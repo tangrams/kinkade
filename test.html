@@ -12,11 +12,11 @@ body, input, button {
 
 <br>
 Color: <input id="picker" class="jscolor" value="ab2567" onchange="updateColor(this.value)"><br>
-<button style="background:#a0a0a0" onclick="setColor(this.innerHTML)">a0a0a0</button>
-<button style="background:#56A08A" onclick="setColor(this.innerHTML)">56A08A</button>
-<button style="background:#867AA0" onclick="setColor(this.innerHTML)">867AA0</button>
-<button style="background:#A0887D" onclick="setColor(this.innerHTML)">A0887D</button>
-<button style="background:#A0868E" onclick="setColor(this.innerHTML)">A0868E</button>
+<button class="jscolor {value:'a0a0a0'}" onclick="setColor(this.innerHTML)">a0a0a0</button>
+<button class="jscolor {value:'56A08A'}" onclick="setColor(this.innerHTML)">56A08A</button>
+<button class="jscolor {value:'867AA0'}" onclick="setColor(this.innerHTML)">867AA0</button>
+<button class="jscolor {value:'A0887D'}" onclick="setColor(this.innerHTML)">A0887D</button>
+<button class="jscolor {value:'A0868E'}" onclick="setColor(this.innerHTML)">A0868E</button>
 <br>
 
 Width: <input id="width" value="10" onchange="updateWidth(this.value)"><br>

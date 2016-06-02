@@ -1,84 +1,64 @@
-cameras:
-    perspective:
-        type: perspective
-        vanishing_point: [0, -500]
-lights:
-    directional1:
-        type: directional
-        direction: [.1, .5, -1]
-        diffuse: .7
-        ambient: .5
-styles:
-    buildings:
-        base: polygons
-        shaders:
-            blocks:
-                color: |
-                    color.rgb *= vec3(min((v_world_position.z*.001 + .5),1.));
 sources:
-    osm:
-        type: TopoJSONTiles
-        url:  https://vector.mapzen.com/osm/all/{z}/{x}/{y}.topojson
+    osm: 
+        type: TopoJSON
+        url: https://vector.mapzen.com/osm/all/{z}/{x}/{y}.topojson?api_key=vector-tiles-JUsa0Gc
         max_zoom: 16
+    normals:
+        type: Raster
+        url: https://terrain-preview.mapzen.com/normal/{z}/{x}/{y}.png
+        max_zoom: 15
+
+textures:
+    spheremap:
+        # url: spheremap.png
+        element: "#kcanvas"
+
+styles: 
+    terrain-envmap:
+        base: raster
+        raster: normal
+        shaders:
+            uniforms:
+                u_scale: .5
+                u_envmap: spheremap
+            blocks:
+                global: |
+                    // Simplified view-independent environment map
+                    vec4 applyEnvmap (in sampler2D _tex, in vec3 _normal) {
+                        const vec3 eye = vec3(0.,0.,-1.);
+                        vec3 r = reflect(eye, _normal);
+                        r.z += 1.0;
+                        float m = 2. * length(r);
+                        vec2 uv = r.xy / m + .5;
+                        return texture2D(_tex, uv);
+                    }
+                color: |                    
+                    normal.z *= u_scale;
+                    normal = normalize(normal);
+                    color = applyEnvmap(u_envmap, normal);
 
 layers:
-    water:
-        data: { source: osm }
+    terrain:
+        data: { source: normals, layer: _default }
         draw:
-            polygons:
-                order: function() { return feature.sort_key; }
-                color: '#353535'
+            terrain-envmap:
+                order: 0
+
     earth:
         data: { source: osm }
         draw:
-            polygons:
-                order: function() { return feature.sort_key; }
-                color: '#555'
-    landuse:
-        data: { source: osm }
-        draw:
-            polygons:
-                order: function() { return feature.sort_key; }
-                color: '#666'
-    roads:
-        data: { source: osm }
-        filter:
-            not: { kind: [rail, ferry] }
-        draw:
-            lines:
-                order: function() { return feature.sort_key; }
-                color: '#777'
-                width: 5
-    buildings:
-        data: { source: osm }
-        draw:
-            polygons:
-                order: function() { return feature.sort_key; }
-                color: '#999'
-        extruded:
-            draw:
-                polygons:
-                    style: buildings
-                    extrude: function () { return feature.height > 0 || $zoom >= 16; }
-    road_labels:
-        data: { source: osm, layer: roads }
-        filter: { name: true, aeroway: false, tunnel: false, railway: false, not: { kind: [rail, ferry] } }
+            lines: 
+                order: 2
+                color: [.3, .3, .3]
+                width: 1px
 
-        highway:
-            filter: { kind: highway, $zoom: { min: 7 } }
-            draw:
-                text:
-                    font:
-                        fill: white
-                        weight: 500
-                        size: 12px
-                        family: Helvetica
-        not_highway:
-            filter: { not: { kind: highway }, $zoom: { min: 13 } }
-            draw:
-                text:
-                    font:
-                        fill: white
-                        weight: 100
-                        size: 11px
-                        family: Helvetica
+    places:
+        data: { source: osm}
+        filter: 
+            kind: [city]
+        draw:
+            text:
+                font:
+                    fill: white
+                    size: 16px
+                    stroke: { color: '#444', width: 4px}

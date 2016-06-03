@@ -61,7 +61,6 @@ var lastX;
 var lastY;
 var colorHex = "ffffff";
 var color = {r: 100, g: 100, b: 100};
-var alpha = .5;
 
 function updateColor(val) {
     valRGB = hexToRgb(val);
@@ -79,6 +78,11 @@ function updateWidth(val) {
 function updateAlpha(val) {
     alpha = val;
     document.getElementById("alpha").value = val;
+}
+function updateScale(val) {
+    scene.styles.hillshade.shaders.uniforms.u_scale = parseFloat(val);
+    scene.requestRedraw();
+    document.getElementById("scale").value = val;
 }
 
 function hexToRgb(hex) {

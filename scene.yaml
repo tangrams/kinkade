@@ -14,7 +14,7 @@ textures:
         element: "#kcanvas"
 
 styles: 
-    terrain-envmap:
+    hillshade:
         base: raster
         raster: normal
         shaders:
@@ -41,7 +41,7 @@ layers:
     terrain:
         data: { source: normals, layer: _default }
         draw:
-            terrain-envmap:
+            hillshade:
                 order: 0
 
     earth:

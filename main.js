@@ -114,8 +114,8 @@ canvas.addEventListener("mousedown", function(e){
     draw(lastX, lastY,w,color.r,color.g,color.b, alpha);
 });
 canvas.addEventListener("mouseup", function(){
-    updateMap();
     drawing = false;
+    scene.loadTextures();
     saveCanvas();
 });
 
@@ -128,39 +128,11 @@ function saveCanvas() {
     });
 }
 
-var canvasPromise;
-function setCanvasPromise() {
-    canvasPromise =
-        Promise.all([scene.updateConfig(), viewComplete]).then(function() {
-            resetViewComplete();
-        });
-};
-function newCanvasPromise() {
-    canvasPromise.then(function() {
-        setCanvasPromise();
-    });
-}
-
-function throttlePromise(operation) {
-  var promise = null;
-
-  return function() {
-    if (!promise) {
-      promise = operation.apply(this, arguments).finally(function() {
-        promise = null;
-      });
-    }
-
-    return promise;
-  };
-}
-
 // based on http://stackoverflow.com/a/17359298/738675
 canvas.addEventListener("mousemove", function(e){
     if(drawing == true){
         x = e.offsetX;
         y = e.offsetY;
-
         // the distance the mouse has moved since last mousemove event
         var dis = Math.sqrt(Math.pow(lastX-x, 2)+Math.pow(lastY-y, 2));
 
@@ -172,7 +144,7 @@ canvas.addEventListener("mousemove", function(e){
         }
         lastX = x;
         lastY = y;
-        updateMap();
+        scene.loadTextures();
     };
 });
 
@@ -184,20 +156,6 @@ ctx.beginPath();
 ctx.rect(0, 0, 512, 512);
 ctx.fillStyle = "white";
 ctx.fill();
-var viewCompleteResolve, viewCompleteReject;
-var viewComplete;
-
-function resetViewComplete() {
-    viewComplete = new Promise(function(resolve, reject){
-        viewCompleteResolve = function(){
-            resolve();
-        };
-        viewCompleteReject = function(e){
-            reject();
-        };
-    });
-};
-resetViewComplete();
 
 // undo
 var lastCanvas = {url: null};
@@ -216,17 +174,13 @@ function KeyPress(e) {
         lastCanvas.url = tempurl;
         img.onload = function() {
             ctx.drawImage(img, 0, 0);
-            updateMap();
+            scene.loadTextures();
         };
     }
 }
 
 function updateMap(){
-    if (typeof canvasPromise == "undefined") {
-        setCanvasPromise();
-    } else {
-        throttlePromise(newCanvasPromise());
-    }
+    scene.loadTextures();
 }
 
 document.onkeydown = KeyPress;
@@ -237,7 +191,7 @@ window.onload = function() {
         // trigger promise resolution
         view_complete: function () {
                 // console.log('frame1 view_complete triggered');
-                viewCompleteResolve();
+                // viewCompleteResolve();
             },
         warning: function(e) {
             // console.log('frame1 scene warning:', e);

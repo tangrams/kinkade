@@ -32,12 +32,26 @@
             font-size: 20px;
             position: absolute;
             right: 0;
-            border: 2px solid gold;
+            border: 2px solid black;
             z-index: 1000;
             background: white;
+            padding: 4px 0 4px 4px;
+            margin: 0;
+
         }
         #kcanvas {
             z-index: 2000;
+            margin: 0;
+            padding: 0;
+        }
+        #reticle {
+            position: absolute;
+            pointer-events: none;
+            height: 512px;
+            width: 512px;
+            left: 5.5px;
+            top: 5.33px;
+            opacity: 0.2;
         }
 
     </style>
@@ -45,6 +59,7 @@
 
   <body>
     <div id="kinkade">
+    <img id="reticle" src="reticle.png">
 
     <canvas id="kcanvas" width="512px" height="512px" style="border:1px #000 solid;"></canvas>
     <script src="jscolor.min.js"></script>

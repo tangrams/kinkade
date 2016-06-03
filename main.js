@@ -51,7 +51,6 @@ map = (function () {
 
 }());
 
-// based on http://stackoverflow.com/a/17359298/738675
 var canvas = document.getElementById('kcanvas');
 
 canvas.onselectstart = function(){ return false; };
@@ -60,13 +59,13 @@ var x = 0;
 var y = 0;
 var lastX;
 var lastY;
-var color = "ffffff";
-var colorRGB = {r: 100, g: 100, b: 100};
+var colorHex = "ffffff";
+var color = {r: 100, g: 100, b: 100};
 var alpha = .5;
 
 function updateColor(val) {
     valRGB = hexToRgb(val);
-    colorRGB = {r: valRGB.r, g: valRGB.g, b: valRGB.b};
+    color = {r: valRGB.r, g: valRGB.g, b: valRGB.b};
     document.getElementById("picker").value = val;
 }
 function setColor(val) {
@@ -106,7 +105,7 @@ function draw(x,y,w,r,g,b,a){
 var ctx = canvas.getContext('2d');
 var w = 10;
 var radius = w/2;
-var going = false;
+var drawing = false;
 function throttle(fn, threshold, scope) {
   threshold || (threshold = 250);
   var last,
@@ -130,21 +129,20 @@ function throttle(fn, threshold, scope) {
   }();
 }
 canvas.addEventListener("mousedown", function(e){
-    going = true;
+    drawing = true;
     lastX = e.offsetX;
     lastY = e.offsetY;
-    draw(lastX, lastY,w,colorRGB.r,colorRGB.g,colorRGB.b, alpha);
+    draw(lastX, lastY,w,color.r,color.g,color.b, alpha);
 });
 canvas.addEventListener("mouseup", function(){
-    going = false;
+    drawing = false;
 });
 
 var canvasPromise;
 function setCanvasPromise() {
     canvasPromise =
-        Promise.all([scene.updateConfig()]).then(function() {
-            console.log('config updated');
-            return;
+        Promise.all([scene.updateConfig(), viewComplete]).then(function() {
+            resetViewComplete();
         });
 };
 function newCanvasPromise() {
@@ -167,8 +165,9 @@ function throttlePromise(operation) {
   };
 }
 
+// based on http://stackoverflow.com/a/17359298/738675
 canvas.addEventListener("mousemove", function(e){
-    if(going == true){
+    if(drawing == true){
         x = e.offsetX;
         y = e.offsetY;
 
@@ -179,7 +178,7 @@ canvas.addEventListener("mousemove", function(e){
         // to get a continous line.
         for (i=0;i<dis;i+=1) {
             var s = i/dis;
-            draw(lastX*s + x*(1-s), lastY*s + y*(1-s),w,colorRGB.r,colorRGB.g,colorRGB.b, alpha);
+            draw(lastX*s + x*(1-s), lastY*s + y*(1-s),w,color.r,color.g,color.b, alpha);
         }
         lastX = x;
         lastY = y;
@@ -188,6 +187,7 @@ canvas.addEventListener("mousemove", function(e){
             setCanvasPromise();
         } else {
             throttlePromise(newCanvasPromise());
+            // newCanvasPromise();
         }
         // }, 250);
     };
@@ -201,3 +201,31 @@ ctx.beginPath();
 ctx.rect(0, 0, 512, 512);
 ctx.fillStyle = "white";
 ctx.fill();
+var viewCompleteResolve, viewCompleteReject;
+var viewComplete;
+
+function resetViewComplete() {
+    viewComplete = new Promise(function(resolve, reject){
+        viewCompleteResolve = function(){
+            resolve();
+        };
+        viewCompleteReject = function(e){
+            reject();
+        };
+    });
+};
+resetViewComplete();
+
+window.onload = function() {
+        // subscribe to Tangram's published view_complete event
+    scene.subscribe({
+        // trigger promise resolution
+        view_complete: function () {
+                // console.log('frame1 view_complete triggered');
+                viewCompleteResolve();
+            },
+        warning: function(e) {
+            // console.log('frame1 scene warning:', e);
+            }
+    });
+}

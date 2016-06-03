@@ -4,7 +4,7 @@
 map = (function () {
     'use strict';
 
-    var map_start_location = [40.70531887544228, -74.00976419448853, 15]; // NYC
+    var map_start_location = [37.8973,-122.0797, 11]; // SF
 
     /*** URL parsing ***/
 
@@ -106,28 +106,7 @@ var ctx = canvas.getContext('2d');
 var w = 10;
 var radius = w/2;
 var drawing = false;
-function throttle(fn, threshold, scope) {
-  threshold || (threshold = 250);
-  var last,
-      deferTimer;
-  return function () {
-    var context = scope || this;
 
-    var now = +new Date,
-        args = arguments;
-    if (last && now < last + threshold) {
-      // hold on to it
-      clearTimeout(deferTimer);
-      deferTimer = setTimeout(function () {
-        last = now;
-        fn.apply(context, args);
-      }, threshold);
-    } else {
-      last = now;
-      fn.apply(context, args);
-    }
-  }();
-}
 canvas.addEventListener("mousedown", function(e){
     drawing = true;
     lastX = e.offsetX;

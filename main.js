@@ -80,7 +80,7 @@ function updateAlpha(val) {
     document.getElementById("alpha").value = val;
 }
 function updateScale(val) {
-    scene.styles.hillshade.shaders.uniforms.u_scale = parseFloat(val);
+    scene.styles.hillshade.shaders.uniforms.u_scale = parseFloat(1/(Math.pow(2,val)-1));
     scene.requestRedraw();
     document.getElementById("scale").value = val;
 }

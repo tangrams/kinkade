@@ -84,8 +84,8 @@
     Alpha: <input id="alpha" value=".15" onchange="updateAlpha(this.value)"><br>
     <input type="range" min=".001" max=".2" value=".15" step=".001" oninput="updateAlpha(this.value)">
     <br>
-    Scale: <input id="scale" value=".5" onchange="updateScale(1-1/Math.pow(2,this.value))"><br>
-    <input type="range" min="0.01" max="5" value=".5" step=".001" oninput="updateScale(1-1/Math.pow(2,this.value))">
+    Scale: <input id="scale" value=".5" onchange="updateScale(this.value)"><br>
+    <input type="range" min="0.01" max="5" value=".5" step=".001" oninput="updateScale(this.value)">
     <br>
     <button id="saveButton" onclick="exportCanvas()">Save</button>
     </div>

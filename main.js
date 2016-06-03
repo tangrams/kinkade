@@ -135,6 +135,11 @@ canvas.addEventListener("mousedown", function(e){
     draw(lastX, lastY,w,color.r,color.g,color.b, alpha);
 });
 canvas.addEventListener("mouseup", function(){
+    if (typeof canvasPromise == "undefined") {
+        setCanvasPromise();
+    } else {
+        throttlePromise(newCanvasPromise());
+    }
     drawing = false;
 });
 
@@ -182,14 +187,11 @@ canvas.addEventListener("mousemove", function(e){
         }
         lastX = x;
         lastY = y;
-        // throttle(function() {
         if (typeof canvasPromise == "undefined") {
             setCanvasPromise();
         } else {
             throttlePromise(newCanvasPromise());
-            // newCanvasPromise();
         }
-        // }, 250);
     };
 });
 

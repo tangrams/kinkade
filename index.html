@@ -74,22 +74,13 @@
     <br>
 
     Width: <input id="width" value="50" onchange="updateWidth(this.value)"><br>
-    <button onclick="updateWidth(this.innerHTML)">10</button>
-    <button onclick="updateWidth(this.innerHTML)">25</button>
-    <button onclick="updateWidth(this.innerHTML)">50</button>
-    <button onclick="updateWidth(this.innerHTML)">100</button>
+    <input type="range" min="0" max="100" value="50" step="1" oninput="updateWidth(this.value)">
     <br>
-    Alpha: <input id="alpha" value=".02" onchange="updateAlpha(this.value)"><br>
-    <button onclick="updateAlpha(this.innerHTML)">.01</button>
-    <button onclick="updateAlpha(this.innerHTML)">.02</button>
-    <button onclick="updateAlpha(this.innerHTML)">.05</button>
-    <button onclick="updateAlpha(this.innerHTML)">1</button>
+    Alpha: <input id="alpha" value=".15" onchange="updateAlpha(this.value)"><br>
+    <input type="range" min=".001" max=".2" value=".15" step=".001" oninput="updateAlpha(this.value)">
     <br>
     Normal scale: <input id="scale" value=".5" onchange="updateScale(this.value)"><br>
-    <button onclick="updateScale(this.innerHTML)">.05</button>
-    <button onclick="updateScale(this.innerHTML)">.1</button>
-    <button onclick="updateScale(this.innerHTML)">.2</button>
-    <button onclick="updateScale(this.innerHTML)">.5</button>
+    <input type="range" min="0.01" max="1" value=".5" step=".001" oninput="updateScale(this.value)">
     </div>
 
     <div id="map"></div>

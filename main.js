@@ -135,13 +135,19 @@ canvas.addEventListener("mousedown", function(e){
     draw(lastX, lastY,w,color.r,color.g,color.b, alpha);
 });
 canvas.addEventListener("mouseup", function(){
-    if (typeof canvasPromise == "undefined") {
-        setCanvasPromise();
-    } else {
-        throttlePromise(newCanvasPromise());
-    }
+    updateMap();
     drawing = false;
+    saveCanvas();
 });
+
+function saveCanvas() {
+    // save current state in case of undo
+    URL.revokeObjectURL(prevCanvas.url);
+    prevCanvas.url = lastCanvas.url;
+    canvas.toBlob(function(blob) {
+        lastCanvas.url = URL.createObjectURL(blob);
+    });
+}
 
 var canvasPromise;
 function setCanvasPromise() {
@@ -187,11 +193,7 @@ canvas.addEventListener("mousemove", function(e){
         }
         lastX = x;
         lastY = y;
-        if (typeof canvasPromise == "undefined") {
-            setCanvasPromise();
-        } else {
-            throttlePromise(newCanvasPromise());
-        }
+        updateMap();
     };
 });
 
@@ -218,6 +220,37 @@ function resetViewComplete() {
 };
 resetViewComplete();
 
+// undo
+var lastCanvas = {url: null};
+var prevCanvas = {url: null};
+function KeyPress(e) {
+    var evtobj = window.event? event : e
+    if (evtobj.keyCode == 90 && evtobj.ctrlKey) {
+        console.log('last:', lastCanvas.url)
+        console.log('prev:', prevCanvas.url)
+        // undo
+        var img = new Image();
+        img.src = prevCanvas.url;
+        var tempurl = prevCanvas.url;
+        prevCanvas.url = lastCanvas.url;
+        lastCanvas.url = tempurl;
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+            updateMap();
+        };
+    }
+}
+
+function updateMap(){
+    if (typeof canvasPromise == "undefined") {
+        setCanvasPromise();
+    } else {
+        throttlePromise(newCanvasPromise());
+    }
+}
+
+document.onkeydown = KeyPress;
+
 window.onload = function() {
         // subscribe to Tangram's published view_complete event
     scene.subscribe({
@@ -230,4 +263,6 @@ window.onload = function() {
             // console.log('frame1 scene warning:', e);
             }
     });
+    // init first undo
+    saveCanvas();
 }

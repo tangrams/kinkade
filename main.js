@@ -166,7 +166,6 @@ var lastCanvas = {url: null};
 var prevCanvas = {url: null};
 function KeyPress(e) {
     var evtobj = window.event? event : e;
-    
     if (evtobj.which == 90 && evtobj.ctrlKey ||
         evtobj.which == 90 && evtobj.metaKey ) {
 
@@ -203,4 +202,11 @@ window.onload = function() {
     });
     // init first undo
     saveCanvas();
+}
+
+function exportCanvas() {
+    window.open(
+      lastCanvas.url,
+      '_blank' // <- This is what makes it open in a new window.
+    );
 }

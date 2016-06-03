@@ -203,11 +203,12 @@ resetViewComplete();
 var lastCanvas = {url: null};
 var prevCanvas = {url: null};
 function KeyPress(e) {
-    var evtobj = window.event? event : e
-    if (evtobj.keyCode == 90 && evtobj.ctrlKey) {
-        console.log('last:', lastCanvas.url)
-        console.log('prev:', prevCanvas.url)
-        // undo
+    var evtobj = window.event? event : e;
+    
+    if (evtobj.which == 90 && evtobj.ctrlKey ||
+        evtobj.which == 90 && evtobj.metaKey ) {
+
+        // swap canvases
         var img = new Image();
         img.src = prevCanvas.url;
         var tempurl = prevCanvas.url;

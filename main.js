@@ -4,7 +4,7 @@
 map = (function () {
     'use strict';
 
-    var map_start_location = [37.8973,-122.0797, 11]; // SF
+    var map_start_location = [35.3470, 138.7379, 12.175]; // SF
 
     /*** URL parsing ***/
 

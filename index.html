@@ -78,13 +78,13 @@
     <button class="jscolor {value:'AB2567'}" onclick="setColor(this.innerHTML)">AB2567</button>
     <br>
 
-    Brush Width: <input id="width" value="50" onchange="updateWidth(this.value)"><br>
+    Brush Width: <input id="width" value="100" onchange="updateWidth(this.value)"><br>
     <input type="range" min="0" max="200" value="100" step="1" oninput="updateWidth(this.value)">
     <br>
-    Brush Alpha: <input id="alpha" value=".015" onchange="updateAlpha(this.value)"><br>
+    Brush Alpha: <input id="alpha" value=".01" onchange="updateAlpha(this.value)"><br>
     <input type="range" min=".001" max=".2" value=".01" step=".001" oninput="updateAlpha(this.value)">
     <br>
-    Terrain Scale: <input id="scale" value=".5" onchange="updateScale(this.value)"><br>
+    Terrain Scale: <input id="scale" value="2" onchange="updateScale(this.value)"><br>
     <input type="range" min="0.01" max="5" value="2" step=".001" oninput="updateScale(this.value)">
     <br>
     <button id="saveButton" onclick="exportCanvas()">Save</button>

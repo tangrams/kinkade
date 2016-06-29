@@ -3,11 +3,14 @@ sources:
         type: TopoJSON
         url: https://vector.mapzen.com/osm/all/{z}/{x}/{y}.topojson?api_key=vector-tiles-JUsa0Gc
         max_zoom: 16
+        rasters: [normals]
     normals:
         type: Raster
         url: https://terrain-preview.mapzen.com/normal/{z}/{x}/{y}.png
         max_zoom: 15
-
+scene:
+    background:
+        color: white
 textures:
     spheremap:
         # url: spheremap.png
@@ -15,7 +18,7 @@ textures:
 
 styles: 
     hillshade:
-        base: raster
+        base: polygons
         raster: normal
         shaders:
             uniforms:
@@ -32,33 +35,35 @@ styles:
                         vec2 uv = r.xy / m + .5;
                         return texture2D(_tex, uv);
                     }
-                color: |                    
+                color: |
                     normal.z *= u_scale;
                     normal = normalize(normal);
                     color = applyEnvmap(u_envmap, normal);
 
 layers:
-    terrain:
-        data: { source: normals, layer: _default }
-        draw:
-            hillshade:
-                order: 0
-
     earth:
         data: { source: osm }
         draw:
-            lines: 
+            hillshade:
+                order: 0
+            lines:
                 order: 2
                 color: [.3, .3, .3]
                 width: 1px
-
-    places:
-        data: { source: osm}
-        filter: 
-            kind: [city]
+    water:
+        data: { source: osm }
+        not-ocean:
+            filter: { not: { kind: ocean} }
+            draw:
+                lines:
+                    order: 3
+                    color: [.3, .3, .3]
+                    width: .5px
+    roads:
+        data: { source: osm }
+        filter: { not: { kind: ocean} }
         draw:
-            text:
-                font:
-                    fill: white
-                    size: 16px
-                    stroke: { color: '#444', width: 4px}
+            lines:
+                order: 3
+                color: [.3, .3, .3]
+                width: .3px

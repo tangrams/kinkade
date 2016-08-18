@@ -167,6 +167,7 @@ var lastCanvas = {url: null};
 var prevCanvas = {url: null};
 function KeyPress(e) {
     var evtobj = window.event? event : e;
+    // if ctrl-z
     if (evtobj.which == 90 && evtobj.ctrlKey ||
         evtobj.which == 90 && evtobj.metaKey ) {
 
@@ -180,6 +181,8 @@ function KeyPress(e) {
             ctx.drawImage(img, 0, 0);
             scene.loadTextures();
         };
+    } else if (evtobj.which == 27) {
+        hidePicker();
     }
 }
 

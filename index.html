@@ -70,14 +70,14 @@
   </head>
 
   <body>
-    <div id="kinkade">
+    <div id="kinkade" onmouseover="hidePicker();">
     <img id="reticle" src="reticle.png">
 
-    <canvas id="kcanvas" height="256" width="256" onmouseover="hidePicker()"></canvas>
+    <canvas id="kcanvas" height="256" width="256"></canvas>
     <script src="lib/jscolor.min.js"></script>
 
     <br>
-    <input id="picker" class="jscolor" value="ab5127" onmouseover="this.jscolor.show();" onchange="updateColor(this.value);"><br>
+    <input id="picker" class="jscolor" value="ab5127" onchange="updateColor(this.value);"><br>
 
 
     Brush Width: <input id="width" value="100" onchange="updateWidth(this.value)"><br>
@@ -98,9 +98,14 @@
     var n = Math.floor(Math.random()*16777215).toString(16);
     // http://stackoverflow.com/a/10073788/738675
     n = n.length >= 6 ? n : new Array(6 - n.length + 1).join('0') + n;
-    document.getElementById("picker").value = n;
+    var picker = document.getElementById('picker');
+    picker.value = n;
     function hidePicker() {
-        if (typeof document.getElementById('picker').jscolor != 'undefined') document.getElementById('picker').jscolor.hide();
+        if (typeof picker.jscolor != 'undefined') picker.jscolor.hide();
+    }
+    picker.onmouseover = function(e) {
+        picker.jscolor.show();
+        e.stopPropagation(); // prevent the kinkade.onmouseover from hiding the popup immediately
     }
     </script>
 

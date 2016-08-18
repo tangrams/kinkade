@@ -20,6 +20,8 @@
             margin: 0px;
             border: 0px;
             padding: 0px;
+            font-family: sans-serif;
+            text-transform: uppercase;
         }
 
         #map {
@@ -29,26 +31,31 @@
             position: absolute;
         }
         #kinkade {
-            font-size: 20px;
+            font-size: 13px;
             position: absolute;
-            right: 0;
-            border: 2px solid black;
+            right: 6px;
             z-index: 1000;
             background: white;
-            padding: 4px 0 4px 4px;
+            padding: 4px;
             margin: 0;
-
+            width: 256px;
+            display: block;
+            border: 1px solid black;
+            overflow: auto;
         }
         #kcanvas {
             z-index: 2000;
             margin: 0;
             padding: 0;
+            width: 256px;
+            height: 256px;
+            border: 1px #000 solid
         }
         #reticle {
             position: absolute;
             pointer-events: none;
-            height: 512px;
-            width: 512px;
+            height: 256px;
+            width: 256px;
             left: 5.5px;
             top: 5.33px;
             opacity: 0.2;
@@ -66,14 +73,15 @@
     <div id="kinkade">
     <img id="reticle" src="reticle.png">
 
-    <canvas id="kcanvas" width="512px" height="512px" style="border:1px #000 solid;"></canvas>
+    <canvas id="kcanvas" height="256" width="256" onmouseover="hidePicker()"></canvas>
     <script src="lib/jscolor.min.js"></script>
 
     <br>
-    Color: <input id="picker" class="jscolor" value="ab2567" onchange="updateColor(this.value);this.jscolor.hide();"><br>
+    <input id="picker" class="jscolor" value="ab5127" onmouseover="this.jscolor.show();" onchange="updateColor(this.value);"><br>
 
-    Brush Width: <input id="width" value="150" onchange="updateWidth(this.value)"><br>
-    <input type="range" min="0" max="200" value="150" step="1" oninput="updateWidth(this.value)">
+
+    Brush Width: <input id="width" value="100" onchange="updateWidth(this.value)"><br>
+    <input type="range" min="0" max="200" value="100" step="1" oninput="updateWidth(this.value)">
     <br>
     Brush Alpha: <input id="alpha" value=".01" onchange="updateAlpha(this.value)"><br>
     <input type="range" min=".001" max=".2" value=".01" step=".001" oninput="updateAlpha(this.value)">
@@ -81,8 +89,20 @@
     Terrain Scale: <input id="scale" value="2" onchange="updateScale(this.value)"><br>
     <input type="range" min="0.01" max="5" value="2" step=".001" oninput="updateScale(this.value)">
     <br>
-    <button id="saveButton" onclick="exportCanvas()">Save</button>
+    <button class="kbutton" onclick="exportCanvas()">SAVE</button>
+    <button class="kbutton" onclick="clearCanvas();updateMap();">RESET</button>
     </div>
+
+    <script>
+    // http://www.paulirish.com/2009/random-hex-color-code-snippets/
+    var n = Math.floor(Math.random()*16777215).toString(16);
+    // http://stackoverflow.com/a/10073788/738675
+    n = n.length >= 6 ? n : new Array(6 - n.length + 1).join('0') + n;
+    document.getElementById("picker").value = n;
+    function hidePicker() {
+        if (typeof document.getElementById('picker').jscolor != 'undefined') document.getElementById('picker').jscolor.hide();
+    }
+    </script>
 
     <div id="map"></div>
 

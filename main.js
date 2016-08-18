@@ -62,6 +62,7 @@ var lastY;
 var colorHex = "ffffff";
 var color = {r: 100, g: 100, b: 100};
 
+
 function updateColor(val) {
     valRGB = hexToRgb(val);
     color = {r: valRGB.r, g: valRGB.g, b: valRGB.b};
@@ -182,6 +183,14 @@ function KeyPress(e) {
     }
 }
 
+// fill canvas with white
+function clearCanvas() {
+    ctx.beginPath();
+    ctx.rect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+    ctx.fill();
+ }
+
 function updateMap(){
     scene.loadTextures();
 }
@@ -200,6 +209,8 @@ window.onload = function() {
             // console.log('frame1 scene warning:', e);
             }
     });
+    // fill canvas with white
+    clearCanvas();
     // init first undo
     saveCanvas();
 }

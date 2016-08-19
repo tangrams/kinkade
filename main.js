@@ -85,6 +85,11 @@ function updateScale(val) {
     scene.requestRedraw();
     document.getElementById("scale").value = val;
 }
+function updateBlur(val) {
+    stackBlurImage( 'lastCanvas', 'kcanvas', val, false );
+    scene.loadTextures();
+    scene.requestRedraw();
+}
 
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -126,11 +131,10 @@ canvas.addEventListener("mouseup", function(){
 
 function saveCanvas() {
     // save current state in case of undo
-    URL.revokeObjectURL(prevCanvas.url);
-    prevCanvas.url = lastCanvas.url;
+    URL.revokeObjectURL(prevCanvas.src);
+    prevCanvas.src = lastCanvas.src;
     canvas.toBlob(function(blob) {
-        lastCanvas.url = URL.createObjectURL(blob);
-        console.log(lastCanvas.url);
+        lastCanvas.src = URL.createObjectURL(blob);
     });
 }
 
@@ -164,8 +168,11 @@ ctx.fillStyle = "white";
 ctx.fill();
 
 // undo
-var lastCanvas = {url: null};
-var prevCanvas = {url: null};
+// var lastCanvas = new Image;
+// lastCanvas.id = "lastCanvas";
+lastCanvas = document.getElementById("lastCanvas");
+var prevCanvas = new Image;
+prevCanvas.id = "prevCanvas";
 function KeyPress(e) {
     var evtobj = window.event? event : e;
     // if ctrl-z
@@ -173,15 +180,13 @@ function KeyPress(e) {
         evtobj.which == 90 && evtobj.metaKey ) {
 
         // swap canvases
-        var img = new Image();
-        img.src = prevCanvas.url;
-        var tempurl = prevCanvas.url;
-        prevCanvas.url = lastCanvas.url;
-        lastCanvas.url = tempurl;
-        img.onload = function() {
-            ctx.drawImage(img, 0, 0);
+        var tempurl = prevCanvas.src;
+        prevCanvas.src = lastCanvas.src;
+        lastCanvas.onload = function() {
+            ctx.drawImage(lastCanvas, 0, 0);
             scene.loadTextures();
         };
+        lastCanvas.src = tempurl;
     } else if (evtobj.which == 27) {
         hidePicker();
     }
@@ -255,7 +260,7 @@ window.onload = function() {
 function exportCanvas() {
     saveCanvas();
     window.open(
-      lastCanvas.url,
+      lastCanvas.src,
       '_blank' // <- This is what makes it open in a new window.
     );
 }

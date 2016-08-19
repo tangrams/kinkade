@@ -130,6 +130,7 @@ function saveCanvas() {
     prevCanvas.url = lastCanvas.url;
     canvas.toBlob(function(blob) {
         lastCanvas.url = URL.createObjectURL(blob);
+        console.log(lastCanvas.url);
     });
 }
 
@@ -194,11 +195,42 @@ function clearCanvas() {
     ctx.fill();
  }
 
+ function loadCanvas(dataurl) {
+    clearCanvas();
+    var img = new Image;
+    img.onload = function(){
+      ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      updateMap();
+      saveCanvas();
+    };
+    img.src = dataurl;
+ }
+
 function updateMap(){
     scene.loadTextures();
 }
 
 document.onkeydown = KeyPress;
+var myDropzone;
+
+function testDropzone(file) {
+    // console.log('dropzone ahoy!', file)
+}
+
+Dropzone.options.kinkade = {
+    paramName: "file", // The name that will be used to transfer the file
+    maxFilesize: 5, // MB
+    accept: function(file, done) {
+        testDropzone(file); // prevents upload attempt
+    },
+    thumbnail: function(file, dataUrl) {
+        // use Dropzone's thumbnail as the canvas image
+        loadCanvas(dataUrl);
+    },
+    thumbnailWidth: 512,
+    thumbnailHeight: 512,
+    previewTemplate: document.getElementById('preview-template').innerHTML
+};
 
 window.onload = function() {
         // subscribe to Tangram's published view_complete event
@@ -212,6 +244,8 @@ window.onload = function() {
             // console.log('frame1 scene warning:', e);
             }
     });
+    // load dropzone
+    myDropzone = new Dropzone("div#kinkade", { url: "#"});
     // fill canvas with white
     clearCanvas();
     // init first undo
@@ -219,6 +253,7 @@ window.onload = function() {
 }
 
 function exportCanvas() {
+    saveCanvas();
     window.open(
       lastCanvas.url,
       '_blank' // <- This is what makes it open in a new window.

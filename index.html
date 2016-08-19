@@ -37,13 +37,13 @@
             z-index: 1000;
             background: white;
             padding: 4px;
-            margin: 0;
-            width: 256px;
+            width: 264px;
             display: block;
             border: 1px solid black;
             overflow: auto;
         }
         #kcanvas {
+            position: absolute;
             z-index: 2000;
             margin: 0;
             padding: 0;
@@ -53,11 +53,10 @@
         }
         #reticle {
             position: absolute;
+            z-index: 3000;
             pointer-events: none;
             height: 256px;
             width: 256px;
-            left: 5.5px;
-            top: 5.33px;
             opacity: 0.2;
         }
         #saveButton {
@@ -65,19 +64,28 @@
             float: right;
             clear: none;
         }
+        .jscolor {
+            width: 100%;
+        }
+        #canvaswrapper {
+            height: 256px;
+            margin: 4px;
+            top: 20px;
+        }
 
     </style>
   </head>
 
   <body>
     <div id="kinkade" onmouseover="hidePicker();">
-    <img id="reticle" src="reticle.png">
 
-    <canvas id="kcanvas" height="256" width="256"></canvas>
     <script src="lib/jscolor.min.js"></script>
 
-    <br>
     <input id="picker" class="jscolor" value="ab5127" onchange="updateColor(this.value);"><br>
+    <div id="canvaswrapper" height="256">
+        <img id="reticle" src="reticle.png"/>
+        <canvas id="kcanvas" height="256" width="256"></canvas>
+    </div>
 
 
     Brush Width: <input id="width" value="100" onchange="updateWidth(this.value)"><br>

@@ -62,6 +62,7 @@ var lastY;
 var colorHex = "ffffff";
 var color = {r: 100, g: 100, b: 100};
 
+
 function updateColor(val) {
     valRGB = hexToRgb(val);
     color = {r: valRGB.r, g: valRGB.g, b: valRGB.b};
@@ -83,6 +84,11 @@ function updateScale(val) {
     scene.styles.hillshade.shaders.uniforms.u_scale = parseFloat(1/(Math.pow(2,val)-1));
     scene.requestRedraw();
     document.getElementById("scale").value = val;
+}
+function updateBlur(val) {
+    stackBlurImage( 'lastCanvas', 'kcanvas', val, false );
+    scene.loadTextures();
+    scene.requestRedraw();
 }
 
 function hexToRgb(hex) {
@@ -125,10 +131,10 @@ canvas.addEventListener("mouseup", function(){
 
 function saveCanvas() {
     // save current state in case of undo
-    URL.revokeObjectURL(prevCanvas.url);
-    prevCanvas.url = lastCanvas.url;
+    URL.revokeObjectURL(prevCanvas.src);
+    prevCanvas.src = lastCanvas.src;
     canvas.toBlob(function(blob) {
-        lastCanvas.url = URL.createObjectURL(blob);
+        lastCanvas.src = URL.createObjectURL(blob);
     });
 }
 
@@ -162,31 +168,74 @@ ctx.fillStyle = "white";
 ctx.fill();
 
 // undo
-var lastCanvas = {url: null};
-var prevCanvas = {url: null};
+// var lastCanvas = new Image;
+// lastCanvas.id = "lastCanvas";
+lastCanvas = document.getElementById("lastCanvas");
+var prevCanvas = new Image;
+prevCanvas.id = "prevCanvas";
 function KeyPress(e) {
     var evtobj = window.event? event : e;
+    // if ctrl-z
     if (evtobj.which == 90 && evtobj.ctrlKey ||
         evtobj.which == 90 && evtobj.metaKey ) {
 
         // swap canvases
-        var img = new Image();
-        img.src = prevCanvas.url;
-        var tempurl = prevCanvas.url;
-        prevCanvas.url = lastCanvas.url;
-        lastCanvas.url = tempurl;
-        img.onload = function() {
-            ctx.drawImage(img, 0, 0);
+        var tempurl = prevCanvas.src;
+        prevCanvas.src = lastCanvas.src;
+        lastCanvas.onload = function() {
+            ctx.drawImage(lastCanvas, 0, 0);
             scene.loadTextures();
         };
+        lastCanvas.src = tempurl;
+    } else if (evtobj.which == 27) {
+        hidePicker();
     }
 }
+
+// fill canvas with white
+function clearCanvas() {
+    ctx.beginPath();
+    ctx.rect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+    ctx.fill();
+ }
+
+ function loadCanvas(dataurl) {
+    clearCanvas();
+    var img = new Image;
+    img.onload = function(){
+      ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      updateMap();
+      saveCanvas();
+    };
+    img.src = dataurl;
+ }
 
 function updateMap(){
     scene.loadTextures();
 }
 
 document.onkeydown = KeyPress;
+var myDropzone;
+
+function testDropzone(file) {
+    // console.log('dropzone ahoy!', file)
+}
+
+Dropzone.options.kinkade = {
+    paramName: "file", // The name that will be used to transfer the file
+    maxFilesize: 5, // MB
+    accept: function(file, done) {
+        testDropzone(file); // prevents upload attempt
+    },
+    thumbnail: function(file, dataUrl) {
+        // use Dropzone's thumbnail as the canvas image
+        loadCanvas(dataUrl);
+    },
+    thumbnailWidth: 512,
+    thumbnailHeight: 512,
+    previewTemplate: document.getElementById('preview-template').innerHTML
+};
 
 window.onload = function() {
         // subscribe to Tangram's published view_complete event
@@ -200,13 +249,18 @@ window.onload = function() {
             // console.log('frame1 scene warning:', e);
             }
     });
+    // load dropzone
+    myDropzone = new Dropzone("div#kinkade", { url: "#"});
+    // fill canvas with white
+    clearCanvas();
     // init first undo
     saveCanvas();
 }
 
 function exportCanvas() {
+    saveCanvas();
     window.open(
-      lastCanvas.url,
+      lastCanvas.src,
       '_blank' // <- This is what makes it open in a new window.
     );
 }

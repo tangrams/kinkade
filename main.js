@@ -102,6 +102,13 @@ function updateOcean(val) {
     scene.rebuild();
 }
 
+// scrub levels of undo
+function rewind(val) {
+    scene.config.global.water = val;
+    scene.config.layers.water.draw.polygons.visible = val;
+    scene.rebuild();
+}
+
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
@@ -127,7 +134,7 @@ var ctx = canvas.getContext('2d');
 var w = 10;
 var radius = w/2;
 var drawing = false;
-
+var undos = {}
 canvas.addEventListener("mousedown", function(e){
     drawing = true;
     lastX = e.offsetX;
@@ -141,7 +148,7 @@ canvas.addEventListener("mouseup", function(){
 });
 
 function saveCanvas() {
-    // save current state in case of undo
+    // save current state to undo history
     URL.revokeObjectURL(prevCanvas.src);
     prevCanvas.src = lastCanvas.src;
     canvas.toBlob(function(blob) {

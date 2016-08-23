@@ -72,6 +72,69 @@
             margin: 4px;
             top: 20px;
         }
+        #rewind {
+            /*removes default webkit styles*/
+            -webkit-appearance: none;
+        }
+
+        #rewind::-webkit-slider-runnable-track {
+            height: 5px;
+            cursor: pointer;
+            -webkit-box-shadow: inset 0px 1px 4px 0px rgba(128,128,128,1);
+            box-shadow: inset 0px 1px 4px 0px rgba(128,128,128,1);
+            background: #eee;
+            background-image: url("line.png");
+            background-size: 50% 50%; /* first percentage is 100/#-of-undos */
+            border-radius: 2px;
+            border: 0.2px solid;
+            border-color: #717171 #8D8D8D #a6a6a6;
+        }
+
+        #rewind::-moz-range-track {
+            height: 5px;
+            cursor: pointer;
+            -moz-box-shadow: inset 0px 1px 4px 0px rgba(128,128,128,1);
+            box-shadow: inset 0px 1px 4px 0px rgba(128,128,128,1);
+            background: #eee;
+            background-image: url("line.png");
+            background-size: 50% 50%; /* first percentage is 100/#-of-undos */
+            border-radius: 2px;
+            border: 0.2px solid;
+            border-color: #717171 #8D8D8D #a6a6a6;
+        }
+
+        #rewind::-ms-track {
+            height: 5px;
+            cursor: pointer;
+            background: #eee;
+            background-image: url("line.png");
+            background-size: 50% 50%; /* first percentage is 100/#-of-undos */
+            color: #a6a6a6;
+            border: 0.2px solid;
+            border-color: #717171 #8D8D8D #a6a6a6;
+        }
+        #rewind::-webkit-slider-thumb {
+            position: relative;
+            top: -5px;
+        }
+        #rewind::-moz-range-thumb {
+            position: relative;
+            top: -5px;
+        }
+        #rewind::-ms-thumb {
+            position: relative;
+            top: -5px;
+        }
+        #rewind:disabled::-webkit-slider-runnable-track {
+            background: white;
+            box-shadow: inset 0px 1px 4px 0px rgba(200,200,200,1);
+            border-color: #ccc;
+        }
+        #rewind:disabled::-moz-range-track {
+            background: white;
+            box-shadow: inset 0px 1px 4px 0px rgba(200,200,200,1);
+            border-color: #ccc;
+        }
 
     </style>
   </head>
@@ -102,6 +165,8 @@
     <br>
     Draw Lines: <input type="checkbox" id="vector" checked="true" onchange="updateLines(this.checked)"><br>
     Solid Water: <input type="checkbox" id="ocean" checked="false" onchange="updateOcean(this.checked)"><br>
+    Rewind:<br>
+    <input disabled="false" type="range" id="rewind" min="0" max="1" value="1" step="1" oninput="rewind(this.value)"><br>
     <br>
     <button class="kbutton" onclick="exportCanvas()">SAVE</button>
     <!-- <input type="file" onchange="previewFile()" value="LOAD"> -->

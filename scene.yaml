@@ -16,6 +16,10 @@ textures:
         # url: spheremap.png
         element: "#kcanvas"
 
+global:
+    lines: true
+    water: true
+
 styles: 
     hillshade:
         base: polygons
@@ -47,23 +51,21 @@ layers:
             hillshade:
                 order: 0
             lines:
+                visible: global.lines
                 order: 2
                 color: [.3, .3, .3]
-                width: 1px
+                width: .5px
     water:
         data: { source: osm }
-        not-ocean:
-            filter: { not: { kind: ocean} }
-            draw:
-                lines:
-                    order: 3
-                    color: [.3, .3, .3]
-                    width: .5px
-    roads:
-        data: { source: osm }
-        filter: { not: { kind: ocean} }
         draw:
+            polygons:
+                visible: global.water
+                order: 4
+                color: white
+            hillshade:
+                order: 3
             lines:
+                visible: global.lines
                 order: 3
                 color: [.3, .3, .3]
                 width: .3px

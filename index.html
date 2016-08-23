@@ -100,6 +100,9 @@
     Blur: <input id="blur" value="0" onchange="updateBlur(this.value)"><br>
     <input type="range" min="0" max="100" value="0" step=".01" oninput="updateBlur(this.value)">
     <br>
+    Draw Lines: <input type="checkbox" id="vector" checked="true" onchange="updateLines(this.checked)"><br>
+    Solid Water: <input type="checkbox" id="ocean" checked="false" onchange="updateOcean(this.checked)"><br>
+    <br>
     <button class="kbutton" onclick="exportCanvas()">SAVE</button>
     <!-- <input type="file" onchange="previewFile()" value="LOAD"> -->
     <button class="kbutton" onclick="clearCanvas();updateMap();">RESET</button>

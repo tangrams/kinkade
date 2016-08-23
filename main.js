@@ -90,6 +90,17 @@ function updateBlur(val) {
     scene.loadTextures();
     scene.requestRedraw();
 }
+function updateLines(val) {
+    scene.config.global.lines = val;
+    scene.config.layers.earth.draw.lines.visible = val;
+    scene.config.layers.water.draw.lines.visible = val;
+    scene.rebuild();
+}
+function updateOcean(val) {
+    scene.config.global.water = val;
+    scene.config.layers.water.draw.polygons.visible = val;
+    scene.rebuild();
+}
 
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -222,7 +233,7 @@ function testDropzone(file) {
     // console.log('dropzone ahoy!', file)
 }
 
-Dropzone.options.kinkade = {
+Dropzone.options.canvaswrapper = {
     paramName: "file", // The name that will be used to transfer the file
     maxFilesize: 5, // MB
     accept: function(file, done) {
@@ -250,7 +261,7 @@ window.onload = function() {
             }
     });
     // load dropzone
-    myDropzone = new Dropzone("div#kinkade", { url: "#"});
+    myDropzone = new Dropzone("div#canvaswrapper", { url: "#"});
     // fill canvas with white
     clearCanvas();
     // init first undo

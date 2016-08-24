@@ -134,7 +134,7 @@ var ctx = canvas.getContext('2d');
 var w = 10;
 var radius = w/2;
 var drawing = false;
-var undos = {}
+var undos = []
 canvas.addEventListener("mousedown", function(e){
     drawing = true;
     lastX = e.offsetX;
@@ -153,7 +153,37 @@ function saveCanvas() {
     prevCanvas.src = lastCanvas.src;
     canvas.toBlob(function(blob) {
         lastCanvas.src = URL.createObjectURL(blob);
+        undos.push(lastCanvas.src);
+        updateRewindSlider()
     });
+}
+
+function getStyle(className) {
+    var classes = document.styleSheets[3].rules || document.styleSheets[3].cssRules;
+    for (var x = 0; x < classes.length; x++) {
+        if (classes[x].selectorText == className) {
+            console.log('classes:', classes);
+            (classes[x].cssText) ? console.log(classes[x].cssText) : console.log(classes[x].style.cssText);
+            return {i: x, length: classes.length};
+        }
+    }
+}
+
+function updateRewindSlider() {
+    document.getElementById('rewind').disabled = false;
+    percentWidth = (100 / undos.length);
+    rule = " { background-repeat: repeat-x; background-image: url('line.png'); background-size: "+percentWidth + "% 50%; }";
+
+    style = getStyle('#rewindwrapper');
+    if (style) {
+        document.styleSheets[3].deleteRule(style.i);
+        try {
+            document.styleSheets[3].insertRule('#rewindwrapper' + rule, style.length-1);
+        } catch(e) {}
+    }
+
+    document.getElementById('rewind').max = undos.length;
+    document.getElementById('rewind').value = undos.length;
 }
 
 // based on http://stackoverflow.com/a/17359298/738675

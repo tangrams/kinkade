@@ -104,9 +104,11 @@ function updateOcean(val) {
 
 // scrub levels of undo
 function rewind(val) {
-    scene.config.global.water = val;
-    scene.config.layers.water.draw.polygons.visible = val;
-    scene.rebuild();
+    lastCanvas.src = undos[val];
+    lastCanvas.onload = function() {
+        ctx.drawImage(lastCanvas, 0, 0);
+        scene.loadTextures();
+    };
 }
 
 function hexToRgb(hex) {
@@ -149,8 +151,6 @@ canvas.addEventListener("mouseup", function(){
 
 function saveCanvas() {
     // save current state to undo history
-    URL.revokeObjectURL(prevCanvas.src);
-    prevCanvas.src = lastCanvas.src;
     canvas.toBlob(function(blob) {
         lastCanvas.src = URL.createObjectURL(blob);
         undos.push(lastCanvas.src);
@@ -170,20 +170,16 @@ function getStyle(className) {
 }
 
 function updateRewindSlider() {
-    document.getElementById('rewind').disabled = false;
-    percentWidth = (100 / undos.length);
-    rule = " { background-repeat: repeat-x; background-image: url('line.png'); background-size: "+percentWidth + "% 50%; }";
+    if (undos.length > 1) {
+        document.getElementById('rewind').disabled = false;
+        percentWidth = (100 / Math.max(undos.length - 1, 1)) * .875;
+        rule = "#rewindwrapper { background-position: left; background-image: url('line.png'); background-size: "+percentWidth + "% 100%; background-position: top 0px left 10px; }";
+        document.styleSheets[3].deleteRule(0);
+        document.styleSheets[3].insertRule(rule, 0);
 
-    style = getStyle('#rewindwrapper');
-    if (style) {
-        document.styleSheets[3].deleteRule(style.i);
-        try {
-            document.styleSheets[3].insertRule('#rewindwrapper' + rule, style.length-1);
-        } catch(e) {}
+        document.getElementById('rewind').max = undos.length - 1;
+        document.getElementById('rewind').value = undos.length - 1;
     }
-
-    document.getElementById('rewind').max = undos.length;
-    document.getElementById('rewind').value = undos.length;
 }
 
 // based on http://stackoverflow.com/a/17359298/738675
@@ -221,20 +217,21 @@ ctx.fill();
 lastCanvas = document.getElementById("lastCanvas");
 var prevCanvas = new Image;
 prevCanvas.id = "prevCanvas";
+var rewindSlider = document.getElementById("rewind");
+
 function KeyPress(e) {
     var evtobj = window.event? event : e;
     // if ctrl-z
-    if (evtobj.which == 90 && evtobj.ctrlKey ||
-        evtobj.which == 90 && evtobj.metaKey ) {
-
-        // swap canvases
-        var tempurl = prevCanvas.src;
-        prevCanvas.src = lastCanvas.src;
-        lastCanvas.onload = function() {
-            ctx.drawImage(lastCanvas, 0, 0);
-            scene.loadTextures();
-        };
-        lastCanvas.src = tempurl;
+    if (evtobj.which == 90 && evtobj.ctrlKey && !evtobj.shiftKey ||
+        evtobj.which == 90 && evtobj.metaKey && !evtobj.shiftKey ) {
+        rewindSlider.value -= 1;
+        rewind(rewindSlider.value);
+    // if ctrl-shift-z
+    } else if (evtobj.which == 90 && evtobj.ctrlKey && evtobj.shiftKey ||
+        evtobj.which == 90 && evtobj.metaKey && evtobj.shiftKey ) {
+        rewindSlider.value = parseInt(rewindSlider.value) + 1;
+        rewind(rewindSlider.value);
+    // if esc
     } else if (evtobj.which == 27) {
         hidePicker();
     }

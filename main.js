@@ -156,6 +156,8 @@ function saveCanvas() {
         undos.push(lastCanvas.src);
         updateRewindSlider()
     });
+    // reset blur
+    document.getElementById('blur').value = 0;
 }
 
 function getStyle(className) {

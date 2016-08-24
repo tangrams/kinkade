@@ -61,9 +61,11 @@ var lastX;
 var lastY;
 var colorHex = "ffffff";
 var color = {r: 100, g: 100, b: 100};
+var blurring = false;
 
 
 function updateColor(val) {
+    resetBlur()
     valRGB = hexToRgb(val);
     color = {r: valRGB.r, g: valRGB.g, b: valRGB.b};
     document.getElementById("picker").value = val;
@@ -73,19 +75,23 @@ function setColor(val) {
     updateColor(val);
 }
 function updateWidth(val) {
+    resetBlur()
     w = val;
     document.getElementById("width").value = val;
 }
 function updateAlpha(val) {
+    resetBlur()
     alpha = val;
     document.getElementById("alpha").value = val;
 }
 function updateScale(val) {
+    resetBlur()
     scene.styles.hillshade.shaders.uniforms.u_scale = parseFloat(1/(Math.pow(2,val)-1));
     scene.requestRedraw();
     document.getElementById("scale").value = val;
 }
 function updateBlur(val) {
+    blurring = true;
     stackBlurImage( 'lastCanvas', 'kcanvas', val, false );
     scene.loadTextures();
     scene.requestRedraw();
@@ -138,6 +144,7 @@ var radius = w/2;
 var drawing = false;
 var undos = []
 canvas.addEventListener("mousedown", function(e){
+    resetBlur();
     drawing = true;
     lastX = e.offsetX;
     lastY = e.offsetY;
@@ -149,15 +156,18 @@ canvas.addEventListener("mouseup", function(){
     saveCanvas();
 });
 
-function saveCanvas() {
+function saveCanvas(overwrite) {
     // save current state to undo history
     canvas.toBlob(function(blob) {
         lastCanvas.src = URL.createObjectURL(blob);
-        undos.push(lastCanvas.src);
-        updateRewindSlider()
+        if (overwrite) {
+            console.log('overwrite')
+            undos[undos.length] = lastCanvas.src;
+        } else {
+            undos.push(lastCanvas.src);
+            updateRewindSlider();
+        }
     });
-    // reset blur
-    document.getElementById('blur').value = 0;
 }
 
 function getStyle(className) {
@@ -168,6 +178,14 @@ function getStyle(className) {
             (classes[x].cssText) ? console.log(classes[x].cssText) : console.log(classes[x].style.cssText);
             return {i: x, length: classes.length};
         }
+    }
+}
+
+function resetBlur() {
+    if (blurring) {
+        saveCanvas();
+        blurring = false;
+        document.getElementById('blur').value = 0;
     }
 }
 
@@ -248,6 +266,7 @@ function clearCanvas() {
  }
 
  function loadCanvas(dataurl) {
+    blurring = false;
     clearCanvas();
     var img = new Image;
     img.onload = function(){

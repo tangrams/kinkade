@@ -102,6 +102,13 @@ function updateLines(val) {
     scene.config.layers.water.draw.lines.visible = val;
     scene.rebuild();
 }
+function updateLabels(val) {
+    scene.config.global.lines = val;
+    scene.config.layers.places.countries.draw.points.visible = val;
+    scene.config.layers.places.cities.draw.points.visible = val;
+    scene.config.layers.places.states.draw.text.visible = val;
+    scene.rebuild();
+}
 function updateOcean(val) {
     scene.config.global.water = val;
     scene.config.layers.water.draw.polygons.visible = val;

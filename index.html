@@ -104,6 +104,7 @@
     <input type="range" id="blur" min="0" max="100" value="0" step=".01" oninput="updateBlur(this.value)">
     <br>
     Draw Lines: <input type="checkbox" id="vector" checked="true" onchange="updateLines(this.checked)"><br>
+    Draw Labels: <input type="checkbox" id="labels" checked="true" onchange="updateLabels(this.checked)"><br>
     Solid Water: <input type="checkbox" id="ocean" checked="false" onchange="updateOcean(this.checked)"><br>
     Rewind:<br>
     <div id="rewindwrapper" class="rewindwrapper"><input disabled type="range" id="rewind" class="rewindClass" min="0" max="1" value="1" step="1" oninput="rewind(this.value)"></div><br>

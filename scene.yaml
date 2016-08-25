@@ -13,12 +13,12 @@ scene:
         color: white
 textures:
     spheremap:
-        # url: spheremap.png
         element: "#kcanvas"
 
 global:
     lines: true
     water: true
+    labels: true
 
 styles: 
     hillshade:
@@ -69,3 +69,65 @@ layers:
                 order: 3
                 color: [.3, .3, .3]
                 width: .3px
+    places:
+        data: { source: osm }
+        filter: { not: { kind: [neighbourhood] } }
+        countries:
+            filter: { kind: country }
+            draw:
+                points:
+                    visible: global.labels
+                    priority: 1
+                    color: [0, 0, 0, 0]
+                    size: 80px
+                    text:
+                        collide: false
+                        anchor: center
+                        visible: global.labels
+                        font:
+                            transform: uppercase
+                            size: function() {return 40 - feature.scalerank * 2 - (20 - $zoom) }
+                            family: Lucida Grande
+                            fill: white
+                            stroke:
+                                color: black
+                                width: 2px
+        cities:
+            filter:
+                any:
+                    - { labelrank: {min: 5}, $zoom: { max: 6 }}
+                    - $zoom: { min: 6, max: 8 }
+                    - { population: { min: 100000 } , $zoom: {min: 8 } }
+                    - { population: { min: 50000 } , $zoom: {min: 12 } }
+                    - { not: { kind: [country, state] }, $zoom: {min: 14 } }
+            draw:
+                points:
+                    visible: global.labels
+                    priority: 2
+                    color: '#aaa'
+                    size: 8px
+                    text:
+                        optional: false
+                        font:
+                            size: function() {return 30 - feature.scalerank * 1 - (10 - $zoom)}
+                            family: Lucida Grande
+                            fill: white
+                            stroke:
+                                color: black
+                                width: 2px
+        states:
+            filter:
+                - kind: state
+                  $zoom: { min: 6 }
+            draw:
+                text:
+                    visible: global.labels
+                    priority: 3
+                    font:
+                        transform: uppercase
+                        size: function() {return 40 - feature.scalerank * 2 - (20 - $zoom) }
+                        family: Lucida Grande
+                        fill: white
+                        stroke:
+                            color: black
+                            width: 2px

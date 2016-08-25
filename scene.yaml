@@ -43,6 +43,9 @@ styles:
                     normal.z *= u_scale;
                     normal = normalize(normal);
                     color = applyEnvmap(u_envmap, normal);
+    dots:
+        base: lines
+        dash: [1, 2]
 
 layers:
     earth:
@@ -132,3 +135,10 @@ layers:
                         stroke:
                             color: black
                             width: 2px
+    boundaries:
+        data: { source: osm }
+        draw:
+            dots:
+                visible: global.lines
+                color: [.75, .75, .75]
+                width: 1px

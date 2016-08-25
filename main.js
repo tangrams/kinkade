@@ -100,6 +100,7 @@ function updateLines(val) {
     scene.config.global.lines = val;
     scene.config.layers.earth.draw.lines.visible = val;
     scene.config.layers.water.draw.lines.visible = val;
+    scene.config.layers.boundaries.draw.dots.visible = val;
     scene.rebuild();
 }
 function updateLabels(val) {

@@ -62,10 +62,11 @@ var lastY;
 var colorHex = "ffffff";
 var color = {r: 100, g: 100, b: 100};
 var blurring = false;
+var rotating = false;
 
 
 function updateColor(val) {
-    resetBlur()
+    resetFX();
     valRGB = hexToRgb(val);
     color = {r: valRGB.r, g: valRGB.g, b: valRGB.b};
     document.getElementById("picker").value = val;
@@ -75,23 +76,26 @@ function setColor(val) {
     updateColor(val);
 }
 function updateWidth(val) {
-    resetBlur()
+    resetFX();
     w = val;
     document.getElementById("width").value = val;
 }
 function updateAlpha(val) {
-    resetBlur()
+    resetFX();
     alpha = val;
     document.getElementById("alpha").value = val;
 }
 function updateScale(val) {
-    resetBlur()
+    resetFX();
     scene.styles.hillshade.shaders.uniforms.u_scale = parseFloat(1/(Math.pow(2,val)-1));
     scene.requestRedraw();
     document.getElementById("scale").value = val;
 }
 function updateBlur(val) {
-    blurring = true;
+    if (!blurring) {
+        resetRotate();
+        blurring = true;
+    }
     stackBlurImage( 'lastCanvas', 'kcanvas', val, false );
     scene.loadTextures();
     scene.requestRedraw();
@@ -116,8 +120,61 @@ function updateOcean(val) {
     scene.rebuild();
 }
 
+rotateAngle = 0;
+function updateRotate(val) {
+    // console.log('updaterotate')
+    if (blurring) resetBlur();
+    if (!rotating) {
+        // save the canvas
+        // console.log('save: updateRotate')
+        // saveCanvas();
+        // save transform state
+        // ctx.save();
+        rotating = true;
+    }
+    val *= -1;
+    rotate( val - rotateAngle );
+    rotateAngle = val;
+    scene.loadTextures();
+    scene.requestRedraw();
+}
+
+// rotate the canvas
+function rotate(val) {
+    // rotate the saved canvas
+    var ctx = canvas.getContext('2d');
+    ctx.translate(canvas.width/2, canvas.height/2); 
+    ctx.rotate(Math.PI/180*val);
+    ctx.translate(-canvas.width/2, -canvas.height/2);
+    ctx.drawImage(lastCanvas, 0, 0); 
+
+}
+
+function resetFX() {
+    if (rotating || blurring) {
+        // console.log('save: resetFX')
+        saveCanvas();
+    }
+    if (rotating) resetRotate();
+    if (blurring) resetBlur();
+}
+
+function resetRotate() {
+    // console.log('reset rotate')
+    if (rotating) {
+        // console.log('save: resetRotate')
+        saveCanvas();
+        rotating = false;
+        rotateAngle = 0;
+        ctx.resetTransform();
+        ctx.restore();
+        document.getElementById('rotate').value = 0;
+    }
+}
+
 // scrub levels of undo
 function rewind(val) {
+    resetFX();
     lastCanvas.src = undos[val];
     lastCanvas.onload = function() {
         ctx.drawImage(lastCanvas, 0, 0);
@@ -152,7 +209,7 @@ var radius = w/2;
 var drawing = false;
 var undos = []
 canvas.addEventListener("mousedown", function(e){
-    resetBlur();
+    resetFX();
     drawing = true;
     lastX = e.offsetX;
     lastY = e.offsetY;
@@ -161,15 +218,17 @@ canvas.addEventListener("mousedown", function(e){
 canvas.addEventListener("mouseup", function(){
     drawing = false;
     scene.loadTextures();
+    // console.log('save: mouseup')
     saveCanvas();
 });
 
 function saveCanvas(overwrite) {
+    // console.log('save canvas')
     // save current state to undo history
     canvas.toBlob(function(blob) {
         lastCanvas.src = URL.createObjectURL(blob);
         if (overwrite) {
-            console.log('overwrite')
+            // console.log('overwrite')
             undos[undos.length] = lastCanvas.src;
         } else {
             undos.push(lastCanvas.src);
@@ -182,7 +241,7 @@ function getStyle(className) {
     var classes = document.styleSheets[3].rules || document.styleSheets[3].cssRules;
     for (var x = 0; x < classes.length; x++) {
         if (classes[x].selectorText == className) {
-            console.log('classes:', classes);
+            // console.log('classes:', classes);
             (classes[x].cssText) ? console.log(classes[x].cssText) : console.log(classes[x].style.cssText);
             return {i: x, length: classes.length};
         }
@@ -190,10 +249,11 @@ function getStyle(className) {
 }
 
 function resetBlur() {
+    // console.log('reset blur')
     if (blurring) {
-        saveCanvas();
         blurring = false;
         document.getElementById('blur').value = 0;
+        // saveCanvas();
     }
 }
 
@@ -275,11 +335,13 @@ function clearCanvas() {
 
  function loadCanvas(dataurl) {
     blurring = false;
+    rotating = false;
     clearCanvas();
     var img = new Image;
     img.onload = function(){
       ctx.drawImage(img,0,0,canvas.width,canvas.height);
       updateMap();
+      // console.log('save: loadCanvas')
       saveCanvas();
     };
     img.src = dataurl;
@@ -328,10 +390,12 @@ window.onload = function() {
     // fill canvas with white
     clearCanvas();
     // init first undo
+    // console.log('save: window.onload')
     saveCanvas();
 }
 
 function exportCanvas() {
+    // console.log('save: exportCanvas')
     saveCanvas();
     window.open(
       lastCanvas.src,

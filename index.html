@@ -103,6 +103,9 @@
     Blur:<br>
     <input type="range" id="blur" min="0" max="100" value="0" step=".01" oninput="updateBlur(this.value)">
     <br>
+    Rotate:<br>
+    <input type="range" id="rotate" min="-360" max="360" value="0" step="1" oninput="updateRotate(this.value)" onChange="resetRotate()">
+    <br>
     Draw Lines: <input type="checkbox" id="vector" checked="true" onchange="updateLines(this.checked)"><br>
     Draw Labels: <input type="checkbox" id="labels" checked="true" onchange="updateLabels(this.checked)"><br>
     Solid Water: <input type="checkbox" id="ocean" checked="false" onchange="updateOcean(this.checked)"><br>

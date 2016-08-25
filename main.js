@@ -122,11 +122,9 @@ function updateOcean(val) {
 
 rotateAngle = 0;
 function updateRotate(val) {
-    // console.log('updaterotate')
     if (blurring) resetBlur();
     if (!rotating) {
         // save the canvas
-        // console.log('save: updateRotate')
         // saveCanvas();
         // save transform state
         // ctx.save();
@@ -152,7 +150,6 @@ function rotate(val) {
 
 function resetFX() {
     if (rotating || blurring) {
-        // console.log('save: resetFX')
         saveCanvas();
     }
     if (rotating) resetRotate();
@@ -160,9 +157,7 @@ function resetFX() {
 }
 
 function resetRotate() {
-    // console.log('reset rotate')
     if (rotating) {
-        // console.log('save: resetRotate')
         saveCanvas();
         rotating = false;
         rotateAngle = 0;
@@ -218,12 +213,10 @@ canvas.addEventListener("mousedown", function(e){
 canvas.addEventListener("mouseup", function(){
     drawing = false;
     scene.loadTextures();
-    // console.log('save: mouseup')
     saveCanvas();
 });
 
 function saveCanvas(overwrite) {
-    // console.log('save canvas')
     // save current state to undo history
     canvas.toBlob(function(blob) {
         lastCanvas.src = URL.createObjectURL(blob);
@@ -237,19 +230,7 @@ function saveCanvas(overwrite) {
     });
 }
 
-function getStyle(className) {
-    var classes = document.styleSheets[3].rules || document.styleSheets[3].cssRules;
-    for (var x = 0; x < classes.length; x++) {
-        if (classes[x].selectorText == className) {
-            // console.log('classes:', classes);
-            (classes[x].cssText) ? console.log(classes[x].cssText) : console.log(classes[x].style.cssText);
-            return {i: x, length: classes.length};
-        }
-    }
-}
-
 function resetBlur() {
-    // console.log('reset blur')
     if (blurring) {
         blurring = false;
         document.getElementById('blur').value = 0;
@@ -341,7 +322,6 @@ function clearCanvas() {
     img.onload = function(){
       ctx.drawImage(img,0,0,canvas.width,canvas.height);
       updateMap();
-      // console.log('save: loadCanvas')
       saveCanvas();
     };
     img.src = dataurl;
@@ -355,7 +335,6 @@ document.onkeydown = KeyPress;
 var myDropzone;
 
 function testDropzone(file) {
-    // console.log('dropzone ahoy!', file)
 }
 
 Dropzone.options.canvaswrapper = {
@@ -378,11 +357,9 @@ window.onload = function() {
     scene.subscribe({
         // trigger promise resolution
         view_complete: function () {
-                // console.log('frame1 view_complete triggered');
                 // viewCompleteResolve();
             },
         warning: function(e) {
-            // console.log('frame1 scene warning:', e);
             }
     });
     // load dropzone
@@ -390,12 +367,10 @@ window.onload = function() {
     // fill canvas with white
     clearCanvas();
     // init first undo
-    // console.log('save: window.onload')
     saveCanvas();
 }
 
 function exportCanvas() {
-    // console.log('save: exportCanvas')
     saveCanvas();
     window.open(
       lastCanvas.src,

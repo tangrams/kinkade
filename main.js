@@ -122,31 +122,34 @@ function updateOcean(val) {
     scene.rebuild();
 }
 
-rotateAngle = 0;
 function updateRotate(val) {
     val *= -1;
     if (!rotating) {
         rotating = true;
     }
     if (blurring) {
-        saveCanvas(false, rotate, (val - rotateAngle));
+        saveCanvas(false, rotate, val);
         resetBlur();
     } else {
-        rotate( val - rotateAngle );
+        rotate(val);
     }
-    rotateAngle = val;
 }
 
 // rotate the canvas
 function rotate(val) {
-    // rotate the saved canvas
+    // get the last saved canvas
     lastCanvas.src = undos[undos.length - 1];
-    ctx.drawImage(lastCanvas, 0, 0);
-
+    // transform the canvas - move so the rotate point is in the center of the image
     ctx.translate(canvas.width/2, canvas.height/2); 
+    // rotate
     ctx.rotate(Math.PI/180*val);
+    // move back to original position
     ctx.translate(-canvas.width/2, -canvas.height/2);
+    // draw the saved image on the transformed canvas
     ctx.drawImage(lastCanvas, 0, 0); 
+    // freeze current transform state
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    // update map
     scene.loadTextures();
     scene.requestRedraw();
 
@@ -164,7 +167,6 @@ function resetRotate() {
     if (rotating) {
         saveCanvas();
         rotating = false;
-        rotateAngle = 0;
         ctx.resetTransform();
         ctx.restore();
         document.getElementById('rotate').value = 0;

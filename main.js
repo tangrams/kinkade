@@ -167,7 +167,6 @@ function resetRotate() {
     if (rotating) {
         saveCanvas();
         rotating = false;
-        ctx.resetTransform();
         ctx.restore();
         document.getElementById('rotate').value = 0;
     }

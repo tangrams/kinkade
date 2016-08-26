@@ -124,41 +124,25 @@ function updateOcean(val) {
 
 rotateAngle = 0;
 function updateRotate(val) {
-    console.log('updaterotate, blurring:', blurring)
     val *= -1;
     if (!rotating) {
-        // save the canvas
-        // saveCanvas();
-        // save transform state
-        // ctx.save();
         rotating = true;
     }
     if (blurring) {
-        // grr
-        // debugger;
-        // saveCanvas();
         saveCanvas(false, rotate, (val - rotateAngle));
-        // saveCanvas();
         resetBlur();
-        // return false;
-    // }
     } else {
         rotate( val - rotateAngle );
     }
-    // rotate( val - rotateAngle );
     rotateAngle = val;
 }
 
 // rotate the canvas
 function rotate(val) {
-    // debugger;
-    console.log('rotate')
-    // if (blurring) debugger;
     // rotate the saved canvas
     lastCanvas.src = undos[undos.length - 1];
     ctx.drawImage(lastCanvas, 0, 0);
-    // scene.loadTextures();
-    // var ctx = canvas.getContext('2d');
+
     ctx.translate(canvas.width/2, canvas.height/2); 
     ctx.rotate(Math.PI/180*val);
     ctx.translate(-canvas.width/2, -canvas.height/2);
@@ -177,7 +161,6 @@ function resetFX() {
 }
 
 function resetRotate() {
-    console.log('resetRotate, rotating:', rotating)
     if (rotating) {
         saveCanvas();
         rotating = false;
@@ -238,26 +221,17 @@ canvas.addEventListener("mouseup", function(){
 });
 
 function saveCanvas(overwrite, callback) {
-    console.log('save, callback:', typeof callback != 'undefined' ? callback : 'undefined')
     // save current state to undo history
-    if (typeof callback != 'undefined') console.log('callback!', callback, 'args?', arguments)
-    console.log('??');
     canvas.toBlob(function(blob, overwrite) {
-        console.log('toBlob')
         lastCanvas.src = URL.createObjectURL(blob);
         if (overwrite) {
-            // console.log('overwrite')
             undos[undos.length] = lastCanvas.src;
             if (typeof callback != 'undefined') callback;
             // if (typeof callback != 'undefined') callback(arguments[arguments.length -1]);
         } else {
-            // debugger;
-            console.log('normal')
             undos.push(lastCanvas.src);
             updateRewindSlider();
-            console.log('typeof callback:', typeof callback)
             if (typeof callback != 'undefined') {
-                console.log('dong callback');
                 callback(arguments[arguments.length-1]);
             }
             // if (typeof callback != 'undefined') callback(arguments[arguments.length -1]);
@@ -269,12 +243,10 @@ function resetBlur() {
     if (blurring) {
         blurring = false;
         document.getElementById('blur').value = 0;
-        // saveCanvas();
     }
 }
 
 function updateRewindSlider() {
-    console.log('updateRewindSlider')
     if (undos.length > 1) {
         document.getElementById('rewind').disabled = false;
         percentWidth = (100 / Math.max(undos.length - 1, 1)) * .875;

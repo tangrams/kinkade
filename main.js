@@ -26,7 +26,8 @@ map = (function () {
 
     var layer = Tangram.leafletLayer({
         scene: 'scene.yaml',
-        attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>'
+        attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>',
+        preUpdate: preUpdate
     });
 
     window.layer = layer;
@@ -86,12 +87,14 @@ function updateAlpha(val) {
     document.getElementById("alpha").value = val;
 }
 function updateScale(val) {
-    resetFX();
     scene.styles.hillshade.shaders.uniforms.u_scale = parseFloat(1/(Math.pow(2,val)-1));
     scene.requestRedraw();
     document.getElementById("scale").value = val;
 }
 function updateBlur(val) {
+    if (document.getElementById('webcam').checked) {
+        useWebcam(false);
+    }
     if (!blurring) {
         blurring = true;
     }
@@ -112,7 +115,7 @@ function updateLines(val) {
 function updateLabels(val) {
     scene.config.global.lines = val;
     scene.config.layers.places.countries.draw.points.visible = val;
-    scene.config.layers.places.cities.draw.points.visible = val;
+    scene.config.layers.places.cities.also.draw.points.visible = val;
     scene.config.layers.places.states.draw.text.visible = val;
     scene.rebuild();
 }
@@ -123,6 +126,7 @@ function updateOcean(val) {
 }
 
 function updateRotate(val) {
+    if (document.getElementById('webcam').checked) useWebcam(false);
     val *= -1;
     if (!rotating) {
         rotating = true;
@@ -155,7 +159,10 @@ function rotate(val) {
 
 }
 
-function resetFX() {
+function resetFX(which) {
+    if (which != 'webcam' && document.getElementById('webcam').checked) {
+        useWebcam(false);
+    }
     if (rotating || blurring) {
         saveCanvas();
     }
@@ -222,6 +229,7 @@ canvas.addEventListener("mouseup", function(){
 });
 
 function saveCanvas(overwrite, callback) {
+
     // save current state to undo history
     canvas.toBlob(function(blob, overwrite) {
         lastCanvas.src = URL.createObjectURL(blob);
@@ -380,9 +388,52 @@ window.onload = function() {
 }
 
 function exportCanvas() {
-    saveCanvas();
-    window.open(
-      lastCanvas.src,
-      '_blank' // <- This is what makes it open in a new window.
-    );
+    saveCanvas(false, function() {
+        window.open(
+          lastCanvas.src,
+          '_blank' // <- This is what makes it open in a new window.
+        );
+    });
+}
+
+function useWebcam(start) { 
+    if (start) {
+        resetFX('webcam');
+        Webcam.set({
+            height: 256,
+            width: 358
+        });
+
+        Webcam.attach( '#kvideo' );
+        scene.updateConfig();
+        document.getElementById("flipspan").style.color = '#000';
+        document.getElementById("flipwebcam").disabled = false;
+        document.getElementById("snapshot").disabled = false;
+    }
+    else {
+        document.getElementById("webcam").checked = false;
+        saveCanvas();
+        Webcam.reset();
+        document.getElementById("flipspan").style.color = '#aaa';
+        document.getElementById("flipwebcam").disabled = true;
+        document.getElementById("snapshot").disabled = true;
+    }
+}
+
+function flipWebcam(active) {
+    if (active) {
+        canvas.style = 'transform:rotate(180deg)';
+    } else {
+        canvas.style = 'transform:rotate(0deg)';
+    }
+}
+
+function preUpdate (will_render) {
+    // Input
+    if (document.getElementById('webcam').checked) {
+        // video width = 358, canvas width = 256, difference = 51
+        // half canvas width + difference = 179
+        ctx.drawImage(document.querySelector('#kvideo > video'), -179, 0);
+        scene.loadTextures();
+    }
 }

@@ -24,6 +24,7 @@ styles:
     hillshade:
         base: polygons
         raster: normal
+        lighting: false
         shaders:
             uniforms:
                 u_scale: .5

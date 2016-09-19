@@ -374,6 +374,24 @@ Dropzone.options.canvaswrapper = {
     thumbnail: function(file, dataUrl) {
         // use Dropzone's thumbnail as the canvas image
         loadCanvas(dataUrl);
+
+        var img = new Image;
+        img.onload = function(){
+          ctx.drawImage(img,0,0,canvas.width,canvas.height);
+            var colorThief = new ColorThief();
+            p = colorThief.getPalette(img, 8);
+            for (var x = 0; x < p.length; x++) {
+                swatches = document.getElementById('swatches').getElementsByClassName('swatch');
+                swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
+            }
+            console.log(p)
+            // debugger;
+
+        };
+        img.src = dataUrl;
+
+
+
     },
     thumbnailWidth: 512,
     thumbnailHeight: 512,

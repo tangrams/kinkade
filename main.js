@@ -52,6 +52,7 @@ map = (function () {
 
 }());
 
+var kinkade = document.getElementById('kinkade');
 var canvas = document.getElementById('kcanvas');
 
 canvas.onselectstart = function(){ return false; };
@@ -317,8 +318,6 @@ ctx.fillStyle = "white";
 ctx.fill();
 
 // undo
-// var lastCanvas = new Image;
-// lastCanvas.id = "lastCanvas";
 lastCanvas = document.getElementById("lastCanvas");
 var prevCanvas = new Image;
 prevCanvas.id = "prevCanvas";
@@ -339,6 +338,13 @@ function KeyPress(e) {
     // if esc
     } else if (evtobj.which == 27) {
         hidePicker();
+    // listen for "h"
+    } else if (evtobj.which == 72 && document.activeElement != document.getElementsByClassName('leaflet-pelias-input')[0]) {
+        // toggle UI
+        var display = map._controlContainer.style.display;
+        map._controlContainer.style.display = (display === "none") ? "block" : "none";
+        display = kinkade.style.display;
+        kinkade.style.display = (display === "none") ? "block" : "none";
     }
 }
 

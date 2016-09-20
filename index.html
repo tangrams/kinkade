@@ -51,6 +51,18 @@
             height: 256px;
             border: 1px #000 solid
         }
+        #kvideo {
+            display: none;
+            position: absolute;
+            z-index: 2001;
+            margin: 0;
+            padding: 0;
+            width: 256px;
+            height: 256px;
+            border: 1px #000 solid;
+            overflow: hidden;
+            left: -51px;
+        }
         #reticle {
             position: absolute;
             z-index: 3000;
@@ -71,9 +83,17 @@
             height: 256px;
             margin: 4px;
             top: 20px;
+            overflow: hidden;
         }
         .rewindwrapper {
             display:inline-block;
+        }
+        #snapshot {
+            margin-left: 25px;
+        }
+        #flipspan {
+            margin-left: 25px;
+            color: #aaa;
         }
         #swatches {
             width: 100%;
@@ -89,6 +109,9 @@
             margin: 2px;
             float: left;
             border: 1px solid #ccc;
+        }
+        #webcamdiv {
+            display: none;
         }
         #recordbutton {
             display: none;
@@ -106,6 +129,7 @@
     <div id="canvaswrapper" height="256">
         <img id="reticle" src="reticle.png"/>
         <canvas id="kcanvas" height="256" width="256"></canvas>
+        <div id="kvideo"></div>
     </div>
     <div id="swatches">
         <div class="swatch" onclick="swatch(this)"></div>
@@ -131,9 +155,14 @@
     Rotate:<br>
     <input type="range" id="rotate" min="-360" max="360" value="0" step="1" oninput="updateRotate(this.value)" onChange="resetRotate()">
     <br>
-    Draw Lines: <input type="checkbox" id="vector" checked="true" onchange="updateLines(this.checked)"><br>
-    Draw Labels: <input type="checkbox" id="labels" checked="true" onchange="updateLabels(this.checked)"><br>
-    Solid Water: <input type="checkbox" id="ocean" checked="false" onchange="updateOcean(this.checked)"><br>
+    Draw Lines: <input type="checkbox" id="vector" checked onchange="updateLines(this.checked)"><br>
+    Draw Labels: <input type="checkbox" id="labels" checked onchange="updateLabels(this.checked)"><br>
+    Solid Water: <input type="checkbox" id="ocean" checked onchange="updateOcean(this.checked)"><br>
+    <div id="webcamdiv">
+    Use Webcam: <input type="checkbox" id="webcam" onchange="useWebcam(this.checked)"><br>
+        <span id="flipspan" style="margin-left: 25px">Flip: <input type="checkbox" id="flipwebcam" onchange="flipWebcam(this.checked)" disabled="true"></span><br>
+        <button disabled="true" id="snapshot" onclick="saveCanvas()">Snapshot webcam</button>
+    </div>
     Rewind:<br>
     <div id="rewindwrapper" class="rewindwrapper"><input disabled type="range" id="rewind" class="rewindClass" min="0" max="1" value="1" step="1" oninput="rewind(this.value)"></div><br>
     <br>
@@ -172,10 +201,12 @@
     <!-- make canvas.toBlob work in Safari -->
     <script type="text/javascript" src="lib/Blob.js"></script>
     <script type="text/javascript" src="lib/canvas-toBlob.js"></script>
-    <!-- drag-n-drop upload -->
+    <!-- drag-n-drop upload - http://www.dropzonejs.com/ -->
     <script type="text/javascript" src="lib/dropzone.js"></script>
-    <!-- blur -->
+    <!-- blur - https://github.com/flozz/StackBlur -->
     <script type="text/javascript" src="lib/StackBlur.js"></script>
+    <!-- webcam - https://github.com/jhuckaby/webcamjs -->
+    <script type="text/javascript" src="lib/webcam.min.js"></script>
     <!-- color-thief https://github.com/lokesh/color-thief -->
     <script type="text/javascript" src="lib/color-thief.min.js"></script>
     <!-- FileSaver.js https://github.com/eligrey/FileSaver.js -->
@@ -185,7 +216,7 @@
     <!-- Main tangram library -->
     <script src="https://mapzen.com/tangram/tangram.debug.js"></script>
 
-    <!-- Demo module -->
+    <!-- Main demo code -->
     <script src="main.js"></script>
 
     <!-- Mapzen map UI -->
@@ -193,10 +224,9 @@
     <script>
       MPZN.bug();
     </script>
-
+    <!-- rewind wrapper style placeholder -->
     <style>
-        #rewindwrapper {
-        }
+    #rewindwrapper {}
     </style>
   </body>
 </html>

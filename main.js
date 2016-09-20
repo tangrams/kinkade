@@ -388,12 +388,10 @@ Dropzone.options.canvaswrapper = {
           ctx.drawImage(img,0,0,canvas.width,canvas.height);
             var colorThief = new ColorThief();
             p = colorThief.getPalette(img, 8);
-            for (var x = 0; x < p.length; x++) {
-                swatches = document.getElementById('swatches').getElementsByClassName('swatch');
+            swatches = document.getElementById('swatches').getElementsByClassName('swatch');
+            for (var x = 0; x < p.length - 1; x++) {
                 swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
             }
-            console.log(p)
-
         };
         img.src = dataUrl;
 

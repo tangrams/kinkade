@@ -325,12 +325,12 @@ var rewindSlider = document.getElementById("rewind");
 
 function KeyPress(e) {
     var evtobj = window.event? event : e;
-    // if ctrl-z
+    // if ctrl-z, undo
     if (evtobj.which == 90 && evtobj.ctrlKey && !evtobj.shiftKey ||
         evtobj.which == 90 && evtobj.metaKey && !evtobj.shiftKey ) {
         rewindSlider.value -= 1;
         rewind(rewindSlider.value);
-    // if ctrl-shift-z
+    // if ctrl-shift-z, redo
     } else if (evtobj.which == 90 && evtobj.ctrlKey && evtobj.shiftKey ||
         evtobj.which == 90 && evtobj.metaKey && evtobj.shiftKey ) {
         rewindSlider.value = parseInt(rewindSlider.value) + 1;
@@ -373,17 +373,13 @@ function updateMap(){
     scene.loadTextures();
 }
 
-document.onkeydown = KeyPress;
+// Dropzone used for drag-n-drop
 var myDropzone;
-
-function testDropzone(file) {
-}
-
 Dropzone.options.canvaswrapper = {
     paramName: "file", // The name that will be used to transfer the file
     maxFilesize: 5, // MB
     accept: function(file, done) {
-        testDropzone(file); // prevents upload attempt
+        return false; // prevents upload attempt
     },
     thumbnail: function(file, dataUrl) {
         // use Dropzone's thumbnail as the canvas image
@@ -419,6 +415,7 @@ window.onload = function() {
         warning: function(e) {
             }
     });
+    document.onkeydown = KeyPress;
     // load dropzone
     myDropzone = new Dropzone("div#canvaswrapper", { url: "#"});
     // fill canvas with white

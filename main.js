@@ -64,16 +64,26 @@ var color = {r: 100, g: 100, b: 100};
 var blurring = false;
 var rotating = false;
 
-
-function updateColor(val) {
+function updateColorHex(val) {
     resetFX();
     valRGB = hexToRgb(val);
     color = {r: valRGB.r, g: valRGB.g, b: valRGB.b};
     document.getElementById("picker").value = val;
 }
+function updateColorRGB(val) {
+    resetFX();
+    valRGB = val;
+    color = val;
+    setColor(RgbToHex(val))
+}
+function swatch(div) {
+    val = getComputedStyle(div).backgroundColor.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+    val = {r: val[1], g: val[2], b: val[3]};
+    updateColorRGB(val);
+}
 function setColor(val) {
     document.getElementById('picker').jscolor.fromString(val);
-    updateColor(val);
+    updateColorHex(val);
 }
 function updateWidth(val) {
     resetFX();
@@ -191,6 +201,15 @@ function hexToRgb(hex) {
     } : null;
 }
 
+function componentToHex(c) {
+    var hex = parseInt(c).toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
+function RgbToHex(val) {
+    return componentToHex(val.r) + componentToHex(val.g) + componentToHex(val.b);
+}
+
 function draw(x,y,w,r,g,b,a){
         var gradient = ctx.createRadialGradient(x, y, 0, x, y, w);
         gradient.addColorStop(0, 'rgba('+r+', '+g+', '+b+', '+a+')');
@@ -280,7 +299,7 @@ canvas.addEventListener("mousemove", function(e){
     };
 });
 
-updateColor(document.getElementById("picker").value);
+updateColorHex(document.getElementById("picker").value);
 updateWidth(document.getElementById("width").value);
 updateAlpha(document.getElementById("alpha").value);
 // fill canvas with white
@@ -355,6 +374,24 @@ Dropzone.options.canvaswrapper = {
     thumbnail: function(file, dataUrl) {
         // use Dropzone's thumbnail as the canvas image
         loadCanvas(dataUrl);
+
+        var img = new Image;
+        img.onload = function(){
+          ctx.drawImage(img,0,0,canvas.width,canvas.height);
+            var colorThief = new ColorThief();
+            p = colorThief.getPalette(img, 8);
+            for (var x = 0; x < p.length; x++) {
+                swatches = document.getElementById('swatches').getElementsByClassName('swatch');
+                swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
+            }
+            console.log(p)
+            // debugger;
+
+        };
+        img.src = dataUrl;
+
+
+
     },
     thumbnailWidth: 512,
     thumbnailHeight: 512,

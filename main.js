@@ -385,7 +385,6 @@ Dropzone.options.canvaswrapper = {
                 swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
             }
             console.log(p)
-            // debugger;
 
         };
         img.src = dataUrl;
@@ -422,4 +421,35 @@ function exportCanvas() {
       lastCanvas.src,
       '_blank' // <- This is what makes it open in a new window.
     );
+}
+
+var video_capture = false;
+var video_button = document.getElementById('recordvideo');
+var video_blink = null;
+// Take a video capture and save to file
+function recordVideo() {
+    if (!video_capture) {
+        if (scene.startVideoCapture()) {
+            video_capture = true;
+            video_button.innerHTML = "STOP VIDEO";
+            video_blink = setInterval(function() {
+                var bgcolor = window.getComputedStyle( video_button ,null).getPropertyValue('background-color');
+                // flash recording button
+                video_button.style.backgroundColor = (bgcolor != "rgb(255, 192, 203)") ? "pink" : "white";
+            }, 500);
+        }
+    }
+    else {
+        return scene.stopVideoCapture().then(function(video) {
+            video_capture = false;
+            video_button.innerHTML = "RECORD VIDEO";
+            window.clearInterval(video_blink);
+            video_button.style.backgroundColor = "white";
+            saveAs(video.blob, 'tangram-video-' + (+new Date()) + '.webm');
+        });
+    }
+};
+
+if (typeof window.MediaRecorder == 'function') {    
+    video_button.style.display = "inline";
 }

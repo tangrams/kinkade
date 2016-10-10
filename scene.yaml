@@ -1,7 +1,7 @@
 sources:
     osm: 
         type: TopoJSON
-        url: https://vector.mapzen.com/osm/all/{z}/{x}/{y}.topojson?api_key=vector-tiles-JUsa0Gc
+        url: https://tile.dev.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson
         max_zoom: 16
         rasters: [normals]
     normals:
@@ -56,11 +56,6 @@ layers:
         draw:
             hillshade:
                 order: 0
-            lines:
-                visible: global.lines
-                order: 2
-                color: [.3, .3, .3]
-                width: .5px
     water:
         data: { source: osm }
         draw:

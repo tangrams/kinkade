@@ -1,7 +1,7 @@
 sources:
     osm: 
         type: TopoJSON
-        url: https://tile.dev.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson
+        url: https://tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson?api_key=mapzen-QF1osLn
         max_zoom: 16
         rasters: [normals]
     normals:

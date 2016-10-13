@@ -118,22 +118,15 @@ function updateBlur(val) {
 }
 function updateLines(val) {
     scene.config.global.lines = val;
-    scene.config.layers.earth.draw.lines.visible = val;
-    scene.config.layers.water.draw.lines.visible = val;
-    scene.config.layers.boundaries.draw.dots.visible = val;
-    scene.rebuild();
+    scene.updateConfig();
 }
 function updateLabels(val) {
-    scene.config.global.lines = val;
-    scene.config.layers.places.countries.draw.points.visible = val;
-    scene.config.layers.places.cities.also.draw.points.visible = val;
-    scene.config.layers.places.states.draw.text.visible = val;
-    scene.rebuild();
+    scene.config.global.labels = val;
+    scene.updateConfig();
 }
 function updateOcean(val) {
     scene.config.global.water = val;
-    scene.config.layers.water.draw.polygons.visible = val;
-    scene.rebuild();
+    scene.updateConfig();
 }
 
 function updateRotate(val) {

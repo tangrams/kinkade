@@ -116,6 +116,79 @@
             display: none;
         }
 
+        .button-small {
+            -moz-box-shadow: 0px 0px 0px -50px #3dc21b;
+            -webkit-box-shadow: 0px 0px 0px -50px #3dc21b;
+            box-shadow: 0px 0px 0px -50px #3dc21b;
+            background-color:#44c767;
+            -moz-border-radius:7px;
+            -webkit-border-radius:7px;
+            border-radius:7px;
+            /*display:inline-block;*/
+            /*cursor:pointer;*/
+            color:#ffffff;
+            padding:7px 7px;
+            border: none;
+            margin-left: 25%;
+        }
+        .button-small:hover {
+            background-color:#5cbf2a;
+        }
+        .button-small:active {
+            position:relative;
+            top:1px;
+        }
+
+        .button-big {
+            -moz-box-shadow: 0px 0px 0px -50px #3dc21b;
+            -webkit-box-shadow: 0px 0px 0px -50px #3dc21b;
+            box-shadow: 0px 0px 0px -50px #3dc21b;
+            background-color:#44c767;
+            -moz-border-radius:16px;
+            -webkit-border-radius:16px;
+            border-radius:16px;
+            /*display:inline-block;*/
+            /*cursor:pointer;*/
+            color:#ffffff;
+            padding:16px 16px;
+            border: none;
+            margin-left: 10%;
+        }
+        .button-big:hover {
+            background-color:#5cbf2a;
+        }
+        .button-big:active {
+            position:relative;
+            top:1px;
+        }
+
+
+        .button-blurry {
+            -moz-box-shadow: 0px 0px 18px 18px #3dc21b;
+            -webkit-box-shadow: 0px 0px 18px 18px #3dc21b;
+            box-shadow: 0px 0px 18px 18px #3dc21b;
+            background-color:#44c767;
+            -moz-border-radius:22px;
+            -webkit-border-radius:22px;
+            border-radius:22px;
+            /*display:inline-block;
+            cursor:pointer;*/
+            color:#ffffff;
+            font-family:Arial;
+            font-size:17px;
+            padding:1px 1px;
+            border: none;
+            margin-left: 15%;
+        }
+        .button-blurry:hover {
+            background-color:#5cbf2a;
+        }
+        .button-blurry:active {
+            position:relative;
+            top:1px;
+        }
+
+
     </style>
   </head>
 
@@ -139,6 +212,11 @@
         <div class="swatch" onclick="swatch(this)"></div>
     </div>
 
+    <button class="button-small" onclick=""></button>
+    <button class="button-big" onclick=""></button>
+    <button class="button-blurry" onclick=""></button>
+
+    <br>
     Brush Width:<br>
     <input type="range" id="width" min="0" max="200" value="100" step="1" oninput="updateWidth(this.value)">
     <br>

@@ -81,7 +81,7 @@ body {
     height: 1em;
     /*border: 2px solid blue;*/
     margin: 5px auto;
-    margin-bottom: 1em;
+    /*margin-bottom: 1em;*/
 }
 .swatch {
     width: 14.39%;
@@ -112,7 +112,8 @@ body {
     color:#ffffff;
     padding:7px 7px;
     border: none;
-    margin-left: 25%;
+    margin: 0 auto;
+    /*margin-left: 25%;*/
 }
 .button-small:hover {
     background-color:#5cbf2a;
@@ -136,7 +137,8 @@ body {
     color:#ffffff;
     padding:16px 16px;
     border: none;
-    margin-left: 10%;
+    margin: 0 auto;
+    /*margin-left: 10%;*/
 }
 .button-big:hover {
     background-color:#5cbf2a;
@@ -163,7 +165,8 @@ body {
     font-size:17px;
     padding:1px 1px;
     border: none;
-    margin-left: 15%;
+    margin: 0 auto;
+    /*margin-left: 15%;*/
 }
 .button-blurry:hover {
     background-color:#5cbf2a;
@@ -171,4 +174,57 @@ body {
 .button-blurry:active {
     position:relative;
     top:1px;
+}
+.hitarea {
+    width: 50px;
+    float: left;
+    cursor: pointer;
+    /*margin: 0 auto;*/
+    margin: 5px 6%;
+}
+.brushes {
+    width: 100%;
+    float: left;
+    margin: 0 auto;
+    text-align: center;
+}
+#presets {
+    position: absolute;
+    right: 280px;
+    z-index: 1000;
+}
+#examples {
+    font-family: sans-serif;
+    text-transform: uppercase;
+    font-size: 13px;
+    z-index: 1000;
+    float: right;
+    background: white;
+    padding: 4px;
+    width: 264px;
+    display: none;
+    border: 1px solid black;
+}
+
+#locations {
+    float: right;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    font-size: 13px;
+    z-index: 1000;
+    background: white;
+    padding: 4px;
+    width: 264px;
+    display: none;
+    border: 1px solid black;
+}
+
+.location {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+}
+
+.example {
+    width: 50px;
 }

@@ -19,8 +19,8 @@
 
   <body>
 
-  <!-- BEGIN UI -->
-    <div id="kinkade" onmouseover="hidePicker();">
+<!-- BEGIN UI -->
+<div id="kinkade" onmouseover="hidePicker();">
 
     <script src="lib/jscolor.min.js"></script>
 
@@ -39,20 +39,17 @@
         <div class="swatch" onclick="swatch(this)"></div>
     </div>
 
-    <div class="hitarea" onclick="updateWidth(50);updateAlpha(.01)"><button class="button-small"></button></div>
-    <div class="hitarea" onclick="updateWidth(50);updateAlpha(.01)"><button class="button-big"></button></div>
-    <div class="hitarea" onclick="updateWidth(50);updateAlpha(.01)"><button class="button-blurry"></button></div>
+    <div class="brushes">
+        <div class="hitarea" onclick="updateWidth(10);updateAlpha(.2)"><button class="button-small"></button></div>
+        <div class="hitarea" onclick="updateWidth(40);updateAlpha(.2)"><button class="button-big"></button></div>
+        <div class="hitarea" onclick="updateWidth(60);updateAlpha(.01)"><button class="button-blurry"></button></div>
+    </div>
+    
     <hr>
-    Draw Lines: <input type="checkbox" id="vector" checked onchange="updateLines(this.checked)"><br>
-    Draw Labels: <input type="checkbox" id="labels" checked onchange="updateLabels(this.checked)"><br>
-    Solid Water: <input type="checkbox" id="ocean" checked onchange="updateOcean(this.checked)"><br>
+    <input type="checkbox" id="vector" checked onchange="updateLines(this.checked)">Lines 
+    <input type="checkbox" id="labels" checked onchange="updateLabels(this.checked)">Labels
+    <input type="checkbox" id="ocean" checked onchange="updateOcean(this.checked)">Water
     <hr>
-    Brush Width:<br>
-    <input type="range" id="width" min="0" max="200" value="100" step="1" oninput="updateWidth(this.value)">
-    <br>
-    Brush Alpha:<br>
-    <input type="range" id="alpha" min=".001" max=".2" value=".01" step=".001" oninput="updateAlpha(this.value)">
-    <br>
     Terrain Scale: <input id="scale" value="2" size=5 onchange="updateScale(this.value)"><br>
     <input type="range" min="0.01" max="5" value="2" step=".001" oninput="updateScale(this.value)">
     <br>
@@ -61,6 +58,7 @@
     <br>
     Rotate:<br>
     <input type="range" id="rotate" min="-360" max="360" value="0" step="1" oninput="updateRotate(this.value)" onChange="resetRotate()">
+    <hr>
     <div id="webcamdiv">
     Use Webcam: <input type="checkbox" id="webcam" onchange="useWebcam(this.checked)"><br>
         <span id="flipspan" style="margin-left: 25px">Flip: <input type="checkbox" id="flipwebcam" onchange="flipWebcam(this.checked)" disabled="true"></span><br>
@@ -68,7 +66,11 @@
     </div>
     Rewind:<br>
     <div id="rewindwrapper" class="rewindwrapper"><input disabled type="range" id="rewind" class="rewindClass" min="0" max="1" value="1" step="1" oninput="rewind(this.value)"></div><br>
-    <br>
+    <hr>
+    PRESETS
+    <button class="kbutton" onclick="toggleExamples()">Examples</button>
+    <button class="kbutton" onclick="toggleLocations()">Locations</button>
+    <hr>
     <button class="kbutton" onclick="exportCanvas()">SAVE</button>
     <!-- <input type="file" onchange="previewFile()" value="LOAD"> -->
     <button class="kbutton" onclick="clearCanvas();updateMap();">RESET</button>
@@ -78,6 +80,24 @@
     </div>
     <!-- Hide default dropzone thumbnail -->
     <div id="preview-template" style="display: none;"><div></div></div>
+</div>
+<div id="presets">
+    <!-- examples pane -->
+    <div id="examples">examples
+    <hr>
+    <a onclick="swapimg(this)"><img class="example" src="examples/aurora.png"></a>
+    <a onclick="swapimg(this)"><img class="example" src="examples/fivedots.png"></a>
+    <a onclick="swapimg(this)"><img class="example" src="examples/imhof5.jpg"></a>
+    </div>
+    <!-- locations pane -->
+    <div id="locations">locations
+    <hr>
+    <a class="location" onclick="map.flyTo([35.3624,138.7388],12.65879)">Fuji, JAPAN</a><br>
+    <a class="location" onclick="map.flyTo([45.9808,7.6595],12.35492)">Matterhorn, SUI</a><br>
+    <a class="location" onclick="map.flyTo([37.7393,-119.5929],13.17645)">Yosemite valley, CA, USA</a><br>
+    <a class="location" onclick="map.flyTo([44.8535,-118.3326],9.90145)">Northeastern Oregon, USA</a><br>
+    <a class="location" onclick="map.flyTo([53.4419,54.5289],9.06812)">Western Bashkorotostan, RUSSIA</a><br>
+    </div>
 </div>
 
 <!-- END UI -->
@@ -132,7 +152,7 @@
     </script>
     <!-- rewind wrapper style placeholder -->
     <style>
-    #rewindwrapper {}
+        #rewindwrapper {}
     </style>
   </body>
 </html>

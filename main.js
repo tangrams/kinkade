@@ -63,6 +63,7 @@ var lastX;
 var lastY;
 var colorHex = "ffffff";
 var color = {r: 100, g: 100, b: 100};
+var alpha = .1
 var blurring = false;
 var rotating = false;
 
@@ -90,12 +91,12 @@ function setColor(val) {
 function updateWidth(val) {
     resetFX();
     w = val;
-    document.getElementById("width").value = val;
+    // document.getElementById("width").value = val;
 }
 function updateAlpha(val) {
     resetFX();
     alpha = val;
-    document.getElementById("alpha").value = val;
+    // document.getElementById("alpha").value = val;
 }
 function updateScale(val) {
     scene.styles.hillshade.shaders.uniforms.u_scale = parseFloat(1/(Math.pow(2,val)-1));
@@ -302,8 +303,8 @@ canvas.addEventListener("mousemove", function(e){
 });
 
 updateColorHex(document.getElementById("picker").value);
-updateWidth(document.getElementById("width").value);
-updateAlpha(document.getElementById("alpha").value);
+// updateWidth(document.getElementById("width").value);
+// updateAlpha(document.getElementById("alpha").value);
 // fill canvas with white
 ctx.beginPath();
 ctx.rect(0, 0, 512, 512);
@@ -379,18 +380,8 @@ Dropzone.options.canvaswrapper = {
         loadCanvas(dataUrl);
 
         var img = new Image;
-        img.onload = function(){
-          ctx.drawImage(img,0,0,canvas.width,canvas.height);
-            var colorThief = new ColorThief();
-            p = colorThief.getPalette(img, 8);
-            swatches = document.getElementById('swatches').getElementsByClassName('swatch');
-            for (var x = 0; x < p.length - 1; x++) {
-                swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
-            }
-        };
+        img.onload = drawImgToCanvas(img);
         img.src = dataUrl;
-
-
 
     },
     thumbnailWidth: 512,
@@ -498,3 +489,30 @@ function recordVideo() {
 if (typeof window.MediaRecorder == 'function') {    
     video_button.style.display = "inline";
 };
+
+function toggleExamples() {
+    document.getElementById("examples").style.display = document.getElementById("examples").style.display != 'block' ? 'block' : 'none';
+}
+
+function toggleLocations() {
+    // debugger
+    document.getElementById("locations").style.display = document.getElementById("locations").style.display != 'block' ? 'block' : 'none';
+}
+
+function swapimg(div) {
+    img = div.childNodes[0];
+    drawImgToCanvas(img);
+    updateMap();
+    saveCanvas();
+
+}
+
+function drawImgToCanvas(img) {
+    ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    var colorThief = new ColorThief();
+    p = colorThief.getPalette(img, 8);
+    swatches = document.getElementById('swatches').getElementsByClassName('swatch');
+    for (var x = 0; x < p.length - 1; x++) {
+        swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
+    }        
+}

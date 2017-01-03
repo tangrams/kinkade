@@ -380,7 +380,9 @@ Dropzone.options.canvaswrapper = {
         loadCanvas(dataUrl);
 
         var img = new Image;
-        img.onload = drawImgToCanvas(img);
+        img.onload = function(){
+            drawImgToCanvas(img);
+        };
         img.src = dataUrl;
 
     },

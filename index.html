@@ -51,13 +51,13 @@
     <input type="checkbox" id="ocean" checked onchange="updateOcean(this.checked)">Water
     <hr>
     Terrain Scale: <input id="scale" value="2" size=5 onchange="updateScale(this.value)"><br>
-    <input type="range" min="0.01" max="5" value="2" step=".001" oninput="updateScale(this.value)">
+    <input class="slider" type="range" min="0.01" max="5" value="2" step=".001" oninput="updateScale(this.value)">
     <br>
     Blur:<br>
-    <input type="range" id="blur" min="0" max="100" value="0" step=".01" oninput="updateBlur(this.value)">
+    <input class="slider" type="range" id="blur" min="0" max="100" value="0" step=".01" oninput="updateBlur(this.value)">
     <br>
     Rotate:<br>
-    <input type="range" id="rotate" min="-360" max="360" value="0" step="1" oninput="updateRotate(this.value)" onChange="resetRotate()">
+    <input class="slider" type="range" id="rotate" min="-360" max="360" value="0" step="1" oninput="updateRotate(this.value)" onChange="resetRotate()">
     <hr>
     <div id="webcamdiv">
     Use Webcam: <input type="checkbox" id="webcam" onchange="useWebcam(this.checked)"><br>
@@ -65,7 +65,7 @@
         <button disabled="true" id="snapshot" onclick="saveCanvas()">Snapshot webcam</button>
     </div>
     Rewind:<br>
-    <div id="rewindwrapper" class="rewindwrapper"><input disabled type="range" id="rewind" class="rewindClass" min="0" max="1" value="1" step="1" oninput="rewind(this.value)"></div><br>
+    <div id="rewindwrapper" class="rewindwrapper"><input disabled type="range" id="rewind" class="slider" min="0" max="1" value="1" step="1" oninput="rewind(this.value)"></div><br>
     <hr>
     PRESETS
     <button class="kbutton" onclick="toggleExamples()">Examples</button>

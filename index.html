@@ -40,9 +40,9 @@
     </div>
 
     <div class="brushes">
-        <div class="hitarea" onclick="updateWidth(10);updateAlpha(.2)"><button class="button-small"></button></div>
-        <div class="hitarea" onclick="updateWidth(40);updateAlpha(.2)"><button class="button-big"></button></div>
-        <div class="hitarea" onclick="updateWidth(60);updateAlpha(.01)"><button class="button-blurry"></button></div>
+        <div id="brush1" class="hitarea" onclick="updateWidth(10);updateAlpha(.2);switchBrush(this)"><button class="button-small"></button></div>
+        <div id="brush2" class="hitarea" onclick="updateWidth(40);updateAlpha(.2);switchBrush(this)"><button class="button-big"></button></div>
+        <div id="brush3" class="hitarea-fuzzy" onclick="updateWidth(60);updateAlpha(.05);switchFuzzyBrush(this)"><button class="button-blurry"></button></div>
     </div>
     
     <hr>

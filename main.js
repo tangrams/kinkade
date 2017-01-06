@@ -98,6 +98,18 @@ function updateAlpha(val) {
     alpha = val;
     // document.getElementById("alpha").value = val;
 }
+function switchBrush(which) {
+    console.log('which:', which);
+    document.getElementById('brush1').className = "hitarea";
+    document.getElementById('brush2').className = "hitarea";
+    document.getElementById('brush3').className = "hitarea-fuzzy";
+    which.className = "hitarea-selected";
+}
+function switchFuzzyBrush(which) {
+    which.className = "hitarea-fuzzy-selected";
+    document.getElementById('brush1').className = "hitarea";
+    document.getElementById('brush2').className = "hitarea";
+}
 function updateScale(val) {
     scene.styles.hillshade.shaders.uniforms.u_scale = parseFloat(1/(Math.pow(2,val)-1));
     scene.requestRedraw();
@@ -392,7 +404,10 @@ Dropzone.options.canvaswrapper = {
 };
 
 window.onload = function() {
-        // subscribe to Tangram's published view_complete event
+    // select fuzzy brush
+    document.getElementById("brush3").click();
+
+    // subscribe to Tangram's published view_complete event
     scene.subscribe({
         // trigger promise resolution
         view_complete: function () {

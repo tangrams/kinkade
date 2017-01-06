@@ -284,7 +284,7 @@ function resetBlur() {
 function updateRewindSlider() {
     if (undos.length > 1) {
         document.getElementById('rewind').disabled = false;
-        percentWidth = (100 / Math.max(undos.length - 1, 1)) * .875;
+        percentWidth = (100. / Math.max(undos.length - 1, 1)) * .93;
         rule = "#rewindwrapper { background-position: left; background-image: url('line.png'); background-size: "+percentWidth + "% 100%; background-position: top 0px left 10px; }";
         document.styleSheets[3].deleteRule(0);
         document.styleSheets[3].insertRule(rule, 0);

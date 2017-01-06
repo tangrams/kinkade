@@ -10,6 +10,9 @@ body {
     width: 100%;
     position: absolute;
 }
+
+/* paint area */
+
 #kinkade {
     font-family: sans-serif;
     text-transform: uppercase;
@@ -31,6 +34,12 @@ body {
     width: 256px;
     height: 256px;
     border: 1px #000 solid
+}
+#canvaswrapper {
+    height: 256px;
+    margin: 4px;
+    top: 20px;
+    overflow: hidden;
 }
 #kvideo {
     display: none;
@@ -211,3 +220,32 @@ body {
 .example {
     width: 50px;
 }
+
+/* other buttons and controls */
+
+.slider {
+    width: 98%;
+}
+#saveButton {
+    font-size: 30px;
+    float: right;
+    clear: none;
+}
+.rewindwrapper {
+    display:inline-block;
+    width: 98%;
+}
+#snapshot {
+    margin-left: 25px;
+}
+#flipspan {
+    margin-left: 25px;
+    color: #aaa;
+}
+#webcamdiv {
+    display: none;
+}
+#recordbutton {
+    display: none;
+}
+

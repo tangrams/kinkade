@@ -472,7 +472,7 @@ function preUpdate (will_render) {
         // video width = 358, canvas width = 256, difference = 51
         // half canvas width + difference = 179
         ctx.drawImage(document.querySelector('#kvideo > video'), -179, 0);
-        scene.loadTextures();
+        if (typeof scene != 'undefined') scene.loadTextures();
     }
 }
 

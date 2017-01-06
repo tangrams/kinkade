@@ -1,5 +1,5 @@
 sources:
-    osm: 
+    mapzen: 
         type: TopoJSON
         url: https://tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson?api_key=mapzen-QF1osLn
         max_zoom: 16
@@ -49,15 +49,18 @@ styles:
     dots:
         base: lines
         dash: [1, 2]
+    dashes:
+        base: lines
+        dash: [1, 3]
 
 layers:
     earth:
-        data: { source: osm }
+        data: { source: mapzen }
         draw:
             hillshade:
                 order: 0
     water:
-        data: { source: osm }
+        data: { source: mapzen }
         draw:
             polygons:
                 visible: global.water
@@ -71,7 +74,7 @@ layers:
                 color: [.3, .3, .3]
                 width: .3px
     places:
-        data: { source: osm }
+        data: { source: mapzen }
         filter: { not: { kind: [neighbourhood] } }
         countries:
             filter: { kind: country }
@@ -87,14 +90,14 @@ layers:
                         visible: global.labels
                         font:
                             transform: uppercase
-                            size: function() {return 40 - feature.scalerank * 2 - (20 - $zoom) }
+                            size: 10px
                             family: Lucida Grande
                             fill: white
                             stroke:
                                 color: black
                                 width: 2px
         cities:
-            filter: { not: { kind: [country, state] } }
+            filter: { not: { kind_detail: [country, state] } }
             also:
                 filter:
                     any:
@@ -111,7 +114,7 @@ layers:
                         text:
                             optional: false
                             font:
-                                size: function() {return 30 - feature.scalerank * 1 - (10 - $zoom)}
+                                size: 8px
                                 family: Lucida Grande
                                 fill: white
                                 stroke:
@@ -119,7 +122,7 @@ layers:
                                     width: 2px
         states:
             filter:
-                - kind: state
+                - kind_detail: state
                   $zoom: { min: 6 }
             draw:
                 text:
@@ -127,16 +130,23 @@ layers:
                     priority: 3
                     font:
                         transform: uppercase
-                        size: function() {return 40 - feature.scalerank * 2 - (20 - $zoom) }
+                        size: 10px
                         family: Lucida Grande
                         fill: white
                         stroke:
                             color: black
                             width: 2px
     boundaries:
-        data: { source: osm }
+        data: { source: mapzen }
         draw:
             dots:
                 visible: global.lines
                 color: [.75, .75, .75]
+                width: 1px
+    roads:
+        data: { source: mapzen }
+        draw:
+            dashes:
+                visible: global.lines
+                color: [.5, .5, .5]
                 width: 1px

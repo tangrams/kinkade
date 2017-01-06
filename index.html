@@ -14,114 +14,13 @@
     <title>Tangram Kinkade</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
-
-    <style>
-        body {
-            margin: 0px;
-            border: 0px;
-            padding: 0px;
-        }
-
-        #map {
-            background: rgba(0, 0, 0, 0);
-            height: 100%;
-            width: 100%;
-            position: absolute;
-        }
-        #kinkade {
-            font-family: sans-serif;
-            text-transform: uppercase;
-            font-size: 13px;
-            position: absolute;
-            right: 6px;
-            z-index: 1000;
-            background: white;
-            padding: 4px;
-            width: 264px;
-            display: block;
-            border: 1px solid black;
-            overflow: auto;
-        }
-        #kcanvas {
-            position: absolute;
-            z-index: 2000;
-            margin: 0;
-            padding: 0;
-            width: 256px;
-            height: 256px;
-            border: 1px #000 solid
-        }
-        #kvideo {
-            display: none;
-            position: absolute;
-            z-index: 2001;
-            margin: 0;
-            padding: 0;
-            width: 256px;
-            height: 256px;
-            border: 1px #000 solid;
-            overflow: hidden;
-            left: -51px;
-        }
-        #reticle {
-            position: absolute;
-            z-index: 3000;
-            pointer-events: none;
-            height: 256px;
-            width: 256px;
-            opacity: 0.2;
-        }
-        #saveButton {
-            font-size: 30px;
-            float: right;
-            clear: none;
-        }
-        .jscolor {
-            width: 100%;
-        }
-        #canvaswrapper {
-            height: 256px;
-            margin: 4px;
-            top: 20px;
-            overflow: hidden;
-        }
-        .rewindwrapper {
-            display:inline-block;
-        }
-        #snapshot {
-            margin-left: 25px;
-        }
-        #flipspan {
-            margin-left: 25px;
-            color: #aaa;
-        }
-        #swatches {
-            width: 100%;
-            height: 1em;
-            /*border: 2px solid blue;*/
-            margin: 5px auto;
-            margin-bottom: 1em;
-        }
-        .swatch {
-            width: 14.39%;
-            height: 100%;
-            background-color: grey;
-            margin: 2px;
-            float: left;
-            border: 1px solid #ccc;
-        }
-        #webcamdiv {
-            display: none;
-        }
-        #recordbutton {
-            display: none;
-        }
-
-    </style>
+    <link rel="stylesheet" href="kinkade.css" />
   </head>
 
   <body>
-    <div id="kinkade" onmouseover="hidePicker();">
+
+<!-- BEGIN UI -->
+<div id="kinkade" onmouseover="hidePicker();">
 
     <script src="lib/jscolor.min.js"></script>
 
@@ -140,32 +39,38 @@
         <div class="swatch" onclick="swatch(this)"></div>
     </div>
 
-    Brush Width:<br>
-    <input type="range" id="width" min="0" max="200" value="100" step="1" oninput="updateWidth(this.value)">
-    <br>
-    Brush Alpha:<br>
-    <input type="range" id="alpha" min=".001" max=".2" value=".01" step=".001" oninput="updateAlpha(this.value)">
-    <br>
+    <div class="brushes">
+        <div id="brush1" class="hitarea" onclick="updateWidth(10);updateAlpha(.2);switchBrush(this)"><button class="button-small"></button></div>
+        <div id="brush2" class="hitarea" onclick="updateWidth(40);updateAlpha(.2);switchBrush(this)"><button class="button-big"></button></div>
+        <div id="brush3" class="hitarea-fuzzy" onclick="updateWidth(60);updateAlpha(.05);switchFuzzyBrush(this)"><button class="button-blurry"></button></div>
+    </div>
+    
+    <hr>
+    <input type="checkbox" id="vector" checked onchange="updateLines(this.checked)">Lines 
+    <input type="checkbox" id="labels" checked onchange="updateLabels(this.checked)">Labels
+    <input type="checkbox" id="ocean" checked onchange="updateOcean(this.checked)">Water
+    <hr>
     Terrain Scale: <input id="scale" value="2" size=5 onchange="updateScale(this.value)"><br>
-    <input type="range" min="0.01" max="5" value="2" step=".001" oninput="updateScale(this.value)">
+    <input class="slider" type="range" min="0.01" max="5" value="2" step=".001" oninput="updateScale(this.value)">
     <br>
     Blur:<br>
-    <input type="range" id="blur" min="0" max="100" value="0" step=".01" oninput="updateBlur(this.value)">
+    <input class="slider" type="range" id="blur" min="0" max="100" value="0" step=".01" oninput="updateBlur(this.value)">
     <br>
     Rotate:<br>
-    <input type="range" id="rotate" min="-360" max="360" value="0" step="1" oninput="updateRotate(this.value)" onChange="resetRotate()">
-    <br>
-    Draw Lines: <input type="checkbox" id="vector" checked onchange="updateLines(this.checked)"><br>
-    Draw Labels: <input type="checkbox" id="labels" checked onchange="updateLabels(this.checked)"><br>
-    Solid Water: <input type="checkbox" id="ocean" checked onchange="updateOcean(this.checked)"><br>
+    <input class="slider" type="range" id="rotate" min="-360" max="360" value="0" step="1" oninput="updateRotate(this.value)" onChange="resetRotate()">
+    <hr>
     <div id="webcamdiv">
     Use Webcam: <input type="checkbox" id="webcam" onchange="useWebcam(this.checked)"><br>
         <span id="flipspan" style="margin-left: 25px">Flip: <input type="checkbox" id="flipwebcam" onchange="flipWebcam(this.checked)" disabled="true"></span><br>
         <button disabled="true" id="snapshot" onclick="saveCanvas()">Snapshot webcam</button>
     </div>
     Rewind:<br>
-    <div id="rewindwrapper" class="rewindwrapper"><input disabled type="range" id="rewind" class="rewindClass" min="0" max="1" value="1" step="1" oninput="rewind(this.value)"></div><br>
-    <br>
+    <div id="rewindwrapper" class="rewindwrapper"><input disabled type="range" id="rewind" class="slider" min="0" max="1" value="1" step="1" oninput="rewind(this.value)"></div><br>
+    <hr>
+    PRESETS
+    <button class="kbutton" onclick="toggleExamples()">Examples</button>
+    <button class="kbutton" onclick="toggleLocations()">Locations</button>
+    <hr>
     <button class="kbutton" onclick="exportCanvas()">SAVE</button>
     <!-- <input type="file" onchange="previewFile()" value="LOAD"> -->
     <button class="kbutton" onclick="clearCanvas();updateMap();">RESET</button>
@@ -176,6 +81,36 @@
     <!-- Hide default dropzone thumbnail -->
     <div id="preview-template" style="display: none;"><div></div></div>
 </div>
+<div id="presets">
+    <!-- examples pane -->
+    <div id="examples">examples
+    <hr>
+    <a onclick="swapimg(this)"><img class="example" src="examples/aurora.png"></a>
+    <a onclick="swapimg(this)"><img class="example" src="examples/fivedots.png"></a>
+    <a onclick="swapimg(this)"><img class="example" src="examples/imhof5.jpg"></a>
+    <a onclick="swapimg(this)"><img class="example" src="examples/emerald.png"></a>
+    <a onclick="swapimg(this)"><img class="example" src="examples/treefrog.png"></a>
+    <a onclick="swapimg(this)"><img class="example" src="examples/normals.jpg"></a>
+    <a onclick="swapimg(this)"><img class="example" src="examples/dorodango.png"></a>
+    <a onclick="swapimg(this)"><img class="example" src="examples/slope.png"></a>
+    </div>
+    <!-- locations pane -->
+    <div id="locations">locations
+    <hr>
+    <a class="location" onclick="map.flyTo([35.3624,138.7388],12.65879)">Mt. Fuji, Japan</a><br>
+    <a class="location" onclick="map.flyTo([45.9808,7.6595],12.35492)">Matterhorn</a><br>
+    <a class="location" onclick="map.flyTo([37.7393,-119.5929],13.17645)">Yosemite Valley, CA, USA</a><br>
+    <a class="location" onclick="map.flyTo([44.8535,-118.3326],9.90145)">Northeastern Oregon, USA</a><br>
+    <a class="location" onclick="map.flyTo([53.4419,54.5289],9.06812)">Western Bashkorotostan, Russia</a><br>
+    <a class="location" onclick="map.flyTo([19.4061,83.8115],11.29881)">Eastern Ghats, India</a><br>
+    <a class="location" onclick="map.flyTo([26.5667,65.0077],9.51131)">Balochistan, Pakistan</a><br>
+    <a class="location" onclick="map.flyTo([29.3709,5.2959],9.25714)">Issaouane Erg, Algeria</a><br>
+    <a class="location" onclick="map.flyTo([36.2434,-112.2843],11.07228)">Grand Canyon, Arizona, USA</a><br>
+    </div>
+</div>
+
+<!-- END UI -->
+
     <script>
     // http://www.paulirish.com/2009/random-hex-color-code-snippets/
     var n = Math.floor(Math.random()*16777215).toString(16);
@@ -214,7 +149,7 @@
     <!-- End of 3rd party libraries -->
 
     <!-- Main tangram library -->
-    <script src="https://mapzen.com/tangram/0.10/tangram.min.js"></script>
+    <script src="https://mapzen.com/tangram/tangram.min.js"></script>
 
     <!-- Main demo code -->
     <script src="main.js"></script>
@@ -226,7 +161,7 @@
     </script>
     <!-- rewind wrapper style placeholder -->
     <style>
-    #rewindwrapper {}
+        #rewindwrapper {}
     </style>
   </body>
 </html>

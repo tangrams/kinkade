@@ -63,6 +63,7 @@ var lastX;
 var lastY;
 var colorHex = "ffffff";
 var color = {r: 100, g: 100, b: 100};
+var alpha = .1
 var blurring = false;
 var rotating = false;
 
@@ -90,12 +91,24 @@ function setColor(val) {
 function updateWidth(val) {
     resetFX();
     w = val;
-    document.getElementById("width").value = val;
+    // document.getElementById("width").value = val;
 }
 function updateAlpha(val) {
     resetFX();
     alpha = val;
-    document.getElementById("alpha").value = val;
+    // document.getElementById("alpha").value = val;
+}
+function switchBrush(which) {
+    console.log('which:', which);
+    document.getElementById('brush1').className = "hitarea";
+    document.getElementById('brush2').className = "hitarea";
+    document.getElementById('brush3').className = "hitarea-fuzzy";
+    which.className = "hitarea-selected";
+}
+function switchFuzzyBrush(which) {
+    which.className = "hitarea-fuzzy-selected";
+    document.getElementById('brush1').className = "hitarea";
+    document.getElementById('brush2').className = "hitarea";
 }
 function updateScale(val) {
     scene.styles.hillshade.shaders.uniforms.u_scale = parseFloat(1/(Math.pow(2,val)-1));
@@ -271,7 +284,7 @@ function resetBlur() {
 function updateRewindSlider() {
     if (undos.length > 1) {
         document.getElementById('rewind').disabled = false;
-        percentWidth = (100 / Math.max(undos.length - 1, 1)) * .875;
+        percentWidth = (100. / Math.max(undos.length - 1, 1)) * .93;
         rule = "#rewindwrapper { background-position: left; background-image: url('line.png'); background-size: "+percentWidth + "% 100%; background-position: top 0px left 10px; }";
         document.styleSheets[3].deleteRule(0);
         document.styleSheets[3].insertRule(rule, 0);
@@ -302,8 +315,8 @@ canvas.addEventListener("mousemove", function(e){
 });
 
 updateColorHex(document.getElementById("picker").value);
-updateWidth(document.getElementById("width").value);
-updateAlpha(document.getElementById("alpha").value);
+// updateWidth(document.getElementById("width").value);
+// updateAlpha(document.getElementById("alpha").value);
 // fill canvas with white
 ctx.beginPath();
 ctx.rect(0, 0, 512, 512);
@@ -380,17 +393,9 @@ Dropzone.options.canvaswrapper = {
 
         var img = new Image;
         img.onload = function(){
-          ctx.drawImage(img,0,0,canvas.width,canvas.height);
-            var colorThief = new ColorThief();
-            p = colorThief.getPalette(img, 8);
-            swatches = document.getElementById('swatches').getElementsByClassName('swatch');
-            for (var x = 0; x < p.length - 1; x++) {
-                swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
-            }
+            drawImgToCanvas(img);
         };
         img.src = dataUrl;
-
-
 
     },
     thumbnailWidth: 512,
@@ -399,7 +404,10 @@ Dropzone.options.canvaswrapper = {
 };
 
 window.onload = function() {
-        // subscribe to Tangram's published view_complete event
+    // select fuzzy brush
+    document.getElementById("brush3").click();
+
+    // subscribe to Tangram's published view_complete event
     scene.subscribe({
         // trigger promise resolution
         view_complete: function () {
@@ -464,7 +472,7 @@ function preUpdate (will_render) {
         // video width = 358, canvas width = 256, difference = 51
         // half canvas width + difference = 179
         ctx.drawImage(document.querySelector('#kvideo > video'), -179, 0);
-        scene.loadTextures();
+        if (typeof scene != 'undefined') scene.loadTextures();
     }
 }
 
@@ -498,3 +506,30 @@ function recordVideo() {
 if (typeof window.MediaRecorder == 'function') {    
     video_button.style.display = "inline";
 };
+
+function toggleExamples() {
+    document.getElementById("examples").style.display = document.getElementById("examples").style.display != 'block' ? 'block' : 'none';
+}
+
+function toggleLocations() {
+    // debugger
+    document.getElementById("locations").style.display = document.getElementById("locations").style.display != 'block' ? 'block' : 'none';
+}
+
+function swapimg(div) {
+    img = div.childNodes[0];
+    drawImgToCanvas(img);
+    updateMap();
+    saveCanvas();
+
+}
+
+function drawImgToCanvas(img) {
+    ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    var colorThief = new ColorThief();
+    p = colorThief.getPalette(img, 8);
+    swatches = document.getElementById('swatches').getElementsByClassName('swatch');
+    for (var x = 0; x < p.length - 1; x++) {
+        swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
+    }        
+}

@@ -91,15 +91,12 @@ function setColor(val) {
 function updateWidth(val) {
     resetFX();
     w = val;
-    // document.getElementById("width").value = val;
 }
 function updateAlpha(val) {
     resetFX();
     alpha = val;
-    // document.getElementById("alpha").value = val;
 }
 function switchBrush(which) {
-    console.log('which:', which);
     document.getElementById('brush1').className = "hitarea";
     document.getElementById('brush2').className = "hitarea";
     document.getElementById('brush3').className = "hitarea-fuzzy";

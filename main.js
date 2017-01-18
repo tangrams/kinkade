@@ -314,11 +314,6 @@ canvas.addEventListener("mousemove", function(e){
 updateColorHex(document.getElementById("picker").value);
 // updateWidth(document.getElementById("width").value);
 // updateAlpha(document.getElementById("alpha").value);
-// fill canvas with white
-ctx.beginPath();
-ctx.rect(0, 0, 512, 512);
-ctx.fillStyle = "white";
-ctx.fill();
 
 // undo
 lastCanvas = document.getElementById("lastCanvas");
@@ -399,28 +394,6 @@ Dropzone.options.canvaswrapper = {
     thumbnailHeight: 512,
     previewTemplate: document.getElementById('preview-template').innerHTML
 };
-
-window.onload = function() {
-    // select fuzzy brush
-    document.getElementById("brush3").click();
-
-    // subscribe to Tangram's published view_complete event
-    scene.subscribe({
-        // trigger promise resolution
-        view_complete: function () {
-                // viewCompleteResolve();
-            },
-        warning: function(e) {
-            }
-    });
-    document.onkeydown = KeyPress;
-    // load dropzone
-    myDropzone = new Dropzone("div#canvaswrapper", { url: "#"});
-    // fill canvas with white
-    clearCanvas();
-    // init first undo
-    saveCanvas();
-}
 
 function exportCanvas() {
     saveCanvas(false, function() {
@@ -529,4 +502,32 @@ function drawImgToCanvas(img) {
     for (var x = 0; x < p.length - 1; x++) {
         swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
     }        
+}
+
+window.onload = function() {
+    // fill canvas with white
+    ctx.beginPath();
+    ctx.rect(0, 0, 512, 512);
+    ctx.fillStyle = "white";
+    ctx.fill();
+
+    // select fuzzy brush
+    document.getElementById("brush3").click();
+
+    // subscribe to Tangram's published view_complete event
+    scene.subscribe({
+        // trigger promise resolution
+        view_complete: function () {
+                // viewCompleteResolve();
+            },
+        warning: function(e) {
+            }
+    });
+    document.onkeydown = KeyPress;
+    // load dropzone
+    myDropzone = new Dropzone("div#canvaswrapper", { url: "#"});
+    // fill canvas with white
+    clearCanvas();
+    // init first undo
+    saveCanvas();
 }

@@ -443,7 +443,7 @@ function togglePane(which, state) {
     var panes = ["locations", "examples", "scenespane"];
     for (x in panes) {
         if (panes[x] != which) {
-            console.log('panes[x]:', panes[x])
+            // console.log('panes[x]:', panes[x])
             document.getElementById(panes[x]).style.display = 'none';
         }
     }

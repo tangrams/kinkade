@@ -428,17 +428,18 @@ function recordVideo() {
     }
 };
 
-if (typeof window.MediaRecorder == 'function') {    
-    video_button.style.display = "inline";
+if (typeof window.MediaRecorder == 'function') {
+    // disable for now
+    // video_button.style.display = "inline";
 };
 
-function toggleExamples() {
-    document.getElementById("examples").style.display = document.getElementById("examples").style.display != 'block' ? 'block' : 'none';
-}
-
-function toggleLocations() {
-    // debugger
-    document.getElementById("locations").style.display = document.getElementById("locations").style.display != 'block' ? 'block' : 'none';
+function togglePane(which, state) {
+    // console.log('typeof state:', typeof state)
+    if (typeof state != 'undefined') {
+        document.getElementById(which).style.display = state == true? 'block' : 'none';
+    } else {
+        document.getElementById(which).style.display = document.getElementById(which).style.display != 'block' ? 'block' : 'none';
+    }
 }
 
 function swapimg(div) {
@@ -446,7 +447,6 @@ function swapimg(div) {
     drawImgToCanvas(img);
     updateMap();
     saveCanvas();
-
 }
 
 function drawImgToCanvas(img) {
@@ -526,4 +526,9 @@ window.onload = function () {
     clearCanvas();
     // init first undo
     saveCanvas();
+
+    // check API to see ifsomebody is logged in
+    get('/api/developer.json', 'json', getUser);
+
 }
+

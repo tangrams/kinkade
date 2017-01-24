@@ -68,20 +68,34 @@
     <div id="rewindwrapper" class="rewindwrapper"><input disabled type="range" id="rewind" class="slider" min="0" max="1" value="1" step="1" oninput="rewind(this.value)"></div><br>
     <hr>
     PRESETS
-    <button class="kbutton" onclick="toggleExamples()">Examples</button>
-    <button class="kbutton" onclick="toggleLocations()">Locations</button>
+    <button class="kbutton" onclick="togglePane('examples')">Examples</button>
+    <button class="kbutton" onclick="togglePane('locations')">Locations</button>
+
     <hr>
-    <button class="kbutton" onclick="exportCanvas()">SAVE</button>
+    <button class="kbutton" onclick="exportCanvas()">EXPORT</button>
     <!-- <input type="file" onchange="previewFile()" value="LOAD"> -->
-    <button class="kbutton" onclick="clearCanvas();updateMap();">RESET</button>
+    <button class="kbutton" onclick="clearCanvas();updateMap();">CLEAR</button>
     <button class="kbutton" id="recordvideo" onclick="recordVideo();">RECORD VIDEO</button>
+
+    <hr>
+    <div id="loginname">Nobody logged in</div>
+    <div id="account-actions">
+    <button class="kbutton" onclick="togglePane('scenespane');getScenes()">LOAD SCENE</button>
+    <button class="kbutton" onclick="togglePane('scenespane', true);saveScene();">SAVE SCENE</button>
+    <button class="kbutton" onclick="get('/api/scenes/'+user.id, 'json', clearScenes);">DELETE ALL</button>
+    </div>
+
     <!-- Hide blur image -->
     <img id="lastCanvas" style="display:none"/>
-    </div>
-    <!-- Hide default dropzone thumbnail -->
-    <div id="preview-template" style="display: none;"><div></div></div>
 </div>
-<div id="presets">
+<!-- BEGIN UI -->
+
+<!-- Hide default dropzone thumbnail -->
+<div id="preview-template" style="display: none;"></div>
+
+<!-- <div id="save-dialog">SAVE SCENE</div> -->
+
+<div id="panes">
     <!-- examples pane -->
     <div id="examples">examples
     <hr>
@@ -107,6 +121,21 @@
     <a class="location" onclick="map.flyTo([29.3709,5.2959],9.25714)">Issaouane Erg, Algeria</a><br>
     <a class="location" onclick="map.flyTo([36.2434,-112.2843],11.07228)">Grand Canyon, Arizona, USA</a><br>
     <a class="location" onclick="map.flyTo([46.2051,-122.1737],13.21471)">Mt. St. Helens, Washington, USA</a><br>
+    </div>
+    <!-- API scenes pane -->
+    <div id="scenespane">scenes
+    <hr>
+    click to load<br>
+
+    <div id="scenes">
+    <span class="scene">
+        <a name="sample" onclick="loadScene(this)">
+        sample
+        <img class="thumbnail" src="">
+        </a>
+    </span>
+    </div>
+
     </div>
 </div>
 
@@ -153,9 +182,9 @@
     <script src="https://mapzen.com/tangram/tangram.min.js"></script>
 
     <!-- Main demo code -->
-    <script src="main.js"></script>
     <script src="lib/thumbnail.js"></script>
     <script src="lib/mapzen-api.js"></script>
+    <script src="main.js"></script>
 
     <!-- Mapzen map UI -->
     <script src='//mapzen.com/common/ui/mapzen-ui.min.js'></script>

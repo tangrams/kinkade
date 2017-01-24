@@ -183,7 +183,6 @@ body {
     position: absolute;
     right: 280px;
     z-index: 1000;
-    height: 100%;
 }
 
 #examples {
@@ -304,9 +303,6 @@ body {
 }
 .screenshot-thumbnail {
     height: 72px;
-}
-.clearfix {
-    height: 100%;
 }
 .clearfix::after {
     content: "";

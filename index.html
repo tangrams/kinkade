@@ -80,7 +80,7 @@
     <hr>
     <div id="loginname">Nobody logged in</div>
     <div id="account-actions">
-    <button class="kbutton" onclick="togglePane('scenespane');getScenes()">LOAD SCENE</button>
+    <button class="kbutton" onclick="togglePane('scenespane')">LOAD SCENE</button>
     <button class="kbutton" onclick="togglePane('scenespane', true);saveScene();">SAVE SCENE</button>
     <button class="kbutton" onclick="get('/api/scenes/'+user.id, 'json', clearScenes);">DELETE ALL</button>
     </div>
@@ -123,6 +123,7 @@
     <a class="location" onclick="map.flyTo([46.2051,-122.1737],13.21471,{duration: 1.5})">Mt. St. Helens, Washington, USA</a><br>
     </div>
     <!-- API scenes pane -->
+    <div class="clearfix">
     <div id="scenespane">scenes
     <hr>
     click to load<br>
@@ -136,6 +137,7 @@
     </span>
     </div>
 
+    </div>
     </div>
 </div>
 

@@ -183,6 +183,7 @@ body {
     position: absolute;
     right: 280px;
     z-index: 1000;
+    height: 100%;
 }
 
 #examples {
@@ -217,9 +218,11 @@ body {
     z-index: 1000;
     background: white;
     padding: 4px;
-    width: 264px;
+    width: 408px;
     display: none;
     border: 1px solid black;
+    max-height: 90%;
+    overflow: hidden;
 }
 
 .example {
@@ -232,11 +235,17 @@ body {
     text-decoration: underline;
 }
 
+#scenes {
+    overflow: auto;
+    height: 618px;
+}
 .scene {
     cursor: pointer;
     color: blue;
     text-decoration: underline;
-    display: block;
+    display: inline-block;
+    margin: 2px;
+    overflow: scroll;
 }
 
 /* other buttons and controls */
@@ -295,4 +304,12 @@ body {
 }
 .screenshot-thumbnail {
     height: 72px;
+}
+.clearfix {
+    height: 100%;
+}
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
 }

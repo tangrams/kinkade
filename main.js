@@ -69,6 +69,7 @@ var color = {r: 100, g: 100, b: 100};
 var alpha = .1
 var blurring = false;
 var rotating = false;
+var rewinding = false;
 
 function updateColorHex(val) {
     resetFX();
@@ -159,7 +160,13 @@ function updateRotate(val) {
 // rotate the canvas
 function rotate(val) {
     // get the last saved canvas
-    lastCanvas.src = undos[undos.length - 1];
+    if (!rewinding && !rotating) {
+        lastCanvas.src = undos[undos.length - 1];
+    } else {
+        // saveCanvas();
+        rewinding = false;
+        rotating = true;
+    }
     // transform the canvas - move so the rotate point is in the center of the image
     ctx.translate(canvas.width/2, canvas.height/2); 
     // rotate
@@ -198,11 +205,13 @@ function resetRotate() {
 
 // scrub levels of undo
 function rewind(val) {
+    rewinding = true;
     resetFX();
     lastCanvas.src = undos[val];
     lastCanvas.onload = function() {
         ctx.drawImage(lastCanvas, 0, 0);
         scene.loadTextures();
+        lastCanvas.onload = null;
     };
 }
 

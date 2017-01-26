@@ -298,6 +298,7 @@ function KeyPress(e) {
         map._controlContainer.style.display = (display === "none") ? "block" : "none";
         display = kinkade.style.display;
         kinkade.style.display = (display === "none") ? "block" : "none";
+        document.getElementById('panes').style.display = (display === "none") ? "block" : "none";
     }
 }
 

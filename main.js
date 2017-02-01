@@ -276,6 +276,7 @@ function updateRewindSlider() {
     if (undos.length > 1) {
         document.getElementById('rewind').disabled = false;
         percentWidth = (100. / Math.max(undos.length - 1, 1)) * .93;
+        percentWidth = percentWidth < 2 ? 2 + (percentWidth % 1)/2 : percentWidth;
         rule = "#rewindwrapper { background-position: left; background-image: url('line.png'); background-size: "+percentWidth + "% 100%; background-position: top 0px left 10px; }";
         document.styleSheets[3].deleteRule(0);
         document.styleSheets[3].insertRule(rule, 0);
@@ -544,8 +545,16 @@ window.onload = function () {
     // init first undo
     saveCanvas();
 
-    // check API to see ifsomebody is logged in
+    // check API to see if somebody is logged in
     get('/api/developer.json', 'json', getUser);
 
 }
 
+function logout() {
+    post('/api/developer/sign_out', null, checkLogout);
+}
+
+function checkLogout(response) {
+    console.log('logged out:', response);
+    getUser();
+}

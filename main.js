@@ -545,9 +545,7 @@ window.onload = function () {
     // init first undo
     saveCanvas();
 
-    // check API to see if somebody is logged in
-    get('/api/developer.json', 'json', getUser);
-
+    checkUser();
 }
 
 function logout() {

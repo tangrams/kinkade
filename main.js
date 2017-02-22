@@ -1,6 +1,13 @@
 /*jslint browser: true*/
 /*global Tangram, gui */
 
+//////
+// Kinkade functionality
+// Blame: Peter Richardson peter@mapzen.com
+//
+
+
+// export map object
 map = (function () {
     'use strict';
 
@@ -52,6 +59,7 @@ map = (function () {
 
 }());
 
+// global variables
 var kinkade = document.getElementById('kinkade');
 var canvas = document.getElementById('kcanvas');
 var ctx = canvas.getContext('2d');
@@ -545,11 +553,18 @@ window.onload = function () {
     // init first undo
     saveCanvas();
 
-    checkUser();
+    if (apiIsAccessible()) {
+        showLoginButton();
+        checkUser();
+    }
 }
 
 function logout() {
     post('/api/developer/sign_out', null, checkLogout);
+}
+
+function showLoginButton() {
+    document.getElementById("loginsection").style.display = "visible";
 }
 
 function checkLogout(response) {

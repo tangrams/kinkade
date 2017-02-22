@@ -90,7 +90,7 @@ layers:
                         visible: global.labels
                         font:
                             transform: uppercase
-                            size: 10px
+                            size: 10pt
                             family: Lucida Grande
                             fill: white
                             stroke:
@@ -114,7 +114,7 @@ layers:
                         text:
                             optional: false
                             font:
-                                size: 8px
+                                size: 8pt
                                 family: Lucida Grande
                                 fill: white
                                 stroke:
@@ -130,7 +130,7 @@ layers:
                     priority: 3
                     font:
                         transform: uppercase
-                        size: 10px
+                        size: 10pt
                         family: Lucida Grande
                         fill: white
                         stroke:

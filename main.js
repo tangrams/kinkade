@@ -54,9 +54,12 @@ map = (function () {
 
 var kinkade = document.getElementById('kinkade');
 var canvas = document.getElementById('kcanvas');
+var ctx = canvas.getContext('2d');
+var w = 10;
+var radius = w/2;
+var drawing = false;
+var undos = [];
 
-canvas.onselectstart = function(){ return false; };
-canvas.onselectend = function(){ console.log('done'); };
 var x = 0;
 var y = 0;
 var lastX;
@@ -66,6 +69,7 @@ var color = {r: 100, g: 100, b: 100};
 var alpha = .1
 var blurring = false;
 var rotating = false;
+var rewinding = false;
 
 function updateColorHex(val) {
     resetFX();
@@ -91,15 +95,12 @@ function setColor(val) {
 function updateWidth(val) {
     resetFX();
     w = val;
-    // document.getElementById("width").value = val;
 }
 function updateAlpha(val) {
     resetFX();
     alpha = val;
-    // document.getElementById("alpha").value = val;
 }
 function switchBrush(which) {
-    console.log('which:', which);
     document.getElementById('brush1').className = "hitarea";
     document.getElementById('brush2').className = "hitarea";
     document.getElementById('brush3').className = "hitarea-fuzzy";
@@ -159,7 +160,13 @@ function updateRotate(val) {
 // rotate the canvas
 function rotate(val) {
     // get the last saved canvas
-    lastCanvas.src = undos[undos.length - 1];
+    if (!rewinding && !rotating) {
+        lastCanvas.src = undos[undos.length - 1];
+    } else {
+        // saveCanvas();
+        rewinding = false;
+        rotating = true;
+    }
     // transform the canvas - move so the rotate point is in the center of the image
     ctx.translate(canvas.width/2, canvas.height/2); 
     // rotate
@@ -198,11 +205,13 @@ function resetRotate() {
 
 // scrub levels of undo
 function rewind(val) {
+    rewinding = true;
     resetFX();
     lastCanvas.src = undos[val];
     lastCanvas.onload = function() {
         ctx.drawImage(lastCanvas, 0, 0);
         scene.loadTextures();
+        lastCanvas.onload = null;
     };
 }
 
@@ -236,24 +245,6 @@ function draw(x,y,w,r,g,b,a){
         ctx.closePath();
 };
 
-var ctx = canvas.getContext('2d');
-var w = 10;
-var radius = w/2;
-var drawing = false;
-var undos = []
-canvas.addEventListener("mousedown", function(e){
-    resetFX();
-    drawing = true;
-    lastX = e.offsetX;
-    lastY = e.offsetY;
-    draw(lastX, lastY,w,color.r,color.g,color.b, alpha);
-});
-canvas.addEventListener("mouseup", function(){
-    drawing = false;
-    scene.loadTextures();
-    saveCanvas();
-});
-
 function saveCanvas(overwrite, callback) {
 
     // save current state to undo history
@@ -285,6 +276,7 @@ function updateRewindSlider() {
     if (undos.length > 1) {
         document.getElementById('rewind').disabled = false;
         percentWidth = (100. / Math.max(undos.length - 1, 1)) * .93;
+        percentWidth = percentWidth < 2 ? 2 + (percentWidth % 1)/2 : percentWidth;
         rule = "#rewindwrapper { background-position: left; background-image: url('line.png'); background-size: "+percentWidth + "% 100%; background-position: top 0px left 10px; }";
         document.styleSheets[3].deleteRule(0);
         document.styleSheets[3].insertRule(rule, 0);
@@ -293,41 +285,6 @@ function updateRewindSlider() {
         document.getElementById('rewind').value = undos.length - 1;
     }
 }
-
-// based on http://stackoverflow.com/a/17359298/738675
-canvas.addEventListener("mousemove", function(e){
-    if(drawing == true){
-        x = e.offsetX;
-        y = e.offsetY;
-        // the distance the mouse has moved since last mousemove event
-        var dis = Math.sqrt(Math.pow(lastX-x, 2)+Math.pow(lastY-y, 2));
-
-        // for each pixel distance, draw a circle on the line connecting the two points
-        // to get a continous line.
-        for (i=0;i<dis;i+=1) {
-            var s = i/dis;
-            draw(lastX*s + x*(1-s), lastY*s + y*(1-s),w,color.r,color.g,color.b, alpha);
-        }
-        lastX = x;
-        lastY = y;
-        scene.loadTextures();
-    };
-});
-
-updateColorHex(document.getElementById("picker").value);
-// updateWidth(document.getElementById("width").value);
-// updateAlpha(document.getElementById("alpha").value);
-// fill canvas with white
-ctx.beginPath();
-ctx.rect(0, 0, 512, 512);
-ctx.fillStyle = "white";
-ctx.fill();
-
-// undo
-lastCanvas = document.getElementById("lastCanvas");
-var prevCanvas = new Image;
-prevCanvas.id = "prevCanvas";
-var rewindSlider = document.getElementById("rewind");
 
 function KeyPress(e) {
     var evtobj = window.event? event : e;
@@ -351,6 +308,7 @@ function KeyPress(e) {
         map._controlContainer.style.display = (display === "none") ? "block" : "none";
         display = kinkade.style.display;
         kinkade.style.display = (display === "none") ? "block" : "none";
+        document.getElementById('panes').style.display = (display === "none") ? "block" : "none";
     }
 }
 
@@ -362,7 +320,7 @@ function clearCanvas() {
     ctx.fill();
  }
 
- function loadCanvas(dataurl) {
+function loadCanvas(dataurl) {
     blurring = false;
     rotating = false;
     clearCanvas();
@@ -402,28 +360,6 @@ Dropzone.options.canvaswrapper = {
     thumbnailHeight: 512,
     previewTemplate: document.getElementById('preview-template').innerHTML
 };
-
-window.onload = function() {
-    // select fuzzy brush
-    document.getElementById("brush3").click();
-
-    // subscribe to Tangram's published view_complete event
-    scene.subscribe({
-        // trigger promise resolution
-        view_complete: function () {
-                // viewCompleteResolve();
-            },
-        warning: function(e) {
-            }
-    });
-    document.onkeydown = KeyPress;
-    // load dropzone
-    myDropzone = new Dropzone("div#canvaswrapper", { url: "#"});
-    // fill canvas with white
-    clearCanvas();
-    // init first undo
-    saveCanvas();
-}
 
 function exportCanvas() {
     saveCanvas(false, function() {
@@ -503,17 +439,25 @@ function recordVideo() {
     }
 };
 
-if (typeof window.MediaRecorder == 'function') {    
-    video_button.style.display = "inline";
+if (typeof window.MediaRecorder == 'function') {
+    // disable for now
+    // video_button.style.display = "inline";
 };
 
-function toggleExamples() {
-    document.getElementById("examples").style.display = document.getElementById("examples").style.display != 'block' ? 'block' : 'none';
-}
-
-function toggleLocations() {
-    // debugger
-    document.getElementById("locations").style.display = document.getElementById("locations").style.display != 'block' ? 'block' : 'none';
+function togglePane(which, state) {
+    // console.log('typeof state:', typeof state)
+    if (typeof state != 'undefined') {
+        document.getElementById(which).style.display = state == true? 'block' : 'none';
+    } else {
+        document.getElementById(which).style.display = document.getElementById(which).style.display != 'block' ? 'block' : 'none';
+    }
+    var panes = ["locations", "examples", "scenespane"];
+    for (x in panes) {
+        if (panes[x] != which) {
+            // console.log('panes[x]:', panes[x])
+            document.getElementById(panes[x]).style.display = 'none';
+        }
+    }
 }
 
 function swapimg(div) {
@@ -521,7 +465,6 @@ function swapimg(div) {
     drawImgToCanvas(img);
     updateMap();
     saveCanvas();
-
 }
 
 function drawImgToCanvas(img) {
@@ -532,4 +475,84 @@ function drawImgToCanvas(img) {
     for (var x = 0; x < p.length - 1; x++) {
         swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
     }        
+}
+
+window.onload = function () {
+    // set events
+    canvas.onselectstart = function(){ return false; };
+    canvas.onselectend = function(){ console.log('done'); };
+    canvas.addEventListener("mousedown", function(e){
+        resetFX();
+        drawing = true;
+        lastX = e.offsetX;
+        lastY = e.offsetY;
+        draw(lastX, lastY,w,color.r,color.g,color.b, alpha);
+    });
+    canvas.addEventListener("mouseup", function(){
+        drawing = false;
+        scene.loadTextures();
+        saveCanvas();
+    });
+
+    // drawing function
+    // based on http://stackoverflow.com/a/17359298/738675
+    canvas.addEventListener("mousemove", function(e){
+        if(drawing == true){
+            x = e.offsetX;
+            y = e.offsetY;
+            // the distance the mouse has moved since last mousemove event
+            var dis = Math.sqrt(Math.pow(lastX-x, 2)+Math.pow(lastY-y, 2));
+
+            // for each pixel distance, draw a circle on the line connecting the two points
+            // to get a continous line.
+            for (i=0;i<dis;i+=1) {
+                var s = i/dis;
+                draw(lastX*s + x*(1-s), lastY*s + y*(1-s),w,color.r,color.g,color.b, alpha);
+            }
+            lastX = x;
+            lastY = y;
+            scene.loadTextures();
+        };
+    });
+
+    updateColorHex(document.getElementById("picker").value);
+    // updateWidth(document.getElementById("width").value);
+    // updateAlpha(document.getElementById("alpha").value);
+
+    // undo
+    window.lastCanvas = document.getElementById("lastCanvas");
+    window.prevCanvas = new Image;
+    prevCanvas.id = "prevCanvas";
+    window.rewindSlider = document.getElementById("rewind");
+
+    // select fuzzy brush
+    document.getElementById("brush3").click();
+
+    // subscribe to Tangram's published view_complete event
+    scene.subscribe({
+        // trigger promise resolution
+        view_complete: function () {
+                // viewCompleteResolve();
+            },
+        warning: function(e) {
+            }
+    });
+    document.onkeydown = KeyPress;
+    // load dropzone
+    window.myDropzone = new Dropzone("div#canvaswrapper", { url: "#"});
+    // fill canvas with white
+    clearCanvas();
+    // init first undo
+    saveCanvas();
+
+    checkUser();
+}
+
+function logout() {
+    post('/api/developer/sign_out', null, checkLogout);
+}
+
+function checkLogout(response) {
+    console.log('logged out:', response);
+    getUser();
 }

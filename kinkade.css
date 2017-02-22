@@ -65,7 +65,7 @@ body {
 /* color picking */
 
 .jscolor {
-    width: 100%;
+    width: 98%;
 }
 
 #swatches {
@@ -179,7 +179,7 @@ body {
 
 /* presets */
 
-#presets {
+#panes {
     position: absolute;
     right: 280px;
     z-index: 1000;
@@ -199,7 +199,6 @@ body {
 }
 
 #locations {
-    float: right;
     font-family: sans-serif;
     text-transform: uppercase;
     font-size: 13px;
@@ -211,14 +210,42 @@ body {
     border: 1px solid black;
 }
 
+#scenespane {
+    font-family: sans-serif;
+    text-transform: uppercase;
+    font-size: 13px;
+    z-index: 1000;
+    background: white;
+    padding: 4px;
+    width: 408px;
+    display: none;
+    border: 1px solid black;
+    max-height: 90%;
+    overflow: hidden;
+}
+
+.example {
+    width: 50px;
+}
+
 .location {
     cursor: pointer;
     color: blue;
     text-decoration: underline;
 }
 
-.example {
-    width: 50px;
+#scenes {
+    overflow: auto;
+    height: 618px;
+}
+.scene {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+    display: inline-block;
+    margin: 2px;
+    overflow: scroll;
+    position: relative;
 }
 
 /* other buttons and controls */
@@ -245,7 +272,47 @@ body {
 #webcamdiv {
     display: none;
 }
-#recordbutton {
+.kbutton#recordvideo {
     display: none;
 }
 
+#account-actions {
+    display: none;
+}
+
+#loginname {
+    clear: right;
+}
+
+#save-dialog {
+    height: 200px;
+    width: 300px;
+    /*display: none;*/
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin:-100px 0 0 -150px;
+    z-index: 10000;
+    border: 2px solid black;
+    background-color: white;
+    padding: 20px;
+}
+
+.spheremap-thumbnail {
+    width: 72px;
+    height: 72px;
+}
+.screenshot-thumbnail {
+    height: 72px;
+}
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.deletescene-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+}

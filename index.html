@@ -77,6 +77,7 @@
     <button class="kbutton" onclick="clearCanvas();updateMap();">CLEAR</button>
     <button class="kbutton" id="recordvideo" onclick="recordVideo();">RECORD VIDEO</button>
 
+    <div id="loginsection" style="display:none">
     <hr>
     <div id="loginname">Nobody logged in</div><button id="login" class="kbutton" onclick="openSignInWindow()">SIGN IN</button>
     <div id="account-actions">
@@ -84,6 +85,7 @@
     <button class="kbutton" onclick="togglePane('scenespane', true);saveScene();">SAVE SCENE</button>
     <button id="logout" class="kbutton" onclick="logout()">SIGN OUT</button>
     <!-- <button class="kbutton" onclick="get('/api/scenes/'+user.id, 'json', clearScenes);">DELETE ALL</button> -->
+    </div>
     </div>
 
     <!-- Hide blur image -->

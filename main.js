@@ -564,7 +564,7 @@ function logout() {
 }
 
 function showLoginButton() {
-    document.getElementById("loginsection").style.display = "visible";
+    document.getElementById("loginsection").style.display = "inline";
 }
 
 function checkLogout(response) {

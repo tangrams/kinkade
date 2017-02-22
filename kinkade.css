@@ -245,6 +245,7 @@ body {
     display: inline-block;
     margin: 2px;
     overflow: scroll;
+    position: relative;
 }
 
 /* other buttons and controls */
@@ -308,4 +309,10 @@ body {
     content: "";
     clear: both;
     display: table;
+}
+
+.deletescene-button {
+    position: absolute;
+    right: 0;
+    top: 0;
 }

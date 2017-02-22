@@ -77,13 +77,15 @@
     <button class="kbutton" onclick="clearCanvas();updateMap();">CLEAR</button>
     <button class="kbutton" id="recordvideo" onclick="recordVideo();">RECORD VIDEO</button>
 
+    <div id="loginsection" style="display:none">
     <hr>
     <div id="loginname">Nobody logged in</div><button id="login" class="kbutton" onclick="openSignInWindow()">SIGN IN</button>
     <div id="account-actions">
     <button class="kbutton" onclick="togglePane('scenespane')">LOAD SCENE</button>
     <button class="kbutton" onclick="togglePane('scenespane', true);saveScene();">SAVE SCENE</button>
     <button id="logout" class="kbutton" onclick="logout()">SIGN OUT</button>
-    <button class="kbutton" onclick="get('/api/scenes/'+user.id, 'json', clearScenes);">DELETE ALL</button>
+    <!-- <button class="kbutton" onclick="get('/api/scenes/'+user.id, 'json', clearScenes);">DELETE ALL</button> -->
+    </div>
     </div>
 
     <!-- Hide blur image -->
@@ -92,7 +94,7 @@
 <!-- BEGIN UI -->
 
 <!-- Hide default dropzone thumbnail -->
-<div id="preview-template" style="display: none;"></div>
+<div id="preview-template" style="display: none;"><div></div></div>
 
 <!-- <div id="save-dialog">SAVE SCENE</div> -->
 
@@ -125,9 +127,8 @@
     </div>
     <!-- API scenes pane -->
     <div class="clearfix">
-    <div id="scenespane">scenes
+    <div id="scenespane">scenes - click to load
     <hr>
-    click to load<br>
 
     <div id="scenes">
     <span class="scene">
@@ -186,7 +187,8 @@
 
     <!-- Main demo code -->
     <script src="lib/thumbnail.js"></script>
-    <script src="lib/mapzen-api.js"></script>
+    <script src="lib/mapzen-user-api.js"></script>
+    <script src="lib/mapzen-api-integration.js"></script>
     <script src="main.js"></script>
 
     <!-- Mapzen map UI -->

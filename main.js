@@ -1,6 +1,10 @@
-/*jslint browser: true*/
-/*global Tangram, gui */
+//////
+// Kinkade functionality
+// Blame: Peter Richardson peter@mapzen.com
+//
 
+
+// export map object
 map = (function () {
     'use strict';
 
@@ -20,10 +24,12 @@ map = (function () {
 
     /*** Map ***/
 
+    // init Leaflet map
     var map = L.map('map',
         {"keyboardZoomOffset" : .05}
     );
 
+    // init Tangram layer
     var layer = Tangram.leafletLayer({
         scene: 'scene.yaml',
         attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>',
@@ -36,7 +42,7 @@ map = (function () {
 
     // setView expects format ([lat, long], zoom)
     map.setView(map_start_location.slice(0, 3), map_start_location[2]);
-
+    // use Leaflet to update hash value in url with latlong
     var hash = new L.Hash(map);
 
     /***** Render loop *****/
@@ -44,7 +50,9 @@ map = (function () {
     window.addEventListener('load', function () {
         // Scene initialized
         layer.on('init', function() {
+            // 
         });
+        // add Tangram layer to Leaflet map
         layer.addTo(map);
     });
 
@@ -52,11 +60,11 @@ map = (function () {
 
 }());
 
+// global variables
 var kinkade = document.getElementById('kinkade');
 var canvas = document.getElementById('kcanvas');
 var ctx = canvas.getContext('2d');
 var w = 10;
-var radius = w/2;
 var drawing = false;
 var undos = [];
 
@@ -64,30 +72,33 @@ var x = 0;
 var y = 0;
 var lastX;
 var lastY;
-var colorHex = "ffffff";
 var color = {r: 100, g: 100, b: 100};
-var alpha = .1
+var alpha = .1;
 var blurring = false;
 var rotating = false;
 var rewinding = false;
 
+// update hex value in color picker
 function updateColorHex(val) {
     resetFX();
     valRGB = hexToRgb(val);
     color = {r: valRGB.r, g: valRGB.g, b: valRGB.b};
     document.getElementById("picker").value = val;
 }
+// set picker color value
 function updateColorRGB(val) {
     resetFX();
     valRGB = val;
     color = val;
     setColor(RgbToHex(val))
 }
+// use preset div color for picker value
 function swatch(div) {
     val = getComputedStyle(div).backgroundColor.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
     val = {r: val[1], g: val[2], b: val[3]};
     updateColorRGB(val);
 }
+// set picker color value
 function setColor(val) {
     document.getElementById('picker').jscolor.fromString(val);
     updateColorHex(val);
@@ -460,6 +471,7 @@ function togglePane(which, state) {
     }
 }
 
+// replace canvas with clicked image
 function swapimg(div) {
     img = div.childNodes[0];
     drawImgToCanvas(img);
@@ -486,7 +498,7 @@ window.onload = function () {
         drawing = true;
         lastX = e.offsetX;
         lastY = e.offsetY;
-        draw(lastX, lastY,w,color.r,color.g,color.b, alpha);
+        draw(lastX, lastY, w, color.r, color.g, color.b, alpha);
     });
     canvas.addEventListener("mouseup", function(){
         drawing = false;
@@ -497,14 +509,13 @@ window.onload = function () {
     // drawing function
     // based on http://stackoverflow.com/a/17359298/738675
     canvas.addEventListener("mousemove", function(e){
-        if(drawing == true){
+        if (drawing) {
             x = e.offsetX;
             y = e.offsetY;
             // the distance the mouse has moved since last mousemove event
             var dis = Math.sqrt(Math.pow(lastX-x, 2)+Math.pow(lastY-y, 2));
 
-            // for each pixel distance, draw a circle on the line connecting the two points
-            // to get a continous line.
+            // for each pixel distance, draw a circle on the line connecting the two points to get a continous line.
             for (i=0;i<dis;i+=1) {
                 var s = i/dis;
                 draw(lastX*s + x*(1-s), lastY*s + y*(1-s),w,color.r,color.g,color.b, alpha);
@@ -515,28 +526,17 @@ window.onload = function () {
         };
     });
 
-    updateColorHex(document.getElementById("picker").value);
-    // updateWidth(document.getElementById("width").value);
-    // updateAlpha(document.getElementById("alpha").value);
-
-    // undo
+    // set up undo
     window.lastCanvas = document.getElementById("lastCanvas");
     window.prevCanvas = new Image;
     prevCanvas.id = "prevCanvas";
     window.rewindSlider = document.getElementById("rewind");
 
+    // initialize color picker
+    updateColorHex(document.getElementById("picker").value);
     // select fuzzy brush
     document.getElementById("brush3").click();
-
-    // subscribe to Tangram's published view_complete event
-    scene.subscribe({
-        // trigger promise resolution
-        view_complete: function () {
-                // viewCompleteResolve();
-            },
-        warning: function(e) {
-            }
-    });
+    // watch for keys
     document.onkeydown = KeyPress;
     // load dropzone
     window.myDropzone = new Dropzone("div#canvaswrapper", { url: "#"});
@@ -545,14 +545,9 @@ window.onload = function () {
     // init first undo
     saveCanvas();
 
-    checkUser();
-}
-
-function logout() {
-    post('/api/developer/sign_out', null, checkLogout);
-}
-
-function checkLogout(response) {
-    console.log('logged out:', response);
-    getUser();
+    // offer login button if possible
+    if (apiIsAccessible()) {
+        showLoginButton();
+        checkUser();
+    }
 }

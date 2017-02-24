@@ -51,7 +51,7 @@
     <input type="checkbox" id="ocean" checked onchange="updateOcean(this.checked)">Water
     <hr>
     Terrain Scale: <input id="scale" value="2" size=5 onchange="updateScale(this.value)"><br>
-    <input class="slider" type="range" min="0.01" max="5" value="2" step=".001" oninput="updateScale(this.value)">
+    <input id="scale_slider" class="slider" type="range" min="0.01" max="5" value="2" step=".001" oninput="updateScale(this.value)">
     <br>
     Blur:<br>
     <input class="slider" type="range" id="blur" min="0" max="100" value="0" step=".01" oninput="updateBlur(this.value)">

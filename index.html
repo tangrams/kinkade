@@ -79,7 +79,7 @@
 
     <div id="loginsection" style="display:none">
     <hr>
-    <div id="loginname">Nobody logged in</div><button id="login" class="kbutton" onclick="openSignInWindow()">SIGN IN</button>
+    <div id="loginname">Nobody logged in</div><button id="login" class="kbutton" onclick="mzUserSignin.openSignInWindow()">SIGN IN</button>
     <div id="account-actions">
     <button class="kbutton" onclick="togglePane('scenespane')">LOAD SCENE</button>
     <button class="kbutton" onclick="togglePane('scenespane', true);saveScene();">SAVE SCENE</button>
@@ -189,6 +189,7 @@
     <script src="lib/thumbnail.js"></script>
     <script src="lib/mapzen-user-api.js"></script>
     <script src="lib/mapzen-api-integration.js"></script>
+    <script src="lib/mz-scenes-signin.js"></script>
     <script src="main.js"></script>
 
     <!-- Mapzen map UI -->

@@ -123,6 +123,7 @@ function switchFuzzyBrush(which) {
     document.getElementById('brush2').className = "hitarea";
 }
 function updateScale(val) {
+    if (typeof scene.styles.hillshade === 'undefined') return false;
     scene.styles.hillshade.shaders.uniforms.u_scale = parseFloat(1/(Math.pow(2,val)-1));
     scene.requestRedraw();
     document.getElementById("scale").value = val;
@@ -480,9 +481,17 @@ function swapimg(div) {
 }
 
 function drawImgToCanvas(img) {
-    ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    if (typeof img.src === 'undefined') return;
+    try {
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    } catch(e) {
+        return console.error('draw fail:', e);
+    }
     var colorThief = new ColorThief();
     p = colorThief.getPalette(img, 8);
+    if (p === null) {
+        return console.error("Empty spheremap");
+    }
     swatches = document.getElementById('swatches').getElementsByClassName('swatch');
     for (var x = 0; x < p.length - 1; x++) {
         swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
@@ -550,4 +559,6 @@ window.onload = function () {
         showLoginButton();
         checkUser();
     }
+
+    togglePane('scenespane', true);
 }

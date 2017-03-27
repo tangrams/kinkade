@@ -543,6 +543,7 @@ window.onload = function () {
         drawing = false;
         scene.loadTextures();
         saveCanvas();
+        loadSwatches();
     });
     document.getElementById("scale").addEventListener("focus", function(){
         this.select();

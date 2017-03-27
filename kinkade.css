@@ -72,7 +72,7 @@ body {
 #swatches {
     width: 100%;
     height: 1em;
-    margin: 5px auto 0;
+    margin: 5px auto;
 }
 .swatch {
     width: 14.39%;
@@ -101,56 +101,39 @@ body {
     /*border: 2px solid gold;*/
 }
 
-.hitarea {
+.hitarea, .hitarea-selected {
     width: 50px;
     height: 45px;
     float: left;
     cursor: pointer;
     margin: 2px 6%;
 }
-.hitarea-fuzzy {
+.hitarea-fuzzy, .hitarea-fuzzy-selected {
     width: 50px;
     height: 43px;
     float: left;
     cursor: pointer;
     margin: 2px 6%;
-}
-.hitarea-selected {
-    width: 50px;
-    height: 43px;
-    float: left;
-    cursor: pointer;
-    margin: 2px 6%;
-    background-color: pink;
-}
-.hitarea-fuzzy-selected {
-    width: 50px;
-    height: 43px;
-    float: left;
-    cursor: pointer;
-    margin: 2px 6%;
-    background-color: pink;
 }
 .hitarea:hover > button {
-    background-color: red;
+    background-color: white;
 }
 .hitarea-fuzzy:hover > button {
-    background-color: red;
-    -moz-box-shadow: 0px 0px 18px 18px red;
-    -webkit-box-shadow: 0px 0px 18px 18px red;
-    box-shadow: 0px 0px 18px 18px red;
+    background-color: white;
+    -moz-box-shadow: 0px 0px 18px 18px white;
+    -webkit-box-shadow: 0px 0px 18px 18px white;
+    box-shadow: 0px 0px 18px 18px white;
 }
 
 .button-small {
     pointer-events: none;
-    -moz-box-shadow: 0px 0px 0px -50px #3dc21b;
-    -webkit-box-shadow: 0px 0px 0px -50px #3dc21b;
-    box-shadow: 0px 0px 0px -50px #3dc21b;
-    background-color:#44c767;
+    -moz-box-shadow: 0px 0px 0px -50px grey;
+    -webkit-box-shadow: 0px 0px 0px -50px grey;
+    box-shadow: 0px 0px 0px -50px grey;
+    background-color: grey;
     -moz-border-radius:7px;
     -webkit-border-radius:7px;
     border-radius:7px;
-    color:#ffffff;
     padding:7px 7px;
     border: none;
     margin: 14px auto;
@@ -158,14 +141,13 @@ body {
 
 .button-big {
     pointer-events: none;
-    -moz-box-shadow: 0px 0px 0px -50px #3dc21b;
-    -webkit-box-shadow: 0px 0px 0px -50px #3dc21b;
-    box-shadow: 0px 0px 0px -50px #3dc21b;
-    background-color:#44c767;
+    -moz-box-shadow: 0px 0px 0px -50px grey;
+    -webkit-box-shadow: 0px 0px 0px -50px grey;
+    box-shadow: 0px 0px 0px -50px grey;
+    background-color: grey;
     -moz-border-radius:16px;
     -webkit-border-radius:16px;
     border-radius:16px;
-    color:#ffffff;
     padding:16px 16px;
     border: none;
     margin: 5px auto;
@@ -173,19 +155,29 @@ body {
 
 .button-blurry {
     pointer-events: none;
-    -moz-box-shadow: 0px 0px 16px 16px #3dc21b;
-    -webkit-box-shadow: 0px 0px 16px 16px #3dc21b;
-    box-shadow: 0px 0px 16px 16px #3dc21b;
-    background-color:#44c767;
+    -moz-box-shadow: 0px 0px 16px 16px grey;
+    -webkit-box-shadow: 0px 0px 16px 16px grey;
+    box-shadow: 0px 0px 16px 16px grey;
+    background-color: grey;
     -moz-border-radius:16px;
     -webkit-border-radius:16px;
     border-radius:16px;
-    color:#ffffff;
     padding:1px 1px;
     border: none;
     margin: 0 auto;
     margin-top: 20px;
 }
+
+.hitarea-selected > button {
+    background-color: white;
+}
+.hitarea-fuzzy-selected > button {
+    background-color: white;
+    -moz-box-shadow: 0px 0px 18px 18px white;
+    -webkit-box-shadow: 0px 0px 18px 18px white;
+    box-shadow: 0px 0px 18px 18px white;
+}
+
 
 /* presets */
 

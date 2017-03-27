@@ -116,13 +116,13 @@ body {
     margin: 2px 6%;
 }
 .hitarea:hover > button {
-    background-color: white;
+    background-color: #eefafa;
 }
 .hitarea-fuzzy:hover > button {
-    background-color: white;
-    -moz-box-shadow: 0px 0px 18px 18px white;
-    -webkit-box-shadow: 0px 0px 18px 18px white;
-    box-shadow: 0px 0px 18px 18px white;
+    background-color: #eefafa;
+    -moz-box-shadow: 0px 0px 18px 18px #eefafa;
+    -webkit-box-shadow: 0px 0px 18px 18px #eefafa;
+    box-shadow: 0px 0px 18px 18px #eefafa;
 }
 
 .button-small {
@@ -169,13 +169,13 @@ body {
 }
 
 .hitarea-selected > button {
-    background-color: white;
+    background-color: #eefafa;
 }
 .hitarea-fuzzy-selected > button {
-    background-color: white;
-    -moz-box-shadow: 0px 0px 18px 18px white;
-    -webkit-box-shadow: 0px 0px 18px 18px white;
-    box-shadow: 0px 0px 18px 18px white;
+    background-color: #eefafa;
+    -moz-box-shadow: 0px 0px 18px 18px #eefafa;
+    -webkit-box-shadow: 0px 0px 18px 18px #eefafa;
+    box-shadow: 0px 0px 18px 18px #eefafa;
 }
 
 
@@ -186,12 +186,12 @@ body {
     right: 272px;
     z-index: 1000;
     background-color: #2e3033;
-    color: #eee;
+    color: #eefafa;
     border: 1px solid #bbb;
 }
 
 #panes a {
-    color: blue;
+    color: #eefafa;
 }
 
 hr {
@@ -262,8 +262,19 @@ hr {
 
 /* other buttons and controls */
 
+button {
+    background-color: #36383e;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.06);
+    color: #eefafa;
+     margin: 0 .4em;
+    border: 1px solid #1a1c1f;
+    border-radius: 3px;
+    padding: .8em .75em;
+
+}
+
 #scale {
-    color: white;
+    color: #eefafa;
     background-color: #444;
     margin-left: 1em;
     border: 1px solid #ccc;

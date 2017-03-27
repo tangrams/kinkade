@@ -144,6 +144,7 @@ layers:
         data: { source: mapzen }
         draw:
             dots:
+                order: 5
                 visible: global.lines
                 color: [.75, .75, .75]
                 width: 1px
@@ -151,6 +152,7 @@ layers:
         data: { source: mapzen }
         draw:
             dashes:
+                order: 6
                 visible: global.lines
                 color: [.5, .5, .5]
                 width: 1px

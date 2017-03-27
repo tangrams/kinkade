@@ -39,17 +39,18 @@
         <div class="swatch" onclick="swatch(this)"></div>
         <div class="swatch" onclick="swatch(this)"></div>
     </div>
-
+    <button id="loadSwatches" class="kbutton" onclick="loadSwatches()">Reoad Color Swatches</button>
     <div class="brushes">
         <div id="brush1" class="hitarea" onclick="updateWidth(10);updateAlpha(.2);switchBrush(this)"><button class="button-small"></button></div>
         <div id="brush2" class="hitarea" onclick="updateWidth(40);updateAlpha(.2);switchBrush(this)"><button class="button-big"></button></div>
         <div id="brush3" class="hitarea-fuzzy" onclick="updateWidth(60);updateAlpha(.05);switchFuzzyBrush(this)"><button class="button-blurry"></button></div>
     </div>
-    
-    <hr>
+    <hr width="256px">
+    <div id="line_toggles">
     <input type="checkbox" id="vector" checked onchange="updateLines(this.checked)">Lines 
     <input type="checkbox" id="labels" checked onchange="updateLabels(this.checked)">Labels
     <input type="checkbox" id="ocean" checked onchange="updateOcean(this.checked)">Water
+    </div>
     <hr>
     Terrain Scale:<input id="scale" value="2" size=5 onchange="updateScale(this.value)"><br>
     <input id="scale_slider" class="slider" type="range" min="0.01" max="5" value="2" step=".001" oninput="updateScale(this.value)">
@@ -68,7 +69,7 @@
     Rewind:<br>
     <div id="rewindwrapper" class="rewindwrapper"><input disabled type="range" id="rewind" class="slider" min="0" max="1" value="1" step="1" oninput="rewind(this.value)"></div><br>
     <hr>
-    PRESETS
+    PRESETS:
     <button class="kbutton" onclick="togglePane('examples')">Examples</button>
     <button class="kbutton" onclick="togglePane('locations')">Locations</button>
 

@@ -18,13 +18,13 @@ body {
     text-transform: uppercase;
     font-size: 13px;
     position: absolute;
-    right: 6px;
+    right: -1px;
     z-index: 1000;
     padding: 4px;
     width: 264px;
     display: block;
     background-color: #2e3033;
-    border: 1px solid black;
+    border: 1px solid #bbb;
     color: #eee;
 }
 #kcanvas {
@@ -34,7 +34,7 @@ body {
     padding: 0;
     width: 256px;
     height: 256px;
-    border: 1px #000 solid
+    border: 1px solid #000
 }
 #canvaswrapper {
     height: 256px;
@@ -80,9 +80,17 @@ body {
     background-color: grey;
     margin: 0 2px;
     float: left;
-    border: 1px solid #ccc;
+    border: 1px solid grey;
 }
 
+#loadSwatches {
+    display: block;
+    position: relative;
+    margin: 0 auto;
+/*    background-color: grey;
+    border: 1px solid #ccc;
+    color: #eee;
+*/}
 /* brushes */
 
 .brushes {
@@ -90,6 +98,7 @@ body {
     float: left;
     margin: 0 auto;
     text-align: center;
+    /*border: 2px solid gold;*/
 }
 
 .hitarea {
@@ -182,10 +191,11 @@ body {
 
 #panes {
     position: absolute;
-    right: 280px;
+    right: 272px;
     z-index: 1000;
     background-color: #2e3033;
     color: #eee;
+    border: 1px solid #bbb;
 }
 
 #panes a {
@@ -196,7 +206,7 @@ hr {
     display: block;
     height: 1px;
     border: 0;
-    border-top: 1px solid #ccc;
+    /*border-top: 1px solid #666;*/
     margin: 1em 0;
     padding: 0; 
 }
@@ -210,7 +220,6 @@ hr {
     padding: 4px;
     width: 264px;
     display: none;
-    border: 1px solid black;
 }
 
 #locations {
@@ -221,7 +230,6 @@ hr {
     padding: 4px;
     width: 264px;
     display: none;
-    border: 1px solid black;
 }
 
 #scenespane {
@@ -232,7 +240,6 @@ hr {
     padding: 4px;
     width: 408px;
     display: none;
-    border: 1px solid black;
     max-height: 90%;
     overflow: hidden;
 }
@@ -264,13 +271,24 @@ hr {
 /* other buttons and controls */
 
 #scale {
-    color: #eee;
+    color: white;
     background-color: #444;
     margin-left: 1em;
+    border: 1px solid #ccc;
 }
 
 input[type=range]:disabled {
   opacity: .3;
+}
+
+#line_toggles {
+    width: 100%;
+    display:block;
+}
+
+input[type=checkbox] {
+  margin-left: .5em;
+  margin-right: 5px;
 }
 
 .slider {

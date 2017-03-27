@@ -504,15 +504,28 @@ function drawImgToCanvas(img) {
     } catch(e) {
         return console.error('draw fail:', e);
     }
+    sampleColors(img);
+}
+
+// sample image and put colors in swatches
+function sampleColors(img) {
     var colorThief = new ColorThief();
     p = colorThief.getPalette(img, 8);
     if (p === null) {
         return console.error("Empty spheremap");
     }
-    swatches = document.getElementById('swatches').getElementsByClassName('swatch');
+    swatches = document.getElementsByClassName('swatch');
+    p.sort();
     for (var x = 0; x < p.length - 1; x++) {
         swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
-    }        
+    }
+}
+
+function loadSwatches() {
+    var img = new Image();
+    img.id = "pic"
+    img.src = document.getElementById("kcanvas").toDataURL();
+    sampleColors(img);
 }
 
 window.onload = function () {

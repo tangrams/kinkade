@@ -1,5 +1,4 @@
 body {
-    font-family: Roboto,sans-serif;
     margin: 0px;
     border: 0px;
     padding: 0px;
@@ -15,7 +14,7 @@ body {
 /* paint area */
 
 #kinkade {
-    font-family: sans-serif;
+    font-family: 'Roboto', sans-serif;
     text-transform: uppercase;
     font-size: 13px;
     position: absolute;
@@ -263,6 +262,12 @@ hr {
 }
 
 /* other buttons and controls */
+
+#scale {
+    color: #eee;
+    background-color: #444;
+    margin-left: 1em;
+}
 
 input[type=range]:disabled {
   opacity: .3;

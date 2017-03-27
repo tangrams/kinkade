@@ -127,6 +127,7 @@ function updateScale(val) {
     scene.styles.hillshade.shaders.uniforms.u_scale = parseFloat(1/(Math.pow(2,val)-1));
     scene.requestRedraw();
     document.getElementById("scale").value = val;
+    document.getElementById("scale_slider").value = val;
 }
 function updateBlur(val) {
     if (document.getElementById('webcam').checked) {
@@ -300,6 +301,7 @@ function updateRewindSlider() {
 
 function KeyPress(e) {
     var evtobj = window.event? event : e;
+    var element = document.activeElement;
     // if ctrl-z, undo
     if (evtobj.which == 90 && evtobj.ctrlKey && !evtobj.shiftKey ||
         evtobj.which == 90 && evtobj.metaKey && !evtobj.shiftKey ) {
@@ -310,17 +312,32 @@ function KeyPress(e) {
         evtobj.which == 90 && evtobj.metaKey && evtobj.shiftKey ) {
         rewindSlider.value = parseInt(rewindSlider.value) + 1;
         rewind(rewindSlider.value);
+    // if esc and focused on scale
+    } else if (evtobj.which == 27 && element == document.getElementById('scale')) {
+        element.blur();
     // if esc
     } else if (evtobj.which == 27) {
         hidePicker();
     // listen for "h"
-    } else if (evtobj.which == 72 && document.activeElement != document.getElementsByClassName('leaflet-pelias-input')[0]) {
+    } else if (evtobj.which == 72 && element != document.getElementsByClassName('leaflet-pelias-input')[0]) {
         // toggle UI
         var display = map._controlContainer.style.display;
         map._controlContainer.style.display = (display === "none") ? "block" : "none";
         display = kinkade.style.display;
         kinkade.style.display = (display === "none") ? "block" : "none";
         document.getElementById('panes').style.display = (display === "none") ? "block" : "none";
+    }
+}
+
+function KeyRelease(e) {
+    var evtobj = window.event? event : e;
+    var element = document.activeElement;
+    // listen for "return"
+    if (evtobj.which == 13 && element == document.getElementById('scale')) {
+        element.select();
+    // update scale
+    } else if (element == document.getElementById('scale')) {
+        updateScale(element.value);
     }
 }
 
@@ -514,6 +531,9 @@ window.onload = function () {
         scene.loadTextures();
         saveCanvas();
     });
+    document.getElementById("scale").addEventListener("focus", function(){
+        this.select();
+    });
 
     // drawing function
     // based on http://stackoverflow.com/a/17359298/738675
@@ -547,6 +567,7 @@ window.onload = function () {
     document.getElementById("brush3").click();
     // watch for keys
     document.onkeydown = KeyPress;
+    document.onkeyup = KeyRelease;
     // load dropzone
     window.myDropzone = new Dropzone("div#canvaswrapper", { url: "#"});
     // fill canvas with white

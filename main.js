@@ -650,6 +650,4 @@ window.onload = function () {
         showLoginButton();
         checkUser();
     }
-
-    togglePane('scenespane', true);
 }

@@ -11,6 +11,19 @@ body {
     position: absolute;
 }
 
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    /*border-top: 1px solid #666;*/
+    margin: 1em 0;
+    padding: 0; 
+}
+
+h3 {
+    text-transform: uppercase;
+}
+
 /* paint area */
 
 #kinkade {
@@ -203,17 +216,8 @@ body {
     text-decoration: underline;
 }
 
-hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    /*border-top: 1px solid #666;*/
-    margin: 1em 0;
-    padding: 0; 
-}
-
 #help {
-    width: 264px;
+    width: 440px;
     padding: 8px;
     display: none;
 }

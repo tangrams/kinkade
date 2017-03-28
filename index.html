@@ -106,19 +106,33 @@
 
 <div id="panes">
     <!-- examples pane -->
-    <div id="help">Tangram Kinkade
+    <div id="help"><h2>Tangram Kinkade</h2>
     <hr>
-<p>This is a spheremap painter. Draw in the box on the right to paint a spheremap, which will color the interactive map on the left.</p>
+    <h3>To use</h3>
+<p>Draw in the pane on the right to paint a spheremap, which will color the interactive map on the left.</p>
 
-<p><a href="">Spheremaps</a> are images used to color 3D geometry, as though they were wrapped around a sphere. Colors on the left side of the image will be the color of 3D faces which point left.</p>
+<p>Sign in with your <a href="https://mapzen.com/developers">Mapzen account</a> to save scenes, and then open and edit them in <a href="https://mapzen.com/tangram/play">Tangram Play</a>.</p>
 
-<p>Try the <a href="#" onclick="togglePane('examples')">example spheremaps</a> at various <a onclick="togglePane('locations')">sample locations</a>.</p>
+<h3>How it works</h3>
+This tool uses the <a href="">sphere mapping</a> technique.</p>
 
-<p>The maps are drawn using the <a href="https://mapzen.com/products/tangram">Tangram</a> map library. Sign in with your <a href="https://mapzen.com/developers">Mapzen account</a> to save scenes, and then open and edit them in <a href="https://mapzen.com/tangram/play">Tangram Play</a>.</p>
+<p>In sphere mapping, an image (the "spheremap") is used to color 3D geometry, by treating the image as though it is wrapped around a sphere. Then, faces of the 3D object are assigned the same color as the faces on the imaginary sphere. For instance, the color on the left side of the spheremap will be the color of 3D faces which point left.</p>
+
+<p>Using the <a href="https://mapzen.com/products/tangram">Tangram</a> map library, the <a href="https://mapzen.com/documentation/terrain-tiles/">Mapzen terrain tiles</a> are treated as though they are real 3D objects, and the spheremap technique can be applied to them too.
+
+<h3>Learn more</h3>
 
 <p>To read about how we use spheremaps in our <a href="https://mapzen.com/documentation/cartography/styles/#walkabout">Walkabout basemap</a>, read our blog post <a href="https://mapzen.com/blog/sphere-maps/">Sphere Maps.</a></p>
 
-<p>To learn more about using spheremaps in cartography, read out blog post <a href="https://mapzen.com/blog/mapping-mountains/">Mapping Mountains</a>.</p>
+<p>To learn more about using spheremaps in cartography, read our blog post <a href="https://mapzen.com/blog/mapping-mountains/">Mapping Mountains</a>.</p>
+
+<p>The <a href="https://github.com/tangrams/kinkade">code</a> for this <a href="https://mapzen.com">Mapzen</a> project is open-source and freely available.</p>
+
+<h3>Secrets</h3>
+
+<p>You can drag an image directly into the drawing pane!</p>
+
+<p>Press 'H' to hide and show the interface!</p>
 
     </div>
 

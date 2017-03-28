@@ -72,23 +72,24 @@
     <input disabled type="range" id="rewind" class="slider" min="0" max="1" value="1" step="1" oninput="rewind(this.value)">
     </div>
     <hr>
-    PRESETS:
+    Presets:
     <button class="kbutton" onclick="togglePane('examples')">Examples</button>
     <button class="kbutton" onclick="togglePane('locations')">Locations</button>
 
     <hr>
-    <button class="kbutton" onclick="exportCanvas()">EXPORT</button>
+    <button class="kbutton" onclick="exportCanvas()">Export</button>
     <!-- <input type="file" onchange="previewFile()" value="LOAD"> -->
-    <button class="kbutton" onclick="clearCanvas();updateMap();">CLEAR</button>
-    <button class="kbutton" id="recordvideo" onclick="recordVideo();">RECORD VIDEO</button>
+    <button class="kbutton" onclick="clearCanvas();updateMap();">Clear</button>
+    <button class="kbutton" onclick="togglePane('help');">Help</button>
+    <button class="kbutton" id="recordvideo" onclick="recordVideo();">Record Video</button>
 
     <div id="loginsection" style="display:none">
     <hr>
-    <div id="loginname">Nobody logged in</div><button id="login" class="kbutton" onclick="mzUserSignin.openSignInWindow()">SIGN IN</button>
+    <div id="loginname">Nobody logged in</div><button id="login" class="kbutton" onclick="mzUserSignin.openSignInWindow()">Sign In</button>
     <div id="account-actions">
-    <button class="kbutton" onclick="togglePane('scenespane')">LOAD</button>
-    <button class="kbutton" onclick="togglePane('scenespane', true);saveScene();">SAVE</button>
-    <button id="logout" class="kbutton" onclick="logout()">SIGN OUT</button>
+    <button class="kbutton" onclick="togglePane('scenespane')">Load</button>
+    <button class="kbutton" onclick="togglePane('scenespane', true);saveScene();">Save</button>
+    <button id="logout" class="kbutton" onclick="logout()">Sign Out</button>
     <!-- <button class="kbutton" onclick="get('/api/scenes/'+user.id, 'json', clearScenes);">DELETE ALL</button> -->
     </div>
     </div>
@@ -132,12 +133,12 @@
     </div>
     <!-- API scenes pane -->
     <div class="clearfix">
-    <div id="scenespane">scenes - click to load
+    <div id="scenespane">scenes
     <hr>
 
     <div id="scenes">
     <span class="scene">
-        <a name="sample" class="scenes_link" onclick="loadScene(this)">
+        <a name="sample" onclick="loadScene(this)">
         sample
         <img class="thumbnail" src="">
         </a>

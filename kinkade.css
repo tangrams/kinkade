@@ -15,7 +15,6 @@ body {
 
 #kinkade {
     font-family: 'Roboto', sans-serif;
-    text-transform: uppercase;
     font-size: 13px;
     position: absolute;
     right: -1px;
@@ -87,10 +86,8 @@ body {
     display: block;
     position: relative;
     margin: 0 auto;
-/*    background-color: grey;
-    border: 1px solid #ccc;
-    color: #eee;
-*/}
+}
+
 /* brushes */
 
 .brushes {
@@ -182,20 +179,23 @@ body {
 /* presets */
 
 #panes {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
     position: absolute;
     right: 272px;
     z-index: 1000;
     background-color: #26282e;
     color: #eefafa;
     border: 1px solid #bbb;
+    float: right;
+    padding: 0px;
+    margin: 0px;
+    z-index: 1000;
+    line-height: 20px;
 }
 
 #panes a {
     color: #eefafa;
-}
-
-.scene:hover {
-    background-color: #d66;
 }
 
 #panes a:hover {
@@ -230,15 +230,14 @@ hr {
     outline: 2px solid #fffe47;
 }
 
+.example {
+    width: 50px;
+}
+
 #locations {
-    font-family: sans-serif;
     text-transform: uppercase;
-    font-size: 13px;
-    line-height: 20px;
-    z-index: 1000;
-    padding: 8px;
-    margin: 0px;
     width: 264px;
+    padding: 8px;
     display: none;
 }
 
@@ -247,32 +246,26 @@ hr {
     text-decoration: none;
 }
 
-#scenespane {
-    font-family: sans-serif;
-    text-transform: uppercase;
-    font-size: 13px;
-    z-index: 1000;
-    padding: 4px;
-    width: 408px;
-    display: none;
-    max-height: 90%;
-    overflow: hidden;
-}
-
-.example {
-    width: 50px;
-}
-
 .location {
     cursor: pointer;
     color: blue;
     text-decoration: underline;
 }
 
+#scenespane {
+    text-transform: uppercase;
+    padding: 8px;
+    width: 408px;
+    display: none;
+    max-height: 90%;
+    overflow: hidden;
+}
+
 #scenes {
     overflow: auto;
     height: 618px;
 }
+
 .scene {
     cursor: pointer;
     color: blue;
@@ -280,6 +273,10 @@ hr {
     margin: 2px;
     overflow: scroll;
     position: relative;
+}
+
+.scene:hover {
+    /*background-color: #d66;*/
 }
 
 /* other buttons and controls */
@@ -324,15 +321,18 @@ input[type=checkbox] {
 .slider {
     width: 98%;
 }
+
 #saveButton {
     font-size: 30px;
     float: right;
     clear: none;
 }
+
 .rewindwrapper {
     display:inline-block;
     width: 98%;
 }
+
 .rewindtick {
     display: inline-block;
     position: absolute;
@@ -345,13 +345,16 @@ input[type=checkbox] {
 #snapshot {
     margin-left: 25px;
 }
+
 #flipspan {
     margin-left: 25px;
     color: #aaa;
 }
+
 #webcamdiv {
     display: none;
 }
+
 .kbutton#recordvideo {
     display: none;
 }
@@ -382,9 +385,16 @@ input[type=checkbox] {
     width: 72px;
     height: 72px;
 }
+
 .screenshot-thumbnail {
     height: 72px;
 }
+
+.clearfix {
+    padding: 0;
+    margin: 0;
+}
+
 .clearfix::after {
     content: "";
     clear: both;

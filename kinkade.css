@@ -23,7 +23,7 @@ body {
     padding: 4px;
     width: 264px;
     display: block;
-    background-color: #2e3033;
+    background-color: #26282e;
     border: 1px solid #bbb;
     color: #eee;
 }
@@ -185,13 +185,22 @@ body {
     position: absolute;
     right: 272px;
     z-index: 1000;
-    background-color: #2e3033;
+    background-color: #26282e;
     color: #eefafa;
     border: 1px solid #bbb;
 }
 
 #panes a {
     color: #eefafa;
+}
+
+.scene:hover {
+    background-color: #d66;
+}
+
+#panes a:hover {
+    color: #fffe47;
+    text-decoration: underline;
 }
 
 hr {
@@ -209,19 +218,33 @@ hr {
     font-size: 13px;
     z-index: 1000;
     float: right;
-    padding: 4px;
+    padding: 8px;
     width: 264px;
     display: none;
+}
+
+#examples a img {
+}
+
+#examples img:hover {
+    outline: 2px solid #fffe47;
 }
 
 #locations {
     font-family: sans-serif;
     text-transform: uppercase;
     font-size: 13px;
+    line-height: 20px;
     z-index: 1000;
-    padding: 4px;
+    padding: 8px;
+    margin: 0px;
     width: 264px;
     display: none;
+}
+
+#locations a {
+    text-transform: none;
+    text-decoration: none;
 }
 
 #scenespane {
@@ -253,7 +276,6 @@ hr {
 .scene {
     cursor: pointer;
     color: blue;
-    text-decoration: underline;
     display: inline-block;
     margin: 2px;
     overflow: scroll;
@@ -263,14 +285,19 @@ hr {
 /* other buttons and controls */
 
 button {
-    background-color: #36383e;
+    background-color: #26282e;
     box-shadow: inset 0 1px 1px rgba(255,255,255,.06);
     color: #eefafa;
-     margin: 0 .4em;
+    margin: 0 .4em;
     border: 1px solid #1a1c1f;
     border-radius: 3px;
     padding: .8em .75em;
+}
 
+button:hover {
+    background-color: #36383e;
+    color: #fffe47;
+    cursor: pointer;
 }
 
 #scale {

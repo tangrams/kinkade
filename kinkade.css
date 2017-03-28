@@ -212,14 +212,16 @@ hr {
     padding: 0; 
 }
 
-#examples {
-    font-family: sans-serif;
-    text-transform: uppercase;
-    font-size: 13px;
-    z-index: 1000;
-    float: right;
-    padding: 8px;
+#help {
     width: 264px;
+    padding: 8px;
+    display: none;
+}
+
+#examples {
+    text-transform: uppercase;
+    width: 264px;
+    padding: 8px;
     display: none;
 }
 

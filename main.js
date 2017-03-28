@@ -492,7 +492,7 @@ function togglePane(which, state) {
     } else {
         document.getElementById(which).style.display = document.getElementById(which).style.display != 'block' ? 'block' : 'none';
     }
-    var panes = ["locations", "examples", "scenespane"];
+    var panes = ["help", "locations", "examples", "scenespane"];
     for (x in panes) {
         if (panes[x] != which) {
             // console.log('panes[x]:', panes[x])

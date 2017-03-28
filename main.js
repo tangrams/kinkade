@@ -515,10 +515,56 @@ function sampleColors(img) {
         return console.error("Empty spheremap");
     }
     swatches = document.getElementsByClassName('swatch');
-    p.sort();
+    console.log(JSON.stringify(p));
+    p = sortColors(p);
+    console.log(JSON.stringify(p));
     for (var x = 0; x < p.length - 1; x++) {
         swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
     }
+}
+
+// sort colors by hue
+// http://runtime-era.blogspot.com/2011/11/grouping-html-hex-colors-by-hue-in.html
+function sortColors(colors) {
+    for (var c = 0; c < colors.length; c++) {
+        // Get the RGB values to calculate the Hue
+        var r = colors[c][0];
+        var g = colors[c][1];
+        var b = colors[c][2];
+
+        // Getting the Max and Min values for Chroma
+        var max = Math.max.apply(Math, [r,g,b]);
+        var min = Math.min.apply(Math, [r,g,b]);
+
+        // Variables for HSV value of hex color
+        var chr = max-min;
+        var hue = 0;
+        var val = max;
+        var sat = 0;
+
+        if (val > 0) {
+            // Calculate Saturation only if Value isn't 0
+            sat = chr/val;
+            if (sat > 0) {
+                if (r == max) {
+                    hue = 60*(((g-min)-(b-min))/chr);
+                    if (hue < 0) {hue += 360;}
+                } else if (g == max) {
+                    hue = 120+60*(((b-min)-(r-min))/chr);
+                } else if (b == max) {
+                    hue = 240+60*(((r-min)-(g-min))/chr);
+                }
+            }
+        }
+
+        // Modifies existing objects by adding HSV values
+        colors[c].hue = hue;
+        colors[c].sat = sat;
+        colors[c].val = val;
+    }
+
+    // Sort by Hue
+    return colors.sort(function(a,b){return a.hue - b.hue;});
 }
 
 function loadSwatches() {

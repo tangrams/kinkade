@@ -359,4 +359,22 @@ input[type=checkbox] {
     position: absolute;
     right: 0;
     top: 0;
+    margin: 0;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    line-height: 10px;
+    background-color: #c00;
+    cursor: pointer;
+    z-index: 1000;
+    outline: 0;
+}
+.deletescene-button:hover {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border: 2px solid white;
+}
+.deletescene-button:focus {
+    border: 2px solid #80b8f4;
 }

@@ -515,9 +515,7 @@ function sampleColors(img) {
         return console.error("Empty spheremap");
     }
     swatches = document.getElementsByClassName('swatch');
-    console.log(JSON.stringify(p));
     p = sortColors(p);
-    console.log(JSON.stringify(p));
     for (var x = 0; x < p.length - 1; x++) {
         swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
     }

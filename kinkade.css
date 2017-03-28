@@ -333,6 +333,15 @@ input[type=checkbox] {
     display:inline-block;
     width: 98%;
 }
+.rewindtick {
+    display: inline-block;
+    position: absolute;
+    height: 20px;
+    width: 3px;
+    background-color: grey;
+    z-index: -1;
+    left: 12px;
+}
 #snapshot {
     margin-left: 25px;
 }

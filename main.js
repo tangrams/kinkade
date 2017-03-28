@@ -287,13 +287,25 @@ function resetBlur() {
 
 function updateRewindSlider() {
     if (undos.length > 1) {
-        document.getElementById('rewind').disabled = false;
-        percentWidth = (100. / Math.max(undos.length - 1, 1)) * .93;
-        percentWidth = percentWidth < 2 ? 2 + (percentWidth % 1)/2 : percentWidth;
-        rule = "#rewindwrapper { background-position: left; background-image: url('line.png'); background-size: "+percentWidth + "% 100%; background-position: top 0px left 10px; }";
-        document.styleSheets[3].deleteRule(0);
-        document.styleSheets[3].insertRule(rule, 0);
-
+        if (undos.length < 50) {
+            document.getElementById('rewind').disabled = false;
+            percentWidth = (100. / Math.max(undos.length - 1, 1));
+            percentWidth = percentWidth < 2 ? 2 + (percentWidth % 1)/2 : percentWidth;
+            var ticks = document.getElementById("ticks");
+            // clear ticks
+            ticks.innerHTML = "";
+            for (var i = 0; i < undos.length; i++) {
+                // make tick
+                var tick = document.createElement("div");
+                ticks.appendChild(tick);
+                tick.setAttribute("class", "rewindtick");
+                // keep ticks between 4.5% and 92.3%
+                var left = i * percentWidth * .878 + 4.5;
+                left = Math.min(left, 92.3);
+                // set tick position
+                tick.setAttribute("style", "left:"+left+"%");
+            }
+        }
         document.getElementById('rewind').max = undos.length - 1;
         document.getElementById('rewind').value = undos.length - 1;
     }

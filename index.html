@@ -67,7 +67,10 @@
         <button disabled="true" id="snapshot" onclick="saveCanvas()">Snapshot webcam</button>
     </div>
     Rewind:<br>
-    <div id="rewindwrapper" class="rewindwrapper"><input disabled type="range" id="rewind" class="slider" min="0" max="1" value="1" step="1" oninput="rewind(this.value)"></div><br>
+    <div id="rewindwrapper" class="rewindwrapper">
+    <div id="ticks"></div>
+    <input disabled type="range" id="rewind" class="slider" min="0" max="1" value="1" step="1" oninput="rewind(this.value)">
+    </div>
     <hr>
     PRESETS:
     <button class="kbutton" onclick="togglePane('examples')">Examples</button>
@@ -83,8 +86,8 @@
     <hr>
     <div id="loginname">Nobody logged in</div><button id="login" class="kbutton" onclick="mzUserSignin.openSignInWindow()">SIGN IN</button>
     <div id="account-actions">
-    <button class="kbutton" onclick="togglePane('scenespane')">LOAD SCENE</button>
-    <button class="kbutton" onclick="togglePane('scenespane', true);saveScene();">SAVE SCENE</button>
+    <button class="kbutton" onclick="togglePane('scenespane')">LOAD</button>
+    <button class="kbutton" onclick="togglePane('scenespane', true);saveScene();">SAVE</button>
     <button id="logout" class="kbutton" onclick="logout()">SIGN OUT</button>
     <!-- <button class="kbutton" onclick="get('/api/scenes/'+user.id, 'json', clearScenes);">DELETE ALL</button> -->
     </div>

@@ -14,17 +14,17 @@ body {
 /* paint area */
 
 #kinkade {
-    font-family: sans-serif;
-    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
     font-size: 13px;
     position: absolute;
-    right: 6px;
+    right: -1px;
     z-index: 1000;
-    background: white;
     padding: 4px;
     width: 264px;
     display: block;
-    border: 1px solid black;
+    background-color: #26282e;
+    border: 1px solid #bbb;
+    color: #eee;
 }
 #kcanvas {
     position: absolute;
@@ -33,7 +33,7 @@ body {
     padding: 0;
     width: 256px;
     height: 256px;
-    border: 1px #000 solid
+    border: 1px solid #000
 }
 #canvaswrapper {
     height: 256px;
@@ -71,7 +71,7 @@ body {
 #swatches {
     width: 100%;
     height: 1em;
-    margin: 5px auto 0;
+    margin: 5px auto;
 }
 .swatch {
     width: 14.39%;
@@ -79,7 +79,13 @@ body {
     background-color: grey;
     margin: 0 2px;
     float: left;
-    border: 1px solid #ccc;
+    border: 1px solid grey;
+}
+
+#loadSwatches {
+    display: block;
+    position: relative;
+    margin: 0 auto;
 }
 
 /* brushes */
@@ -89,58 +95,42 @@ body {
     float: left;
     margin: 0 auto;
     text-align: center;
+    /*border: 2px solid gold;*/
 }
 
-.hitarea {
+.hitarea, .hitarea-selected {
     width: 50px;
     height: 45px;
     float: left;
     cursor: pointer;
     margin: 2px 6%;
 }
-.hitarea-fuzzy {
+.hitarea-fuzzy, .hitarea-fuzzy-selected {
     width: 50px;
     height: 43px;
     float: left;
     cursor: pointer;
     margin: 2px 6%;
-}
-.hitarea-selected {
-    width: 50px;
-    height: 43px;
-    float: left;
-    cursor: pointer;
-    margin: 2px 6%;
-    background-color: pink;
-}
-.hitarea-fuzzy-selected {
-    width: 50px;
-    height: 43px;
-    float: left;
-    cursor: pointer;
-    margin: 2px 6%;
-    background-color: pink;
 }
 .hitarea:hover > button {
-    background-color: red;
+    background-color: #eefafa;
 }
 .hitarea-fuzzy:hover > button {
-    background-color: red;
-    -moz-box-shadow: 0px 0px 18px 18px red;
-    -webkit-box-shadow: 0px 0px 18px 18px red;
-    box-shadow: 0px 0px 18px 18px red;
+    background-color: #eefafa;
+    -moz-box-shadow: 0px 0px 18px 18px #eefafa;
+    -webkit-box-shadow: 0px 0px 18px 18px #eefafa;
+    box-shadow: 0px 0px 18px 18px #eefafa;
 }
 
 .button-small {
     pointer-events: none;
-    -moz-box-shadow: 0px 0px 0px -50px #3dc21b;
-    -webkit-box-shadow: 0px 0px 0px -50px #3dc21b;
-    box-shadow: 0px 0px 0px -50px #3dc21b;
-    background-color:#44c767;
+    -moz-box-shadow: 0px 0px 0px -50px grey;
+    -webkit-box-shadow: 0px 0px 0px -50px grey;
+    box-shadow: 0px 0px 0px -50px grey;
+    background-color: grey;
     -moz-border-radius:7px;
     -webkit-border-radius:7px;
     border-radius:7px;
-    color:#ffffff;
     padding:7px 7px;
     border: none;
     margin: 14px auto;
@@ -148,14 +138,13 @@ body {
 
 .button-big {
     pointer-events: none;
-    -moz-box-shadow: 0px 0px 0px -50px #3dc21b;
-    -webkit-box-shadow: 0px 0px 0px -50px #3dc21b;
-    box-shadow: 0px 0px 0px -50px #3dc21b;
-    background-color:#44c767;
+    -moz-box-shadow: 0px 0px 0px -50px grey;
+    -webkit-box-shadow: 0px 0px 0px -50px grey;
+    box-shadow: 0px 0px 0px -50px grey;
+    background-color: grey;
     -moz-border-radius:16px;
     -webkit-border-radius:16px;
     border-radius:16px;
-    color:#ffffff;
     padding:16px 16px;
     border: none;
     margin: 5px auto;
@@ -163,69 +152,100 @@ body {
 
 .button-blurry {
     pointer-events: none;
-    -moz-box-shadow: 0px 0px 16px 16px #3dc21b;
-    -webkit-box-shadow: 0px 0px 16px 16px #3dc21b;
-    box-shadow: 0px 0px 16px 16px #3dc21b;
-    background-color:#44c767;
+    -moz-box-shadow: 0px 0px 16px 16px grey;
+    -webkit-box-shadow: 0px 0px 16px 16px grey;
+    box-shadow: 0px 0px 16px 16px grey;
+    background-color: grey;
     -moz-border-radius:16px;
     -webkit-border-radius:16px;
     border-radius:16px;
-    color:#ffffff;
     padding:1px 1px;
     border: none;
     margin: 0 auto;
     margin-top: 20px;
 }
 
+.hitarea-selected > button {
+    background-color: #eefafa;
+}
+.hitarea-fuzzy-selected > button {
+    background-color: #eefafa;
+    -moz-box-shadow: 0px 0px 18px 18px #eefafa;
+    -webkit-box-shadow: 0px 0px 18px 18px #eefafa;
+    box-shadow: 0px 0px 18px 18px #eefafa;
+}
+
+
 /* presets */
 
 #panes {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
     position: absolute;
-    right: 280px;
+    right: 272px;
     z-index: 1000;
+    background-color: #26282e;
+    color: #eefafa;
+    border: 1px solid #bbb;
+    float: right;
+    padding: 0px;
+    margin: 0px;
+    z-index: 1000;
+    line-height: 20px;
+}
+
+#panes a {
+    color: #eefafa;
+}
+
+#panes a:hover {
+    color: #fffe47;
+    text-decoration: underline;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    /*border-top: 1px solid #666;*/
+    margin: 1em 0;
+    padding: 0; 
+}
+
+#help {
+    width: 264px;
+    padding: 8px;
+    display: none;
 }
 
 #examples {
-    font-family: sans-serif;
     text-transform: uppercase;
-    font-size: 13px;
-    z-index: 1000;
-    float: right;
-    background: white;
-    padding: 4px;
     width: 264px;
+    padding: 8px;
     display: none;
-    border: 1px solid black;
 }
 
-#locations {
-    font-family: sans-serif;
-    text-transform: uppercase;
-    font-size: 13px;
-    z-index: 1000;
-    background: white;
-    padding: 4px;
-    width: 264px;
-    display: none;
-    border: 1px solid black;
+#examples a img {
 }
 
-#scenespane {
-    font-family: sans-serif;
-    text-transform: uppercase;
-    font-size: 13px;
-    z-index: 1000;
-    background: white;
-    padding: 4px;
-    width: 408px;
-    display: none;
-    border: 1px solid black;
-    max-height: 90%;
-    overflow: hidden;
+#examples img:hover {
+    outline: 2px solid #fffe47;
 }
 
 .example {
     width: 50px;
+}
+
+#locations {
+    text-transform: uppercase;
+    width: 264px;
+    padding: 8px;
+    display: none;
+}
+
+#locations a {
+    text-transform: none;
+    text-decoration: none;
 }
 
 .location {
@@ -234,44 +254,109 @@ body {
     text-decoration: underline;
 }
 
+#scenespane {
+    text-transform: uppercase;
+    padding: 8px;
+    width: 408px;
+    display: none;
+    max-height: 90%;
+    overflow: hidden;
+}
+
 #scenes {
     overflow: auto;
     height: 618px;
 }
+
 .scene {
     cursor: pointer;
     color: blue;
-    text-decoration: underline;
     display: inline-block;
     margin: 2px;
     overflow: scroll;
     position: relative;
 }
 
+.scene:hover {
+    /*background-color: #d66;*/
+}
+
 /* other buttons and controls */
+
+button {
+    background-color: #26282e;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.06);
+    color: #eefafa;
+    margin: 0 .4em;
+    border: 1px solid #1a1c1f;
+    border-radius: 3px;
+    padding: .8em .75em;
+}
+
+button:hover {
+    background-color: #36383e;
+    color: #fffe47;
+    cursor: pointer;
+}
+
+#scale {
+    color: #eefafa;
+    background-color: #444;
+    margin-left: 1em;
+    border: 1px solid #ccc;
+}
+
+input[type=range]:disabled {
+  opacity: .3;
+}
+
+#line_toggles {
+    width: 100%;
+    display:block;
+}
+
+input[type=checkbox] {
+  margin-left: .5em;
+  margin-right: 5px;
+}
 
 .slider {
     width: 98%;
 }
+
 #saveButton {
     font-size: 30px;
     float: right;
     clear: none;
 }
+
 .rewindwrapper {
     display:inline-block;
     width: 98%;
 }
+
+.rewindtick {
+    display: inline-block;
+    position: absolute;
+    height: 20px;
+    width: 3px;
+    background-color: grey;
+    z-index: -1;
+    left: 12px;
+}
 #snapshot {
     margin-left: 25px;
 }
+
 #flipspan {
     margin-left: 25px;
     color: #aaa;
 }
+
 #webcamdiv {
     display: none;
 }
+
 .kbutton#recordvideo {
     display: none;
 }
@@ -302,9 +387,16 @@ body {
     width: 72px;
     height: 72px;
 }
+
 .screenshot-thumbnail {
     height: 72px;
 }
+
+.clearfix {
+    padding: 0;
+    margin: 0;
+}
+
 .clearfix::after {
     content: "";
     clear: both;
@@ -315,4 +407,22 @@ body {
     position: absolute;
     right: 0;
     top: 0;
+    margin: 0;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    line-height: 10px;
+    background-color: #c00;
+    cursor: pointer;
+    z-index: 1000;
+    outline: 0;
+}
+.deletescene-button:hover {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border: 2px solid white;
+}
+.deletescene-button:focus {
+    border: 2px solid #80b8f4;
 }

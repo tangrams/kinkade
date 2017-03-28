@@ -123,9 +123,11 @@ function switchFuzzyBrush(which) {
     document.getElementById('brush2').className = "hitarea";
 }
 function updateScale(val) {
+    if (typeof scene.styles.hillshade === 'undefined') return false;
     scene.styles.hillshade.shaders.uniforms.u_scale = parseFloat(1/(Math.pow(2,val)-1));
     scene.requestRedraw();
     document.getElementById("scale").value = val;
+    document.getElementById("scale_slider").value = val;
 }
 function updateBlur(val) {
     if (document.getElementById('webcam').checked) {
@@ -285,13 +287,25 @@ function resetBlur() {
 
 function updateRewindSlider() {
     if (undos.length > 1) {
-        document.getElementById('rewind').disabled = false;
-        percentWidth = (100. / Math.max(undos.length - 1, 1)) * .93;
-        percentWidth = percentWidth < 2 ? 2 + (percentWidth % 1)/2 : percentWidth;
-        rule = "#rewindwrapper { background-position: left; background-image: url('line.png'); background-size: "+percentWidth + "% 100%; background-position: top 0px left 10px; }";
-        document.styleSheets[3].deleteRule(0);
-        document.styleSheets[3].insertRule(rule, 0);
-
+        if (undos.length < 50) {
+            document.getElementById('rewind').disabled = false;
+            percentWidth = (100. / Math.max(undos.length - 1, 1));
+            percentWidth = percentWidth < 2 ? 2 + (percentWidth % 1)/2 : percentWidth;
+            var ticks = document.getElementById("ticks");
+            // clear ticks
+            ticks.innerHTML = "";
+            for (var i = 0; i < undos.length; i++) {
+                // make tick
+                var tick = document.createElement("div");
+                ticks.appendChild(tick);
+                tick.setAttribute("class", "rewindtick");
+                // keep ticks between 4.5% and 92.3%
+                var left = i * percentWidth * .878 + 4.5;
+                left = Math.min(left, 92.3);
+                // set tick position
+                tick.setAttribute("style", "left:"+left+"%");
+            }
+        }
         document.getElementById('rewind').max = undos.length - 1;
         document.getElementById('rewind').value = undos.length - 1;
     }
@@ -299,6 +313,7 @@ function updateRewindSlider() {
 
 function KeyPress(e) {
     var evtobj = window.event? event : e;
+    var element = document.activeElement;
     // if ctrl-z, undo
     if (evtobj.which == 90 && evtobj.ctrlKey && !evtobj.shiftKey ||
         evtobj.which == 90 && evtobj.metaKey && !evtobj.shiftKey ) {
@@ -309,17 +324,32 @@ function KeyPress(e) {
         evtobj.which == 90 && evtobj.metaKey && evtobj.shiftKey ) {
         rewindSlider.value = parseInt(rewindSlider.value) + 1;
         rewind(rewindSlider.value);
+    // if esc and focused on scale
+    } else if (evtobj.which == 27 && element == document.getElementById('scale')) {
+        element.blur();
     // if esc
     } else if (evtobj.which == 27) {
         hidePicker();
     // listen for "h"
-    } else if (evtobj.which == 72 && document.activeElement != document.getElementsByClassName('leaflet-pelias-input')[0]) {
+    } else if (evtobj.which == 72 && element != document.getElementsByClassName('leaflet-pelias-input')[0]) {
         // toggle UI
         var display = map._controlContainer.style.display;
         map._controlContainer.style.display = (display === "none") ? "block" : "none";
         display = kinkade.style.display;
         kinkade.style.display = (display === "none") ? "block" : "none";
         document.getElementById('panes').style.display = (display === "none") ? "block" : "none";
+    }
+}
+
+function KeyRelease(e) {
+    var evtobj = window.event? event : e;
+    var element = document.activeElement;
+    // listen for "return"
+    if (evtobj.which == 13 && element == document.getElementById('scale')) {
+        element.select();
+    // update scale
+    } else if (element == document.getElementById('scale')) {
+        updateScale(element.value);
     }
 }
 
@@ -462,7 +492,7 @@ function togglePane(which, state) {
     } else {
         document.getElementById(which).style.display = document.getElementById(which).style.display != 'block' ? 'block' : 'none';
     }
-    var panes = ["locations", "examples", "scenespane"];
+    var panes = ["help", "locations", "examples", "scenespane"];
     for (x in panes) {
         if (panes[x] != which) {
             // console.log('panes[x]:', panes[x])
@@ -480,13 +510,78 @@ function swapimg(div) {
 }
 
 function drawImgToCanvas(img) {
-    ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    if (typeof img.src === 'undefined') return;
+    try {
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    } catch(e) {
+        return console.error('draw fail:', e);
+    }
+    sampleColors(img);
+}
+
+// sample image and put colors in swatches
+function sampleColors(img) {
     var colorThief = new ColorThief();
     p = colorThief.getPalette(img, 8);
-    swatches = document.getElementById('swatches').getElementsByClassName('swatch');
+    if (p === null) {
+        return console.error("Empty spheremap");
+    }
+    swatches = document.getElementsByClassName('swatch');
+    p = sortColors(p);
     for (var x = 0; x < p.length - 1; x++) {
         swatches[x].style.backgroundColor = 'rgb('+p[x][0]+', '+p[x][1]+', '+p[x][2]+')';
-    }        
+    }
+}
+
+// sort colors by hue
+// http://runtime-era.blogspot.com/2011/11/grouping-html-hex-colors-by-hue-in.html
+function sortColors(colors) {
+    for (var c = 0; c < colors.length; c++) {
+        // Get the RGB values to calculate the Hue
+        var r = colors[c][0];
+        var g = colors[c][1];
+        var b = colors[c][2];
+
+        // Getting the Max and Min values for Chroma
+        var max = Math.max.apply(Math, [r,g,b]);
+        var min = Math.min.apply(Math, [r,g,b]);
+
+        // Variables for HSV value of hex color
+        var chr = max-min;
+        var hue = 0;
+        var val = max;
+        var sat = 0;
+
+        if (val > 0) {
+            // Calculate Saturation only if Value isn't 0
+            sat = chr/val;
+            if (sat > 0) {
+                if (r == max) {
+                    hue = 60*(((g-min)-(b-min))/chr);
+                    if (hue < 0) {hue += 360;}
+                } else if (g == max) {
+                    hue = 120+60*(((b-min)-(r-min))/chr);
+                } else if (b == max) {
+                    hue = 240+60*(((r-min)-(g-min))/chr);
+                }
+            }
+        }
+
+        // Modifies existing objects by adding HSV values
+        colors[c].hue = hue;
+        colors[c].sat = sat;
+        colors[c].val = val;
+    }
+
+    // Sort by Hue
+    return colors.sort(function(a,b){return a.hue - b.hue;});
+}
+
+function loadSwatches() {
+    var img = new Image();
+    img.id = "pic"
+    img.src = document.getElementById("kcanvas").toDataURL();
+    sampleColors(img);
 }
 
 window.onload = function () {
@@ -504,6 +599,10 @@ window.onload = function () {
         drawing = false;
         scene.loadTextures();
         saveCanvas();
+        loadSwatches();
+    });
+    document.getElementById("scale").addEventListener("focus", function(){
+        this.select();
     });
 
     // drawing function
@@ -538,6 +637,7 @@ window.onload = function () {
     document.getElementById("brush3").click();
     // watch for keys
     document.onkeydown = KeyPress;
+    document.onkeyup = KeyRelease;
     // load dropzone
     window.myDropzone = new Dropzone("div#canvaswrapper", { url: "#"});
     // fill canvas with white
@@ -550,4 +650,6 @@ window.onload = function () {
         showLoginButton();
         checkUser();
     }
+
+    togglePane('scenespane', true);
 }

@@ -123,6 +123,7 @@ function switchFuzzyBrush(which) {
     document.getElementById('brush2').className = "hitarea";
 }
 function updateScale(val) {
+    val = parseFloat(val);
     if (typeof scene.styles.hillshade === 'undefined') return false;
     scene.styles.hillshade.shaders.uniforms.u_scale = parseFloat(1/(Math.pow(2,val)-1));
     scene.requestRedraw();

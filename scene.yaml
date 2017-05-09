@@ -38,13 +38,12 @@ styles:
             blocks:
                 global: |
                     // Simplified view-independent environment map
-                    vec4 applyEnvmap (in sampler2D _tex, in vec3 _normal) {
-                        return texture2D(_tex, .5*(_normal.xy + 1.));
+                    vec4 applyEnvmap (in sampler2D _tex, in vec3 _normal, in float scale) {
+                        normal.z *= scale;
+                        return texture2D(_tex, .5*(normalize(_normal).xy + 1.));
                     }
                 color: |
-                    normal.z *= u_scale;
-                    normal = normalize(normal);
-                    color = applyEnvmap(u_envmap, normal);
+                    color = applyEnvmap(u_envmap, normal, u_scale);
     dots:
         base: lines
         dash: [1, 2]

@@ -260,7 +260,6 @@ function draw(x,y,w,r,g,b,a){
 };
 
 function saveCanvas(overwrite, callback) {
-
     // save current state to undo history
     canvas.toBlob(function(blob, overwrite) {
         lastCanvas.src = URL.createObjectURL(blob);
@@ -604,7 +603,7 @@ window.onload = function () {
     canvas.onselectend = function(){ console.log('done'); };
     canvas.addEventListener("mousedown", function(e){
         resetFX();
-        useWebcam(false);
+        if (document.getElementById("webcam").checked) useWebcam(false);
         drawing = true;
         lastX = e.offsetX;
         lastY = e.offsetY;

@@ -598,6 +598,10 @@ function loadSwatches() {
 }
 
 window.onload = function () {
+    if (location.hostname !== "localhost" && location.hostname !== "127.0.0.1" && location.protocol !== 'https:')
+        {
+         location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+        }
     // set events
     canvas.onselectstart = function(){ return false; };
     canvas.onselectend = function(){ console.log('done'); };

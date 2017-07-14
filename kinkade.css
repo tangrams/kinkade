@@ -15,7 +15,7 @@ hr {
     display: block;
     height: 1px;
     border: 0;
-    /*border-top: 1px solid #666;*/
+    background-color: #666;
     margin: 1em 0;
     padding: 0; 
 }
@@ -288,7 +288,7 @@ h3 {
 /* other buttons and controls */
 
 button {
-    background-color: #26282e;
+    background-color: #343639;
     box-shadow: inset 0 1px 1px rgba(255,255,255,.06);
     color: #eefafa;
     margin: 0 .4em;
@@ -349,7 +349,12 @@ input[type=checkbox] {
     left: 12px;
 }
 #snapshot {
-    margin-left: 25px;
+    color: #aaa;
+    margin-left: 20px;
+}
+
+#flipwebcam {
+    color: #333;
 }
 
 #flipspan {
@@ -358,7 +363,7 @@ input[type=checkbox] {
 }
 
 #webcamdiv {
-    display: none;
+    /*display: none;*/
 }
 
 .kbutton#recordvideo {

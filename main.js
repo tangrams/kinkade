@@ -406,7 +406,7 @@ function exportCanvas() {
     saveCanvas(false, function() {
         window.open(
           lastCanvas.src,
-          '_blank' // <- This is what makes it open in a new window.
+          '_blank' // open in a new window/tab
         );
     });
 }

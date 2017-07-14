@@ -422,17 +422,23 @@ function useWebcam(start) {
 
         Webcam.attach( '#kvideo' );
         scene.updateConfig();
-        document.getElementById("flipspan").style.color = '#000';
+        document.getElementById("flipspan").style.color = '#eee';
+        document.getElementById("snapshot").style.color = '#eee';
         document.getElementById("flipwebcam").disabled = false;
         document.getElementById("snapshot").disabled = false;
+        document.getElementById("blur").disabled = true;
+        document.getElementById("rotate").disabled = true;
     }
     else {
         document.getElementById("webcam").checked = false;
         saveCanvas();
         Webcam.reset();
         document.getElementById("flipspan").style.color = '#aaa';
+        document.getElementById("snapshot").style.color = '#aaa';
         document.getElementById("flipwebcam").disabled = true;
         document.getElementById("snapshot").disabled = true;
+        document.getElementById("blur").disabled = false;
+        document.getElementById("rotate").disabled = false;
     }
 }
 
@@ -450,7 +456,13 @@ function preUpdate (will_render) {
         // video width = 358, canvas width = 256, difference = 51
         // half canvas width + difference = 179
         ctx.drawImage(document.querySelector('#kvideo > video'), -179, 0);
-        if (typeof scene != 'undefined') scene.loadTextures();
+        if (typeof scene != 'undefined') {
+            try {
+                scene.loadTextures();
+            } catch(e) {
+                console.log(e);
+            }
+        }
     }
 }
 
@@ -591,6 +603,7 @@ window.onload = function () {
     canvas.onselectend = function(){ console.log('done'); };
     canvas.addEventListener("mousedown", function(e){
         resetFX();
+        useWebcam(false);
         drawing = true;
         lastX = e.offsetX;
         lastY = e.offsetY;

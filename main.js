@@ -529,12 +529,13 @@ function drawImgToCanvas(img) {
     } catch(e) {
         return console.error('draw fail:', e);
     }
-    sampleColors(img);
+    sampleColors(canvas);
 }
 
 // sample image and put colors in swatches
 function sampleColors(img) {
     var colorThief = new ColorThief();
+    // debugger
     p = colorThief.getPalette(img, 8);
     if (p === null) {
         return console.error("Empty spheremap");
@@ -594,7 +595,7 @@ function loadSwatches() {
     var img = new Image();
     img.id = "pic"
     img.src = document.getElementById("kcanvas").toDataURL();
-    sampleColors(img);
+    sampleColors(document.getElementById("kcanvas"));
 }
 
 window.onload = function () {

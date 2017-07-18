@@ -38,6 +38,8 @@ h3 {
     background-color: #26282e;
     border: 1px solid #bbb;
     color: #eee;
+    overflow: scroll;
+    max-height: 97%;
 }
 #kcanvas {
     position: absolute;

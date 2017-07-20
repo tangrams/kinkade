@@ -40,6 +40,27 @@ map = (function () {
     var scene = layer.scene;
     window.scene = scene;
 
+    function readTextFile(file)
+    {
+        var rawFile = new XMLHttpRequest();
+        rawFile.open("GET", file, false);
+        rawFile.onreadystatechange = function ()
+        {
+            if(rawFile.readyState === 4)
+            {
+                if(rawFile.status === 200 || rawFile.status == 0)
+                {
+                    var allText = rawFile.responseText;
+                    console.log('yaml:', allText);
+                    return allText;
+                }
+            }
+        }
+        rawFile.send(null);
+    }
+    window.scenefile = readTextFile('scene.yaml');
+    console.log('window.scenefile:', window.scenefile);
+
     // setView expects format ([lat, long], zoom)
     map.setView(map_start_location.slice(0, 3), map_start_location[2]);
     // use Leaflet to update hash value in url with latlong

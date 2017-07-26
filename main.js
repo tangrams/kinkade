@@ -40,27 +40,6 @@ map = (function () {
     var scene = layer.scene;
     window.scene = scene;
 
-    function readTextFile(file)
-    {
-        var rawFile = new XMLHttpRequest();
-        rawFile.open("GET", file, false);
-        rawFile.onreadystatechange = function ()
-        {
-            if(rawFile.readyState === 4)
-            {
-                if(rawFile.status === 200 || rawFile.status == 0)
-                {
-                    var allText = rawFile.responseText;
-                    console.log('yaml:', allText);
-                    return allText;
-                }
-            }
-        }
-        rawFile.send(null);
-    }
-    window.scenefile = readTextFile('scene.yaml');
-    console.log('window.scenefile:', window.scenefile);
-
     // setView expects format ([lat, long], zoom)
     map.setView(map_start_location.slice(0, 3), map_start_location[2]);
     // use Leaflet to update hash value in url with latlong
@@ -75,6 +54,33 @@ map = (function () {
         });
         // add Tangram layer to Leaflet map
         layer.addTo(map);
+
+
+        function readTextFile(file, callback, callbackArg)
+        {
+            var rawFile = new XMLHttpRequest();
+            rawFile.open("GET", file, false);
+            rawFile.onreadystatechange = function ()
+            {
+                if(rawFile.readyState === 4)
+                {
+                    if(rawFile.status === 200 || rawFile.status == 0)
+                    {
+                        var response = rawFile.responseText;
+                        callback(response, callbackArg);
+                    }
+                }
+            }
+            rawFile.send(null);
+        }
+
+        // load the scene file into a global variable for un-parsed export later
+        readTextFile('scene.yaml', setVariable, 'scenefile');
+        // make a separate callback to trigger when the file comes back
+        function setVariable(value, varname) {
+            window[varname] = value;
+        }
+
     });
 
     return map;
@@ -167,17 +173,20 @@ function updateBlur(val) {
 }
 function updateLines(val) {
     scene.config.global.lines = val;
-    scene.updateConfig();
+    updateConfig();
 }
 function updateLabels(val) {
     scene.config.global.labels = val;
-    scene.updateConfig();
+    updateConfig();
 }
 function updateOcean(val) {
     scene.config.global.water = val;
-    scene.updateConfig();
+    updateConfig();
 }
-
+function updateConfig() {
+    scene.updateConfig();
+    updateScale(document.getElementById("scale").value);
+}
 function updateRotate(val) {
     if (document.getElementById('webcam').checked) useWebcam(false);
     val *= -1;
@@ -519,7 +528,6 @@ if (typeof window.MediaRecorder == 'function') {
 };
 
 function togglePane(which, state) {
-    // console.log('typeof state:', typeof state)
     if (typeof state != 'undefined') {
         document.getElementById(which).style.display = state == true? 'block' : 'none';
     } else {
@@ -528,7 +536,6 @@ function togglePane(which, state) {
     var panes = ["help", "locations", "examples", "scenespane"];
     for (x in panes) {
         if (panes[x] != which) {
-            // console.log('panes[x]:', panes[x])
             document.getElementById(panes[x]).style.display = 'none';
         }
     }

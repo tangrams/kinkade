@@ -50,11 +50,13 @@ map = (function () {
     window.addEventListener('load', function () {
         // Scene initialized
         layer.on('init', function() {
-            // 
+            // injections
+            scene.config.sources.mapzen.url_params.api_key = "mapzen-tGBL5tg";
+            scene.config.sources.normals.url_params.api_key = "mapzen-tGBL5tg";
+            scene.updateConfig();
         });
         // add Tangram layer to Leaflet map
         layer.addTo(map);
-
 
         function readTextFile(file, callback, callbackArg)
         {

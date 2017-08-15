@@ -85,8 +85,9 @@
 
     <div id="loginsection" style="display:none">
     <hr>
-    <div id="loginname">Nobody logged in</div><button id="login" class="kbutton" onclick="mzUserSignin.openSignInWindow()">Sign In</button>
+    <div id="loginname">Nobody logged in!</div><button id="login" class="kbutton" onclick="mzUserSignin.openSignInWindow()">Sign In</button>
     <div id="account-actions">
+    <a href="https://mapzen.com/developers/" target="_blank">Mapzen API key</a>: <input id="apikey" value="mapzen-XXXXXXX" size=20>
     <button class="kbutton" onclick="togglePane('scenespane')">Load</button>
     <button class="kbutton" onclick="togglePane('scenespane', true);saveScene();">Save</button>
     <button id="logout" class="kbutton" onclick="logout()">Sign Out</button>
@@ -111,10 +112,10 @@
     <h3>To use</h3>
 <p>Draw in the pane on the right to paint a spheremap, which will color the interactive map on the left.</p>
 
-<p>Sign in with your <a href="https://mapzen.com/developers">Mapzen account</a> to save scenes, and then open and edit them in <a href="https://mapzen.com/tangram/play">Tangram Play</a>.</p>
+<p>Sign in with your <a href="https://mapzen.com/developers">Mapzen account</a> and enter an API key to save scenes, and then open and edit them in <a href="https://mapzen.com/tangram/play">Tangram Play</a>.</p>
 
 <h3>How it works</h3>
-This tool uses a technique called sphere mapping. An image (the "spheremap") is used to color 3D geometry, by treating the image as though it is wrapped around a sphere. Then, faces of the 3D object are assigned the same color as parallel faces on the imaginary sphere. For instance, the color on the left side of the spheremap will be the color of 3D faces which point left.</p>
+This tool uses a technique called <a href="https://en.wikipedia.org/wiki/Sphere_mapping">sphere mapping</a>. An image (the "spheremap") is used to color 3D geometry, by treating the image as though it is wrapped around a sphere. Then, faces of the 3D object are assigned the same color as parallel faces on the imaginary sphere. For instance, the color on the left side of the spheremap will be the color of 3D faces which point left.</p>
 
 <p>Using the <a href="https://mapzen.com/products/tangram">Tangram</a> map library, the <a href="https://mapzen.com/documentation/terrain-tiles/">Mapzen terrain tiles</a> are treated as though they are real 3D objects, and the spheremap technique can be applied to them too.
 

@@ -16,7 +16,7 @@ hr {
     height: 1px;
     border: 0;
     background-color: #666;
-    margin: .8em 0;
+    margin: .5em 0;
     padding: 0; 
 }
 
@@ -329,7 +329,19 @@ input[type=checkbox] {
 .slider {
     width: 98%;
 }
-
+.slider50 {
+    width: 50%;
+    float: right;
+}
+.slider75 {
+    width: 75%;
+    /*float: right;*/
+}
+.span25 {
+	float: left;
+	width: 23%;
+	display: inline-block;
+}
 #saveButton {
     font-size: 30px;
     float: right;

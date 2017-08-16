@@ -52,14 +52,12 @@
     <input type="checkbox" id="ocean" checked onchange="updateOcean(this.checked)">Water
     </div>
     <hr>
-    Terrain Scale:<input id="scale" value="2" size=5 onchange="updateScale(this.value)"><br>
-    <input id="scale_slider" class="slider" type="range" min="0.01" max="5" value="2" step=".001" oninput="updateScale(this.value)">
+    Terrain Scale:<input id="scale" value="2" size=3 onchange="updateScale(this.value)">
+    <input id="scale_slider" class="slider50" type="range" min="0.01" max="5" value="2" step=".001" oninput="updateScale(this.value)">
     <br>
-    Blur:<br>
-    <input class="slider" type="range" id="blur" min="0" max="100" value="0" step=".01" oninput="updateBlur(this.value)">
+    <span class="span25">Blur:</span><input class="slider75" type="range" id="blur" min="0" max="100" value="0" step=".01" oninput="updateBlur(this.value)">
     <br>
-    Rotate:<br>
-    <input class="slider" type="range" id="rotate" min="-360" max="360" value="0" step="1" oninput="updateRotate(this.value)" onChange="resetRotate()">
+    <span class="span25">Rotate:</span><input class="slider75" type="range" id="rotate" min="-360" max="360" value="0" step="1" oninput="updateRotate(this.value)" onChange="resetRotate()">
     <hr width="256px">
     <div id="webcamdiv">
     <input type="checkbox" id="webcam" onchange="useWebcam(this.checked)">Webcam 

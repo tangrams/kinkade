@@ -40,6 +40,30 @@ map = (function () {
     var scene = layer.scene;
     window.scene = scene;
 
+
+    // useful events to subscribe to
+    layer.scene.subscribe({
+        load: function (msg) {
+            // scene was loaded
+            injectAPIKey(msg.config);
+        }
+    });
+
+    function injectAPIKey(config) {
+        if (config.global && config.global.sdk_mapzen_api_key) {
+            config.global.sdk_mapzen_api_key = 'mapzen-tGBL5tg';
+        }
+        else {
+            for (var name in config.sources) {
+                var source = config.sources[name];
+                if (source.url.search('mapzen.com') > -1) {
+                    source.url_params = source.url_params || {};
+                    source.url_params.api_key = 'mapzen-tGBL5tg';
+                }
+            }
+        }
+    }
+
     // setView expects format ([lat, long], zoom)
     map.setView(map_start_location.slice(0, 3), map_start_location[2]);
     // use Leaflet to update hash value in url with latlong

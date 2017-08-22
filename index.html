@@ -15,7 +15,10 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
     <link rel="stylesheet" href="kinkade.css" />
+    <link rel="stylesheet" href="lib/scarab/scarab.css" />
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <script src="lib/jscolor.min.js"></script>
   </head>
 
   <body>
@@ -23,7 +26,6 @@
 <!-- BEGIN UI -->
 <div id="kinkade" onmouseover="hidePicker();">
 
-    <script src="lib/jscolor.min.js"></script>
 
     <input id="picker" class="jscolor" value="ab5127" onchange="updateColorHex(this.value);"><br>
     <div id="canvaswrapper" height="256">
@@ -231,9 +233,16 @@ This tool uses a technique called <a href="https://en.wikipedia.org/wiki/Sphere_
     <script src="main.js"></script>
 
     <!-- Mapzen map UI -->
-    <script src='//mapzen.com/common/ui/mapzen-ui.min.js'></script>
+    <!-- <script src='//mapzen.com/common/ui/mapzen-ui.min.js'></script> -->
+    <script src='lib/scarab/scarab.js'></script>
     <script>
-      MPZN.bug();
+    var scarab = new MapzenScarab({
+      name: 'Tangram Kinkade',
+      link: 'https://mapzen.com/tangram/kinkade',
+      tweet: 'Kinkade spheremap painter from @mapzen',
+      repo: 'https://github.com/tangrams/kinkade/',
+      description: 'A terrain map made with Tangram JS from Mapzen.'
+    });
     </script>
     <!-- rewind wrapper style placeholder -->
     <style>

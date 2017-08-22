@@ -1,0 +1,183 @@
+@charset 'utf-8';
+
+/* pop up box for info button */
+
+.mz-bug-description {
+  display: none;
+  box-sizing: border-box;
+
+  background-color: rgba(255,255,255,0.90);
+  box-shadow: 0 0 10px 1px rgba(0,0,0,0.20);
+  text-align: center;
+  position: absolute;
+  top: 75px;
+  left: 50%;
+  z-index: 900;
+
+  padding: 10px;
+  border-radius: 5px;
+  border: solid 0px black;
+}
+
+/* end of pop up box styling */
+
+.mz-bug-container,
+.mz-bug-container * {
+  box-sizing: content-box;
+}
+
+.mz-bug-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 48px;
+  background-color: rgba(255,255,255,0.90);
+  box-shadow: 0 0 10px 1px rgba(0,0,0,0.20);
+  overflow: hidden;
+  z-index: 900;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.mz-bug-icons {
+  float: left;
+  height: 100%;
+
+  -webkit-transition: box-shadow 160ms ease-in-out, background-color 160ms linear;
+     -moz-transition: box-shadow 160ms ease-in-out, background-color 160ms linear;
+          transition: box-shadow 160ms ease-in-out, background-color 160ms linear;
+}
+
+.mz-bug-container a:focus {
+  outline: dotted 1px;
+  outline-offset: -1px;
+}
+
+.mz-bug-mapzen-link {
+  display: block;
+  width: 144px;
+}
+
+.mz-bug-mapzen-link:hover,
+.mz-bug-mapzen-link:active {
+  background: white;
+  box-shadow: inset 0 -4px 0 #635378;
+}
+
+.mz-bug-mapzen-logo {
+  background-image: url('images/logo.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 100%;
+  height: 100%;
+  margin-top: -1px;
+}
+
+@media only screen and (max-width: 400px) {
+  .mz-bug-mapzen-link {
+    width: 48px;
+  }
+  .mz-bug-mapzen-logo {
+    background-size: 144px;
+    margin-left: -3px;
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .mz-bug-mapzen-logo {
+    background-image: url('images/logo@2x.png');
+  }
+}
+
+.mz-bug-twitter-link {
+  width: 48px;
+  height: 48px;
+  border-left: 1px solid rgba(0,0,0,0.10);
+}
+
+.mz-bug-twitter-link:hover,
+.mz-bug-twitter-link:active {
+  background: white;
+  box-shadow: inset 0 -4px 0 #2aa9e0;
+}
+
+.mz-bug-twitter-logo {
+  background-image: url(data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2228%22%20height%3D%2228%22%20viewBox%3D%220%200%2028%2028%22%3E%3Cpath%20d%3D%22M24.253%208.756C24.69%2017.08%2018.297%2024.182%209.97%2024.62c-3.122.162-6.22-.646-8.86-2.32%202.702.18%205.375-.648%207.507-2.32-2.072-.248-3.818-1.662-4.49-3.64.802.13%201.62.077%202.4-.154-2.482-.466-4.312-2.586-4.412-5.11.688.276%201.426.408%202.168.387-2.135-1.65-2.73-4.62-1.394-6.965C5.574%207.816%209.54%209.84%2013.802%2010.07c-.842-2.738.694-5.64%203.434-6.48%202.018-.624%204.212.043%205.546%201.682%201.186-.213%202.318-.662%203.33-1.317-.386%201.256-1.248%202.312-2.4%202.942%201.048-.106%202.07-.394%203.02-.85-.458%201.182-1.343%202.15-2.48%202.71z%22%20fill%3D%22%232aa9e0%22%2F%3E%3C%2Fsvg%3E);
+  background-position: center center;
+  background-size: 50%;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  margin-top: -1px;
+}
+
+.mz-bug-facebook-link {
+  width: 48px;
+  height: 48px;
+  border-left: 1px solid rgba(0,0,0,0.10);
+}
+
+.mz-bug-facebook-link:hover,
+.mz-bug-facebook-link:active {
+  background: white;
+  box-shadow: inset 0 -4px 0 #3b579d;
+}
+
+.mz-bug-facebook-logo {
+  background-image: url(data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2228%22%20height%3D%2228%22%20viewBox%3D%220%200%2028%2028%22%3E%3Cpath%20d%3D%22M27.825%204.783c0-2.427-2.182-4.608-4.608-4.608H4.783C2.36.175.175%202.357.175%204.783v18.434c0%202.427%202.18%204.608%204.608%204.608H14V17.38h-3.38v-4.61H14v-1.794c0-3.09%202.335-5.885%205.192-5.885h3.718V9.7h-3.726c-.408%200-.884.49-.884%201.235v1.836h4.61v4.61H18.3v10.445h4.916c2.422%200%204.608-2.188%204.608-4.608V4.783z%22%20fill%3D%22%233b579d%22%2F%3E%3C%2Fsvg%3E);
+  background-position: center center;
+  background-size: 40%;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  margin-top: -1px;
+}
+
+.mz-bug-github-link {
+  width: 48px;
+  height: 48px;
+  border-left: 1px solid rgba(0,0,0,0.10);
+}
+
+.mz-bug-github-link:hover,
+.mz-bug-github-link:active {
+  background: white;
+  box-shadow: inset 0 -4px 0 #444;
+}
+
+.mz-bug-github-logo {
+  background-image: url(data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%221024%22%20width%3D%221024%22%20data-ember-extension%3D%221%22%3E%3Cpath%20d%3D%22M512%200C229.25%200%200%20229.25%200%20512c0%20226.25%20146.688%20418.125%20350.156%20485.812%2025.594%204.688%2034.938-11.125%2034.938-24.625%200-12.188-.47-52.562-.72-95.312C242%20908.812%20211.907%20817.5%20211.907%20817.5c-23.312-59.125-56.844-74.875-56.844-74.875-46.53-31.75%203.53-31.125%203.53-31.125%2051.406%203.562%2078.47%2052.75%2078.47%2052.75%2045.688%2078.25%20119.875%2055.625%20149%2042.5%204.654-33%2017.904-55.625%2032.5-68.375-113.656-12.937-233.218-56.875-233.218-253.063%200-55.938%2019.97-101.562%2052.656-137.406-5.22-13-22.844-65.094%205.062-135.562%200%200%2042.938-13.75%20140.812%2052.5%2040.812-11.406%2084.594-17.03%20128.125-17.22%2043.5.19%2087.31%205.876%20128.187%2017.282%2097.688-66.312%20140.688-52.5%20140.688-52.5%2028%2070.53%2010.375%20122.562%205.125%20135.5%2032.812%2035.844%2052.625%2081.47%2052.625%20137.406%200%20196.688-119.75%20240-233.812%20252.688%2018.438%2015.875%2034.75%2047%2034.75%2094.75%200%2068.438-.688%20123.625-.688%20140.5%200%2013.625%209.312%2029.562%2035.25%2024.562C877.438%20930%201024%20738.125%201024%20512%201024%20229.25%20794.75%200%20512%200z%22%20fill%3D%22%23272727%22%2F%3E%3C%2Fsvg%3E);
+  background-position: center center;
+  background-size: 45%;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  margin-top: -1px;
+  margin-left: -1px;
+}
+
+/* adding info logo and info link */
+
+.mz-bug-info {
+  width: 48px;
+  height: 48px;
+  border-left: 1px solid rgba(0,0,0,0.10);
+}
+
+.mz-bug-info-logo {
+  background-image: url(data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3C%21--%20Generator%3A%20Adobe%20Illustrator%2016.0.4%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200%29%20%20--%3E%0D%0A%3C%21DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0D%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0D%0A%09%20width%3D%2248.004px%22%20height%3D%2248px%22%20viewBox%3D%220%200%2048.004%2048%22%20enable-background%3D%22new%200%200%2048.004%2048%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%3Ccircle%20fill%3D%22%231F1034%22%20cx%3D%2224.002%22%20cy%3D%2224%22%20r%3D%2223%22%2F%3E%0D%0A%3Cg%3E%0D%0A%09%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M26.419%2C16.356c-0.657%2C0.658-1.464%2C0.987-2.417%2C0.987c-0.954%2C0-1.76-0.329-2.418-0.987%0D%0A%09%09c-0.659-0.659-0.987-1.47-0.987-2.436c0-0.965%2C0.328-1.775%2C0.987-2.435c0.658-0.658%2C1.464-0.986%2C2.418-0.986%0D%0A%09%09c0.953%2C0%2C1.76%2C0.328%2C2.417%2C0.986c0.659%2C0.659%2C0.988%2C1.47%2C0.988%2C2.435C27.407%2C14.887%2C27.078%2C15.697%2C26.419%2C16.356z%20M21.107%2C37.5%0D%0A%09%09V18.501h5.822V37.5H21.107z%22%2F%3E%0D%0A%3C%2Fg%3E%0D%0A%3C%2Fsvg%3E%0D%0A);
+  background-position: center center;
+  background-size: 45%;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  margin-top: -1px;
+  margin-left: -1px;
+}
+
+.mz-bug-info:hover,
+.mz-bug-info:active {
+  background: white;
+  box-shadow: inset 0 -4px 0 #2c1e3f;
+  cursor: pointer;
+}

@@ -3,7 +3,6 @@ sources:
         type: TopoJSON
         url: https://meetar.github.io/mapzen-tiles/vector/v1/256/all/{z}/{x}/{y}.topojson
         max_zoom: 8
-        rasters: [normals]
     normals:
         type: Raster
         url: https://s3.amazonaws.com/elevation-tiles-prod/normal/{z}/{x}/{y}.png
@@ -49,7 +48,7 @@ styles:
 
 layers:
     earth:
-        data: { source: mapzen }
+        data: { source: normals }
         draw:
             hillshade:
                 order: 0

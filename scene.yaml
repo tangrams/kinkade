@@ -1,12 +1,19 @@
 sources:
     mapzen: 
         type: TopoJSON
-        url: https://meetar.github.io/mapzen-tiles/vector/v1/256/all/{z}/{x}/{y}.topojson
-        max_zoom: 8
+        url: https://tile.nextzen.org/tilezen/vector/v1/512/all/{z}/{x}/{y}.topojson
+        url_params:
+            api_key: LV_omJtLQV2Mx2ZdESsGlg # Kinkade-specific key
+        tile_size: 512
+        max_zoom: 15
     normals:
         type: Raster
-        url: https://s3.amazonaws.com/elevation-tiles-prod/normal/{z}/{x}/{y}.png
-        max_zoom: 15
+        # url: https://s3.amazonaws.com/elevation-tiles-prod/normal/{z}/{x}/{y}.png # direct S3 bucket access (256px tiles)
+        url: https://tile.nextzen.org/tilezen/terrain/v1/512/normal/{z}/{x}/{y}.png
+        url_params:
+            api_key: LV_omJtLQV2Mx2ZdESsGlg # Kinkade-specific key
+        tile_size: 512
+        max_zoom: 14
 
 scene:
     background:

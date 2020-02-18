@@ -712,10 +712,4 @@ window.onload = function () {
     clearCanvas();
     // init first undo
     saveCanvas();
-
-    // offer login button if possible
-    if (apiIsAccessible()) {
-        showLoginButton();
-        checkUser();
-    }
 }

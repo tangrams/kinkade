@@ -48,7 +48,8 @@ styles:
                     color = applyEnvmap(u_envmap, normal, u_scale);
     dots:
         base: lines
-        dash: [1, 2]
+        dash: [1, 1]
+        blend: add
     dashes:
         base: lines
         dash: [1, 3]
@@ -70,7 +71,7 @@ layers:
                 visible: global.lines
                 order: 3
                 color: [.3, .3, .3]
-                width: .3px
+                width: .5px
     places:
         data: { source: mapzen }
         filter: { not: { kind: [neighbourhood] } }
@@ -107,8 +108,11 @@ layers:
                     points:
                         visible: global.labels
                         priority: 2
-                        color: '#aaa'
-                        size: 8px
+                        color: '#666'
+                        size: 5px
+                        outline:
+                            width: .75px
+                            color: white
                         text:
                             optional: false
                             font:
@@ -127,6 +131,7 @@ layers:
                     visible: global.labels
                     priority: 3
                     font:
+                        weight: bold
                         transform: uppercase
                         size: 10pt
                         family: Lucida Grande
@@ -140,13 +145,5 @@ layers:
             dots:
                 order: 5
                 visible: global.lines
-                color: [.75, .75, .75]
-                width: 1px
-    roads:
-        data: { source: mapzen }
-        draw:
-            dashes:
-                order: 6
-                visible: global.lines
-                color: [.5, .5, .5]
-                width: 1px
+                color: [.25, .25, .25, .25]
+                width: 2px

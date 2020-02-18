@@ -66,8 +66,6 @@ layers:
                 visible: global.water
                 order: 4
                 color: white
-            hillshade:
-                order: 3
             lines:
                 visible: global.lines
                 order: 3

@@ -56,10 +56,8 @@
     <hr>
     Terrain Scale:<input id="scale" value="2" size=3 onchange="updateScale(this.value)">
     <input id="scale_slider" class="slider50" type="range" min="0.01" max="5" value="2" step=".001" oninput="updateScale(this.value)">
-    <br>
-    <span class="span25">Blur:</span><input class="slider75" type="range" id="blur" min="0" max="100" value="0" step=".01" oninput="updateBlur(this.value)">
-    <br>
-    <span class="span25">Rotate:</span><input class="slider75" type="range" id="rotate" min="-360" max="360" value="0" step="1" oninput="updateRotate(this.value)" onChange="resetRotate()">
+    <span class="span25">Blur:<input class="slider75" type="range" id="blur" min="0" max="100" value="0" step=".01" oninput="updateBlur(this.value)"></span>
+    <span class="span25">Rotate:<input class="slider75" type="range" id="rotate" min="-360" max="360" value="0" step="1" oninput="updateRotate(this.value)" onChange="resetRotate()"></span>
     <hr width="256px">
     <div id="webcamdiv">
     <input type="checkbox" id="webcam" onchange="useWebcam(this.checked)">Webcam 

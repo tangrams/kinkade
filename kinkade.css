@@ -38,7 +38,7 @@ h3 {
     background-color: #26282e;
     border: 1px solid #bbb;
     color: #eee;
-    overflow: scroll;
+    overflow: hidden;
     max-height: 97%;
 }
 #kcanvas {
@@ -48,7 +48,7 @@ h3 {
     padding: 0;
     width: 256px;
     height: 256px;
-    border: 1px solid #000
+    border: 1px solid #000;
 }
 #canvaswrapper {
     height: 256px;
@@ -330,16 +330,16 @@ input[type=checkbox] {
     width: 98%;
 }
 .slider50 {
-    width: 50%;
+    width: 40%;
     float: right;
 }
 .slider75 {
-    width: 75%;
-    /*float: right;*/
+    width: 70%;
+    float: right;
 }
 .span25 {
-	float: left;
-	width: 23%;
+    width: 100%;
+    height: 2.25em;
 	display: inline-block;
 }
 #saveButton {

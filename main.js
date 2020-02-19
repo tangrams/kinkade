@@ -574,7 +574,7 @@ function togglePane(which, state) {
 function swapimg(div) {
     img = div.childNodes[0];
     drawImgToCanvas(img);
-    updateMap();
+    if (scene.config) updateMap();
     saveCanvas();
 }
 
@@ -715,8 +715,10 @@ window.onload = function () {
     document.onkeyup = KeyRelease;
     // load dropzone
     window.myDropzone = new Dropzone("div#canvaswrapper", { url: "#"});
-    // fill canvas with white
-    clearCanvas();
+    // load default image
+    document.getElementById("default").click();
+    // sample colors
+    loadSwatches();
     // init first undo
     saveCanvas();
 }

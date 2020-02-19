@@ -25,9 +25,7 @@ map = (function () {
     /*** Map ***/
 
     // init Leaflet map
-    var map = L.map('map',
-        {"keyboardZoomOffset" : .05}
-    );
+    var map = L.map('map', {"keyboardZoomOffset" : .05});
 
     // init Tangram layer
     var layer = Tangram.leafletLayer({

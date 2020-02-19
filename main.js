@@ -330,6 +330,13 @@ function saveCanvas(overwrite, callback) {
     });
 }
 
+function snapshot() {
+    if (document.getElementById("webcam").checked) {
+        useWebcam(false);
+    } else {
+        saveCanvas()
+    }
+}
 function resetBlur() {
     if (blurring) {
         blurring = false;

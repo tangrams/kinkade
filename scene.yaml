@@ -14,6 +14,10 @@ sources:
             api_key: LV_omJtLQV2Mx2ZdESsGlg # Kinkade-specific key
         tile_size: 512
         max_zoom: 14
+    tile-boundaries:
+        type: Raster
+        url: empty.png
+        bounds: [-180, -90, 180, 90]
 
 scene:
     background:
@@ -147,3 +151,11 @@ layers:
                 visible: global.lines
                 color: [.25, .25, .25, .25]
                 width: 2px
+    background:
+        data: { source: tile-boundaries }
+        draw:
+            lines:
+                order: 0
+                tile_edges: true
+                color: gray
+                width: .5px
